@@ -1,1 +1,1 @@
-# BFXSnake-Android
+# BFXSnake-libGDX
