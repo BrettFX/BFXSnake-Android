@@ -1,3 +1,7 @@
+/*
+ * Reference: https://www.youtube.com/playlist?list=PLZm85UZQLd2TPXpUJfDEdWTSgszionbJy
+ * */
+
 package io.github.brettfx.bfxsnake;
 
 import com.badlogic.gdx.ApplicationAdapter;
