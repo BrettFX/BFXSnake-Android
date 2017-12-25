@@ -5,5 +5,5 @@ package io.github.brettfx.bfxsnake.States;
  * @since 12/24/2017
  */
 
-public class MenuState extends State {
-}
+//public class MenuState extends State {
+//}
