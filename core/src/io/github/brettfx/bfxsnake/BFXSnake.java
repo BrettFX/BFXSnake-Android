@@ -30,6 +30,8 @@ public class BFXSnake extends ApplicationAdapter {
 		m_shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		m_shapeRenderer.setColor(0, 1, 0, 1);
 		m_shapeRenderer.rect(400, 400, m_snakePartSize, m_snakePartSize);
+		m_shapeRenderer.rect(400 + m_snakePartSize, 400, m_snakePartSize, m_snakePartSize);
+		m_shapeRenderer.rect(400 + (m_snakePartSize * 2), 400, m_snakePartSize, m_snakePartSize);
 		m_shapeRenderer.end();
 	}
 	
