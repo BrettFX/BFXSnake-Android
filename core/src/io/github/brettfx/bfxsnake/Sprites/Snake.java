@@ -27,19 +27,43 @@ public class Snake {
 
     public boolean m_colliding;
 
+    enum Directions {
+        LEFT, RIGHT, UP, DOWN, NONE
+    }
+
+    //Keep track of the snake's current direction
+    private Directions currentDirection = Directions.NONE;
+
     /**
      * Constructor
-     *
-     * @param xLoc the x-coordinate location to spawn the snake
-     * @param yLoc the y-coordinate location to spawn the snake
      * */
-    public Snake(int xLoc, int yLoc){
-        m_position = new Vector3(xLoc, yLoc, 0);
+    public Snake(){
+        //Create the initial snake
+        m_snakeParts.add(new SnakePart());
+
+        m_position = new Vector3(m_snakeParts.get(0).getX(), m_snakeParts.get(0).getY(), 0);
         m_velocity = new Vector3(0, 0, 0);
 
-
+        m_shapeRenderer = new ShapeRenderer();
 
         m_colliding = false;
+    }
+
+    /**
+     * If a valid direction is specified then change the direction that the snake is going in
+     *
+     * @param direction the direction to make the snake go in
+     * */
+    public void move(Directions direction){
+        if(currentDirection != direction){
+            //Move in the specified direction
+
+            currentDirection = direction;
+        }
+    }
+
+    public void dispose(){
+        m_shapeRenderer.dispose();
     }
 
 }

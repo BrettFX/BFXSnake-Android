@@ -13,6 +13,11 @@ import io.github.brettfx.bfxsnake.BFXSnake;
  */
 public class SnakePart {
     private Rectangle m_part;
+
+    //Promotes versatility by enabling the data type of m_part to change to Texture or Image
+    //Boundary of each snake part to detect collisions
+    private Rectangle m_bounds;
+
     private float m_xLoc;
     private float m_yLoc;
     private float m_width;
@@ -30,11 +35,13 @@ public class SnakePart {
         m_xLoc = m_width / 2;
         m_yLoc = m_height / 2;
         m_part = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
+        m_bounds = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
 
     }
 
     public SnakePart(float x, float y, float width, float height){
         m_part = new Rectangle(x, y, width, height);
+        m_bounds = new Rectangle(x, y, width, height);
         m_xLoc = x;
         m_yLoc = y;
         m_width = width;
