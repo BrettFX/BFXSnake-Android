@@ -7,6 +7,7 @@ package io.github.brettfx.bfxsnake;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class BFXSnake extends ApplicationAdapter {
@@ -14,6 +15,8 @@ public class BFXSnake extends ApplicationAdapter {
 
 	private ShapeRenderer m_shapeRenderer;
 	private float m_snakePartSize;
+
+	public static SpriteBatch m_batch;
 
 	
 	@Override
