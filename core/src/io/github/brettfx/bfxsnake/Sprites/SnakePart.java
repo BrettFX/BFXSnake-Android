@@ -56,8 +56,16 @@ public class SnakePart {
         return m_xLoc;
     }
 
+    public void setX(float x){
+        m_xLoc = x;
+    }
+
     public float getY() {
         return m_yLoc;
+    }
+
+    public void setY(float y){
+        m_yLoc = y;
     }
 
     public float getWidth() {
