@@ -19,6 +19,7 @@ public class Snake {
     private Vector3 m_velocity;
     private Rectangle m_bounds;
 
+    //The snake (comprised of snake parts)
     private Array<SnakePart> m_snakeParts;
 
     //To render individual snake parts
