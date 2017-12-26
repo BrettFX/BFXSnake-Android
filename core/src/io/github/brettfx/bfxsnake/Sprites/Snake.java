@@ -6,4 +6,7 @@ package io.github.brettfx.bfxsnake.Sprites;
  */
 
 public class Snake {
+    public static final boolean DEBUG_MODE = false;
+
+
 }
