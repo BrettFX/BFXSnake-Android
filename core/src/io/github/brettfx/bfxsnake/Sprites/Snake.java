@@ -56,7 +56,7 @@ public class Snake {
 
         m_colliding = false;
         m_delay = 0;
-        m_currentCascadingIndex = 0;
+        m_currentCascadingIndex = 1;
     }
 
     /**
@@ -205,15 +205,18 @@ public class Snake {
         m_delay++;
 
         //Update snake based on delay value
-        if(m_delay > INIT_MOVEMENT_SPEED){
+        if(m_delay >= INIT_MOVEMENT_SPEED){
             if(m_currentCascadingIndex >= m_snakeParts.size){
-                m_currentCascadingIndex = 0;
+                m_currentCascadingIndex = 1;
             }
 
             move();
 
             //Cascade new direction (if any)
-            cascade(m_currentCascadingIndex);
+            //Only required when there is more than one snake part
+            if(m_snakeParts.size > 1){
+                cascade(m_currentCascadingIndex);
+            }
 
             m_delay = 0;
             m_currentCascadingIndex++;
