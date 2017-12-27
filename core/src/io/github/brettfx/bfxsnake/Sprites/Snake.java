@@ -92,6 +92,9 @@ public class Snake {
     public void setDirection(Directions direction){
         if(!isOpposite(direction)){
             m_currentDirection = direction;
+
+            //Starts the cascading process
+            m_snakeParts.get(0).setDirection(m_currentDirection);
         }
     }
 
@@ -139,13 +142,12 @@ public class Snake {
      * going in will be cascaded through the snake until each snake part is going in the same direction
      * as the head of the snake.
      *
-     * @param direction the direction to make the current snake part go in based on current
-     *                  direction.
      * @param i the current index of the snake part to move to avoid moving all
-     *          snake parts simultaneously
+     *          snake parts simultaneously in the direction of the head
      * */
-    private void cascade(Directions direction, int i){
-        m_snakeParts.get(i).setDirection(direction);
+    private void cascade(int i){
+        SnakePart previousPart = i > 0 ? m_snakeParts.get(i - 1) : m_snakeParts.get(0);
+        m_snakeParts.get(i).setDirection(previousPart.getDirection());
     }
 
     /**
@@ -203,15 +205,16 @@ public class Snake {
         m_delay++;
 
         //Update snake based on delay value
-        if(m_delay >= INIT_MOVEMENT_SPEED){
+        if(m_delay > INIT_MOVEMENT_SPEED){
             if(m_currentCascadingIndex >= m_snakeParts.size){
                 m_currentCascadingIndex = 0;
             }
 
-            //Cascade new direction (if any)
-            cascade(m_currentDirection, m_currentCascadingIndex);
-
             move();
+
+            //Cascade new direction (if any)
+            cascade(m_currentCascadingIndex);
+
             m_delay = 0;
             m_currentCascadingIndex++;
         }
