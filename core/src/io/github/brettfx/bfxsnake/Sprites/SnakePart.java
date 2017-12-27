@@ -32,8 +32,8 @@ public class SnakePart {
     public SnakePart(){
         m_width = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
         m_height = m_width;
-        m_xLoc = m_width / 2;
-        m_yLoc = m_height / 2;
+        m_xLoc = Gdx.graphics.getWidth() / 2;
+        m_yLoc = Gdx.graphics.getHeight() / 2;
         m_part = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
         m_bounds = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
 

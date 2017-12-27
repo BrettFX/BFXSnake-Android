@@ -84,6 +84,7 @@ public class Snake {
         return m_shapeRenderer;
     }
 
+    //TODO Fix bug that occurs when changing directions and the snake contains more than one part
     public void setDirection(Directions direction){
         if(!isOpposite(direction)){
             m_currentDirection = direction;
@@ -105,7 +106,6 @@ public class Snake {
             m_currentDirection = direction;
 
             for(int i = 0; i < m_snakeParts.size; i++){
-                //TODO adapt to full snake (i.e., traverse entire snake and update loc of each part)
                 switch (m_currentDirection){
                     case UP:
                         newY = m_snakeParts.get(i).getY() + m_snakeParts.get(i).getHeight();
