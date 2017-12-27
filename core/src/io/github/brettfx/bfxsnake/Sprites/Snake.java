@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
  */
 
 public class Snake {
-    public static final boolean DEBUG_MODE = false;
+    private static final boolean DEBUG_MODE = false;
 
     //Increasing the value will slow the speed, i.e., the smaller the number the faster the snake will go
     private static final int INIT_MOVEMENT_SPEED = 25;
@@ -52,7 +52,7 @@ public class Snake {
         m_shapeRenderer = new ShapeRenderer();
 
         m_colliding = false;
-        m_delay = INIT_MOVEMENT_SPEED;
+        m_delay = 0;
     }
 
     /**
@@ -103,7 +103,7 @@ public class Snake {
             float newY;
 
             //Move in the specified direction
-            m_currentDirection = direction;
+            //m_currentDirection = direction;
 
             for(int i = 0; i < m_snakeParts.size; i++){
                 newX = m_snakeParts.get(i).getX();
@@ -142,27 +142,27 @@ public class Snake {
      * Depends on the current direction
      * */
     public void grow(){
-        int prev = m_snakeParts.size - 1;
-        float width = m_snakeParts.get(prev).getWidth();
-        float height = m_snakeParts.get(prev).getHeight();
-        float x = m_snakeParts.get(prev).getX();
-        float y = m_snakeParts.get(prev).getY();
+        int tail = m_snakeParts.size - 1;
+        float width = m_snakeParts.get(tail).getWidth();
+        float height = m_snakeParts.get(tail).getHeight();
+        float x = m_snakeParts.get(tail).getX();
+        float y = m_snakeParts.get(tail).getY();
 
         switch (m_currentDirection) {
             case UP:
-                y = m_snakeParts.get(prev).getY() - height;
+                y = m_snakeParts.get(tail).getY() - height;
                 break;
 
             case DOWN:
-                y = m_snakeParts.get(prev).getY() + height;
+                y = m_snakeParts.get(tail).getY() + height;
                 break;
 
             case LEFT:
-                x = m_snakeParts.get(prev).getX() + width;
+                x = m_snakeParts.get(tail).getX() + width;
                 break;
 
             case RIGHT:
-                x = m_snakeParts.get(prev).getX() - width;
+                x = m_snakeParts.get(tail).getX() - width;
                 break;
 
             default:
@@ -180,16 +180,16 @@ public class Snake {
      * Updates location of snake
      * */
     public void update(float dt){
-        if(DEBUG_MODE && m_delay <= 0){
+        if(DEBUG_MODE && m_delay > INIT_MOVEMENT_SPEED){
             System.out.println("Tick time: " + dt +  "; delay count: " + m_delay);
         }
 
-        m_delay--;
+        m_delay++;
 
         //Update snake based on delay value
-        if(m_delay < 0){
+        if(m_delay >= INIT_MOVEMENT_SPEED){
             move(m_currentDirection);
-            m_delay = INIT_MOVEMENT_SPEED;
+            m_delay = 0;
         }
     }
 
