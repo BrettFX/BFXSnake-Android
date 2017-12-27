@@ -23,6 +23,8 @@ public class SnakePart {
     private float m_width;
     private float m_height;
 
+    private Snake.Directions m_direction;
+
     /**
      * Default constructor to be used at initial state of game
      * Makes it so the snake will spawn in the center of the screen
@@ -36,7 +38,7 @@ public class SnakePart {
         m_yLoc = Gdx.graphics.getHeight() / 2;
         m_part = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
         m_bounds = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
-
+        m_direction = Snake.Directions.NONE;
     }
 
     public SnakePart(float x, float y, float width, float height){
@@ -46,6 +48,15 @@ public class SnakePart {
         m_yLoc = y;
         m_width = width;
         m_height = height;
+        m_direction = Snake.Directions.NONE;
+    }
+
+    public void setDirection(Snake.Directions direction){
+        m_direction = direction;
+    }
+
+    public Snake.Directions getDirection(){
+        return m_direction;
     }
 
     public Rectangle getPart(){

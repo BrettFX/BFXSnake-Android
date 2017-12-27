@@ -19,6 +19,8 @@ public class Snake {
     //Delay between ticks to update snake
     private int m_delay;
 
+    private int m_currentCascadingIndex;
+
     private Vector3 m_position;
     private Vector3 m_velocity;
     private Rectangle m_bounds;
@@ -45,6 +47,7 @@ public class Snake {
         //Create the initial snake
         m_snakeParts = new Array<SnakePart>();
         m_snakeParts.add(new SnakePart());
+        m_snakeParts.get(m_snakeParts.size - 1).setDirection(m_currentDirection);
 
         m_position = new Vector3(m_snakeParts.get(0).getX(), m_snakeParts.get(0).getY(), 0);
         m_velocity = new Vector3(0, 0, 0);
@@ -53,6 +56,7 @@ public class Snake {
 
         m_colliding = false;
         m_delay = 0;
+        m_currentCascadingIndex = 0;
     }
 
     /**
@@ -94,75 +98,84 @@ public class Snake {
     /**
      * If a valid direction is specified then change the direction that the snake is going in
      *
-     * @param direction the direction to make the snake go in
      * */
-    private void move(Directions direction){
-        //Can't go in the opposite direction
-        if(!isOpposite(direction)){
-            float newX;
-            float newY;
+    private void move(){
+        float newX;
+        float newY;
 
-            //Move in the specified direction
-            //m_currentDirection = direction;
+        for(int i = 0; i < m_snakeParts.size; i++){
+            newX = m_snakeParts.get(i).getX();
+            newY = m_snakeParts.get(i).getY();
 
-            for(int i = 0; i < m_snakeParts.size; i++){
-                newX = m_snakeParts.get(i).getX();
-                newY = m_snakeParts.get(i).getY();
+            switch (m_snakeParts.get(i).getDirection()){
+                case UP:
+                    newY = m_snakeParts.get(i).getY() + m_snakeParts.get(i).getHeight();
+                    break;
 
-                switch (m_currentDirection){
-                    case UP:
-                        newY = m_snakeParts.get(i).getY() + m_snakeParts.get(i).getHeight();
-                        break;
+                case DOWN:
+                    newY = m_snakeParts.get(i).getY() - m_snakeParts.get(i).getHeight();
+                    break;
 
-                    case DOWN:
-                        newY = m_snakeParts.get(i).getY() - m_snakeParts.get(i).getHeight();
-                        break;
+                case LEFT:
+                    newX = m_snakeParts.get(i).getX() - m_snakeParts.get(i).getWidth();
+                    break;
 
-                    case LEFT:
-                        newX = m_snakeParts.get(i).getX() - m_snakeParts.get(i).getWidth();
-                        break;
+                case RIGHT:
+                    newX = m_snakeParts.get(i).getX() + m_snakeParts.get(i).getWidth();
+                    break;
 
-                    case RIGHT:
-                        newX = m_snakeParts.get(i).getX() + m_snakeParts.get(i).getWidth();
-                        break;
-
-                    default:
-                        break;
-                }
-
-                //Traverse entire snake and update the position of each part accordingly
-                m_snakeParts.get(i).setX(newX);
-                m_snakeParts.get(i).setY(newY);
+                default:
+                    break;
             }
+
+            //Traverse entire snake and update the position of each part accordingly
+            m_snakeParts.get(i).setX(newX);
+            m_snakeParts.get(i).setY(newY);
         }
     }
 
     /**
+     * Used when the direction of the snake has been changed. The new direction that the snake is
+     * going in will be cascaded through the snake until each snake part is going in the same direction
+     * as the head of the snake.
+     *
+     * @param direction the direction to make the current snake part go in based on current
+     *                  direction.
+     * @param i the current index of the snake part to move to avoid moving all
+     *          snake parts simultaneously
+     * */
+    private void cascade(Directions direction, int i){
+        m_snakeParts.get(i).setDirection(direction);
+    }
+
+    /**
      * Grow the snake by appending a snake part
-     * Depends on the current direction
+     * Depends on the current direction of last snake part
      * */
     public void grow(){
         int tail = m_snakeParts.size - 1;
-        float width = m_snakeParts.get(tail).getWidth();
-        float height = m_snakeParts.get(tail).getHeight();
-        float x = m_snakeParts.get(tail).getX();
-        float y = m_snakeParts.get(tail).getY();
+        SnakePart previousPart = m_snakeParts.get(tail);
 
-        switch (m_currentDirection) {
+        float width = previousPart.getWidth();
+        float height = previousPart.getHeight();
+        float x = previousPart.getX();
+        float y = previousPart.getY();
+
+        switch (previousPart.getDirection()) {
             case UP:
-                y = m_snakeParts.get(tail).getY() - height;
+                y = previousPart.getY() - height;
                 break;
 
             case DOWN:
-                y = m_snakeParts.get(tail).getY() + height;
+                y = previousPart.getY() + height;
                 break;
 
             case LEFT:
-                x = m_snakeParts.get(tail).getX() + width;
+                x = previousPart.getX() + width;
                 break;
 
             case RIGHT:
-                x = m_snakeParts.get(tail).getX() - width;
+                x = previousPart.getX() - width;
                 break;
 
             default:
@@ -170,6 +183,9 @@ public class Snake {
         }
 
         m_snakeParts.add(new SnakePart(x, y, width, height));
+
+        //Have the newly inserted snake part follow the previous part
+        m_snakeParts.get(m_snakeParts.size - 1).setDirection(previousPart.getDirection());
     }
 
     public Array<SnakePart> getSnake(){
@@ -188,8 +204,16 @@ public class Snake {
 
         //Update snake based on delay value
         if(m_delay >= INIT_MOVEMENT_SPEED){
-            move(m_currentDirection);
+            if(m_currentCascadingIndex >= m_snakeParts.size){
+                m_currentCascadingIndex = 0;
+            }
+
+            //Cascade new direction (if any)
+            cascade(m_currentDirection, m_currentCascadingIndex);
+
+            move();
             m_delay = 0;
+            m_currentCascadingIndex++;
         }
     }
 
