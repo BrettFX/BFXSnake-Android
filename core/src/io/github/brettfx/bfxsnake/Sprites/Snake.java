@@ -99,13 +99,16 @@ public class Snake {
     private void move(Directions direction){
         //Can't go in the opposite direction
         if(!isOpposite(direction)){
-            float newX = m_snakeParts.get(0).getX();
-            float newY = m_snakeParts.get(0).getY();
+            float newX;
+            float newY;
 
             //Move in the specified direction
             m_currentDirection = direction;
 
             for(int i = 0; i < m_snakeParts.size; i++){
+                newX = m_snakeParts.get(i).getX();
+                newY = m_snakeParts.get(i).getY();
+
                 switch (m_currentDirection){
                     case UP:
                         newY = m_snakeParts.get(i).getY() + m_snakeParts.get(i).getHeight();
@@ -139,11 +142,11 @@ public class Snake {
      * Depends on the current direction
      * */
     public void grow(){
-        float x = 0.0f;
-        float y = 0.0f;
         int prev = m_snakeParts.size - 1;
         float width = m_snakeParts.get(prev).getWidth();
         float height = m_snakeParts.get(prev).getHeight();
+        float x = m_snakeParts.get(prev).getX();
+        float y = m_snakeParts.get(prev).getY();
 
         switch (m_currentDirection) {
             case UP:
