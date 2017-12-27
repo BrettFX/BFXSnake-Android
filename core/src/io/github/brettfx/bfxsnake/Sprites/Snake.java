@@ -95,7 +95,7 @@ public class Snake {
      *
      * @param direction the direction to make the snake go in
      * */
-    public void move(Directions direction){
+    private void move(Directions direction){
         //Can't go in the opposite direction
         if(!isOpposite(direction)){
             float newX = m_snakeParts.get(0).getX();
@@ -104,39 +104,69 @@ public class Snake {
             //Move in the specified direction
             m_currentDirection = direction;
 
-            //TODO adapt to full snake (i.e., traverse entire snake and update loc of each part)
-            switch (m_currentDirection){
-                case UP:
-                    newY = m_snakeParts.get(0).getY() + m_snakeParts.get(0).getHeight();
-                    break;
+            for(int i = 0; i < m_snakeParts.size; i++){
+                //TODO adapt to full snake (i.e., traverse entire snake and update loc of each part)
+                switch (m_currentDirection){
+                    case UP:
+                        newY = m_snakeParts.get(i).getY() + m_snakeParts.get(i).getHeight();
+                        break;
 
-                case DOWN:
-                    newY = m_snakeParts.get(0).getY() - m_snakeParts.get(0).getHeight();
-                    break;
+                    case DOWN:
+                        newY = m_snakeParts.get(i).getY() - m_snakeParts.get(i).getHeight();
+                        break;
 
-                case LEFT:
-                    newX = m_snakeParts.get(0).getX() - m_snakeParts.get(0).getWidth();
-                    break;
+                    case LEFT:
+                        newX = m_snakeParts.get(i).getX() - m_snakeParts.get(i).getWidth();
+                        break;
 
-                case RIGHT:
-                    newX = m_snakeParts.get(0).getX() + m_snakeParts.get(0).getWidth();
-                    break;
+                    case RIGHT:
+                        newX = m_snakeParts.get(i).getX() + m_snakeParts.get(i).getWidth();
+                        break;
 
-                default:
-                   break;
+                    default:
+                        break;
+                }
+
+                //Traverse entire snake and update the position of each part accordingly
+                m_snakeParts.get(i).setX(newX);
+                m_snakeParts.get(i).setY(newY);
             }
-
-            //Traverse entire snake and update the position of each part accordingly
-            m_snakeParts.get(0).setX(newX);
-            m_snakeParts.get(0).setY(newY);
         }
     }
 
     /**
      * Grow the snake by appending a snake part
+     * Depends on the current direction
      * */
     public void grow(){
+        float x = 0.0f;
+        float y = 0.0f;
+        int prev = m_snakeParts.size - 1;
+        float width = m_snakeParts.get(prev).getWidth();
+        float height = m_snakeParts.get(prev).getHeight();
 
+        switch (m_currentDirection) {
+            case UP:
+                y = m_snakeParts.get(prev).getY() - height;
+                break;
+
+            case DOWN:
+                y = m_snakeParts.get(prev).getY() + height;
+                break;
+
+            case LEFT:
+                x = m_snakeParts.get(prev).getX() + width;
+                break;
+
+            case RIGHT:
+                x = m_snakeParts.get(prev).getX() - width;
+                break;
+
+            default:
+                break;
+        }
+
+        m_snakeParts.add(new SnakePart(x, y, width, height));
     }
 
     public Array<SnakePart> getSnake(){
