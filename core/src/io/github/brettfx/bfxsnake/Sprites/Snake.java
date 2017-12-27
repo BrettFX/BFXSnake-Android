@@ -13,7 +13,11 @@ import com.badlogic.gdx.utils.Array;
 public class Snake {
     public static final boolean DEBUG_MODE = false;
 
-    private static final int INIT_MOVEMENT_SPEED = 100;
+    //Increasing the value will slow the speed, i.e., the smaller the number the faster the snake will go
+    private static final int INIT_MOVEMENT_SPEED = 25;
+
+    //Delay between ticks to update snake
+    private int m_delay;
 
     private Vector3 m_position;
     private Vector3 m_velocity;
@@ -32,7 +36,7 @@ public class Snake {
     }
 
     //Keep track of the snake's current direction
-    private Directions currentDirection = Directions.NONE;
+    private Directions m_currentDirection = Directions.RIGHT;
 
     /**
      * Constructor
@@ -48,6 +52,7 @@ public class Snake {
         m_shapeRenderer = new ShapeRenderer();
 
         m_colliding = false;
+        m_delay = INIT_MOVEMENT_SPEED;
     }
 
     /**
@@ -59,16 +64,16 @@ public class Snake {
     private boolean isOpposite(Directions direction){
         switch (direction){
             case UP:
-                return currentDirection == Directions.DOWN;
+                return m_currentDirection == Directions.DOWN;
 
             case DOWN:
-                return currentDirection == Directions.UP;
+                return m_currentDirection == Directions.UP;
 
             case LEFT:
-                return currentDirection == Directions.RIGHT;
+                return m_currentDirection == Directions.RIGHT;
 
             case RIGHT:
-                return currentDirection == Directions.LEFT;
+                return m_currentDirection == Directions.LEFT;
 
             default:
                 return false;
@@ -77,6 +82,12 @@ public class Snake {
 
     public ShapeRenderer getShapeRenderer(){
         return m_shapeRenderer;
+    }
+
+    public void setDirection(Directions direction){
+        if(!isOpposite(direction)){
+            m_currentDirection = direction;
+        }
     }
 
     /**
@@ -91,10 +102,10 @@ public class Snake {
             float newY = m_snakeParts.get(0).getY();
 
             //Move in the specified direction
-            currentDirection = direction;
+            m_currentDirection = direction;
 
             //TODO adapt to full snake (i.e., traverse entire snake and update loc of each part)
-            switch (currentDirection){
+            switch (m_currentDirection){
                 case UP:
                     newY = m_snakeParts.get(0).getY() + m_snakeParts.get(0).getHeight();
                     break;
@@ -136,7 +147,17 @@ public class Snake {
      * Updates location of snake
      * */
     public void update(float dt){
+        if(DEBUG_MODE && m_delay <= 0){
+            System.out.println("Tick time: " + dt +  "; delay count: " + m_delay);
+        }
 
+        m_delay--;
+
+        //Update snake based on delay value
+        if(m_delay < 0){
+            move(m_currentDirection);
+            m_delay = INIT_MOVEMENT_SPEED;
+        }
     }
 
     public void dispose(){

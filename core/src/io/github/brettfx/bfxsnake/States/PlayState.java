@@ -34,22 +34,23 @@ public class PlayState extends State {
     @Override
     public void handleInput() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || (m_controller.isDownPressed() && Gdx.input.justTouched())){
-            m_snake.move(Snake.Directions.DOWN);
+            m_snake.setDirection(Snake.Directions.DOWN);
 
         }else if(Gdx.input.isKeyJustPressed(Input.Keys.UP) || (m_controller.isUpPressed() && Gdx.input.justTouched())){
-            m_snake.move(Snake.Directions.UP);
+            m_snake.setDirection(Snake.Directions.UP);
 
         }else if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || (m_controller.isLeftPressed() && Gdx.input.justTouched())){
-            m_snake.move(Snake.Directions.LEFT);
+            m_snake.setDirection(Snake.Directions.LEFT);
 
         }else if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || (m_controller.isRightPressed() && Gdx.input.justTouched())){
-            m_snake.move(Snake.Directions.RIGHT);
+            m_snake.setDirection(Snake.Directions.RIGHT);
         }
     }
 
     @Override
     public void update(float dt) {
         handleInput();
+        m_snake.update(dt);
     }
 
     @Override
