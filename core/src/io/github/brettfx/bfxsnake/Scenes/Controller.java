@@ -29,8 +29,8 @@ public class Controller {
     private static final float PADDING_BOTTOM = 5f;
     private static final float PADDING_RIGHT = 5f;
 
-    private static final float ARROW_WIDTH = 40f;
-    private static final float ARROW_HEIGHT = 40f;
+    private static final float ARROW_WIDTH = 150f; //40
+    private static final float ARROW_HEIGHT = 150f; //40
 
     private Viewport m_viewport;
     private Stage m_stage;
@@ -40,10 +40,8 @@ public class Controller {
             m_leftPressed,
             m_rightPressed;
 
-    private OrthographicCamera cam;
-
     public Controller(){
-        cam = new OrthographicCamera();
+        OrthographicCamera cam = new OrthographicCamera();
         m_viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cam);
 
         m_stage = new Stage(m_viewport, BFXSnake.m_batch);

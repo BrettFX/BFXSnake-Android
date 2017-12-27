@@ -27,7 +27,7 @@ public class Snake {
 
     public boolean m_colliding;
 
-    enum Directions {
+    public enum Directions {
         LEFT, RIGHT, UP, DOWN, NONE
     }
 
@@ -39,6 +39,7 @@ public class Snake {
      * */
     public Snake(){
         //Create the initial snake
+        m_snakeParts = new Array<SnakePart>();
         m_snakeParts.add(new SnakePart());
 
         m_position = new Vector3(m_snakeParts.get(0).getX(), m_snakeParts.get(0).getY(), 0);
@@ -74,6 +75,10 @@ public class Snake {
         }
     }
 
+    public ShapeRenderer getShapeRenderer(){
+        return m_shapeRenderer;
+    }
+
     /**
      * If a valid direction is specified then change the direction that the snake is going in
      *
@@ -82,7 +87,8 @@ public class Snake {
     public void move(Directions direction){
         //Can't go in the opposite direction
         if(!isOpposite(direction)){
-            float newX = 0.0f, newY = 0.0f;
+            float newX = m_snakeParts.get(0).getX();
+            float newY = m_snakeParts.get(0).getY();
 
             //Move in the specified direction
             currentDirection = direction;
@@ -120,6 +126,10 @@ public class Snake {
      * */
     public void grow(){
 
+    }
+
+    public Array<SnakePart> getSnake(){
+        return m_snakeParts;
     }
 
     /**

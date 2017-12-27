@@ -31,7 +31,7 @@ public class SnakePart {
      * */
     public SnakePart(){
         m_width = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
-        m_height = Gdx.graphics.getHeight() / BFXSnake.SCALE_FACTOR;
+        m_height = m_width;
         m_xLoc = m_width / 2;
         m_yLoc = m_height / 2;
         m_part = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
@@ -58,6 +58,8 @@ public class SnakePart {
 
     public void setX(float x){
         m_xLoc = x;
+        m_part.setX(m_xLoc);
+        m_bounds.setX(m_xLoc);
     }
 
     public float getY() {
@@ -66,6 +68,8 @@ public class SnakePart {
 
     public void setY(float y){
         m_yLoc = y;
+        m_part.setY(m_yLoc);
+        m_bounds.setY(m_yLoc);
     }
 
     public float getWidth() {
@@ -74,5 +78,9 @@ public class SnakePart {
 
     public float getHeight() {
         return m_height;
+    }
+
+    public Rectangle getBounds(){
+        return m_bounds;
     }
 }
