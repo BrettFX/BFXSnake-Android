@@ -31,6 +31,7 @@ public class Snake {
     private ShapeRenderer m_shapeRenderer;
 
     public boolean m_colliding;
+    private boolean m_paused;
 
     public enum Directions {
         LEFT, RIGHT, UP, DOWN, NONE
@@ -54,6 +55,7 @@ public class Snake {
         m_shapeRenderer = new ShapeRenderer();
 
         m_colliding = false;
+        m_paused = false;
         m_delay = 0;
     }
 
@@ -104,6 +106,11 @@ public class Snake {
         float x;
         float y;
 
+        //Don't update movement if paused
+        if(m_paused){
+            return;
+        }
+
         for(int i = 0; i < m_snakeParts.size; i++){
             SnakePart part = m_snakeParts.get(i);
             x = part.getX();
@@ -112,6 +119,7 @@ public class Snake {
             switch (part.getDirection()){
                 case UP:
                     if(y >= Gdx.graphics.getHeight() - part.getHeight()){
+                        m_colliding = true;
                         return;
                     }
 
@@ -120,6 +128,7 @@ public class Snake {
 
                 case DOWN:
                     if(y <= 0){
+                        m_colliding = true;
                         return;
                     }
 
@@ -128,6 +137,7 @@ public class Snake {
 
                 case LEFT:
                     if(x <= 0){
+                        m_colliding = true;
                         return;
                     }
 
@@ -136,6 +146,7 @@ public class Snake {
 
                 case RIGHT:
                     if(x >= Gdx.graphics.getWidth() - part.getWidth()){
+                        m_colliding = true;
                         return;
                     }
 
@@ -145,6 +156,8 @@ public class Snake {
                 default:
                     break;
             }
+
+            m_colliding = false;
 
             //Traverse entire snake and update the position of each part accordingly
             m_snakeParts.get(i).setX(x);
@@ -158,6 +171,11 @@ public class Snake {
      * as the head of the snake.
      * */
     private void cascade(){
+        //Only cascade if not paused
+        if(m_paused || m_colliding){
+            return;
+        }
+
         //Start from the end to ensure that only one is updated at a time
         for(int i = m_snakeParts.size - 1; i > 0; i--){
             SnakePart previousPart = m_snakeParts.get(i - 1);
@@ -207,6 +225,27 @@ public class Snake {
 
     public Array<SnakePart> getSnake(){
         return m_snakeParts;
+    }
+
+    /**
+     * Pause the snake
+     * */
+    public void pause(){
+        m_paused = true;
+    }
+
+    /**
+     * Resume the snake from a paused state
+     * */
+    public void resume(){
+        m_paused = false;
+    }
+
+    /**
+     * Determine if the snake is paused
+     * */
+    public boolean isPaused(){
+        return m_paused;
     }
 
     /**

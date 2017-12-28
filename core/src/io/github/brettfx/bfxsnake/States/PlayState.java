@@ -33,19 +33,25 @@ public class PlayState extends State {
 
     @Override
     public void handleInput() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || (m_controller.isDownPressed() && Gdx.input.justTouched())){
-            m_snake.setDirection(Snake.Directions.DOWN);
+        if(!m_snake.isPaused()){
+            if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || (m_controller.isDownPressed() && Gdx.input.justTouched())){
+                m_snake.setDirection(Snake.Directions.DOWN);
 
-        }else if(Gdx.input.isKeyJustPressed(Input.Keys.UP) || (m_controller.isUpPressed() && Gdx.input.justTouched())){
-            m_snake.setDirection(Snake.Directions.UP);
+            }else if(Gdx.input.isKeyJustPressed(Input.Keys.UP) || (m_controller.isUpPressed() && Gdx.input.justTouched())){
+                m_snake.setDirection(Snake.Directions.UP);
 
-        }else if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || (m_controller.isLeftPressed() && Gdx.input.justTouched())){
-            m_snake.setDirection(Snake.Directions.LEFT);
+            }else if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || (m_controller.isLeftPressed() && Gdx.input.justTouched())){
+                m_snake.setDirection(Snake.Directions.LEFT);
 
-        }else if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || (m_controller.isRightPressed() && Gdx.input.justTouched())){
-            m_snake.setDirection(Snake.Directions.RIGHT);
-        }else if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
-            m_snake.grow();
+            }else if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || (m_controller.isRightPressed() && Gdx.input.justTouched())){
+                m_snake.setDirection(Snake.Directions.RIGHT);
+            }else if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
+                m_snake.grow();
+            }else if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+                m_snake.pause();
+            }
+        }else if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            m_snake.resume();
         }
     }
 
