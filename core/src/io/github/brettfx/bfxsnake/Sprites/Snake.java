@@ -226,7 +226,7 @@ public class Snake {
                     m_currentCascadingIndex = 1;
                     m_directionChanged = false;
                 }
-                
+
                 cascade(m_currentCascadingIndex);
                 m_currentCascadingIndex++;
             }
