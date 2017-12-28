@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.HashMap;
+
 /**
  * @author brett
  * @since 12/25/2017
@@ -107,7 +109,7 @@ public class Snake {
         float y;
 
         //Don't update movement if paused
-        if(m_paused){
+        if(m_paused || m_colliding){
             return;
         }
 
@@ -157,7 +159,11 @@ public class Snake {
                     break;
             }
 
-            m_colliding = false;
+            m_colliding = i != 0 && y == m_snakeParts.get(0).getY() && x == m_snakeParts.get(0).getX();
+
+            if(m_colliding){
+                return;
+            }
 
             //Traverse entire snake and update the position of each part accordingly
             m_snakeParts.get(i).setX(x);
