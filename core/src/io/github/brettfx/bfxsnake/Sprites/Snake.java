@@ -1,5 +1,6 @@
 package io.github.brettfx.bfxsnake.Sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -14,7 +15,7 @@ public class Snake {
     private static final boolean DEBUG_MODE = false;
 
     //Increasing the value will slow the speed, i.e., the smaller the number the faster the snake will go
-    private static final int INIT_MOVEMENT_SPEED = 25; //Default: 25
+    private static final int INIT_MOVEMENT_SPEED = 10; //Default: 25
 
     //Delay between ticks to update snake
     private int m_delay;
@@ -100,28 +101,45 @@ public class Snake {
      *
      * */
     private void move(){
-        float newX;
-        float newY;
+        float x;
+        float y;
 
         for(int i = 0; i < m_snakeParts.size; i++){
-            newX = m_snakeParts.get(i).getX();
-            newY = m_snakeParts.get(i).getY();
+            SnakePart part = m_snakeParts.get(i);
+            x = part.getX();
+            y = part.getY();
 
-            switch (m_snakeParts.get(i).getDirection()){
+            switch (part.getDirection()){
                 case UP:
-                    newY = m_snakeParts.get(i).getY() + m_snakeParts.get(i).getHeight();
+                    if(y >= Gdx.graphics.getHeight() - part.getHeight()){
+                        return;
+                    }
+
+                    y = part.getY() + part.getHeight();
                     break;
 
                 case DOWN:
-                    newY = m_snakeParts.get(i).getY() - m_snakeParts.get(i).getHeight();
+                    if(y <= 0){
+                        return;
+                    }
+
+                    y = part.getY() - part.getHeight();
                     break;
 
                 case LEFT:
-                    newX = m_snakeParts.get(i).getX() - m_snakeParts.get(i).getWidth();
+                    if(x <= 0){
+                        return;
+                    }
+
+                    x = part.getX() - part.getWidth();
                     break;
 
                 case RIGHT:
-                    newX = m_snakeParts.get(i).getX() + m_snakeParts.get(i).getWidth();
+                    if(x >= Gdx.graphics.getWidth() - part.getWidth()){
+                        return;
+                    }
+
+                    x = part.getX() + part.getWidth();
                     break;
 
                 default:
@@ -129,8 +147,8 @@ public class Snake {
             }
 
             //Traverse entire snake and update the position of each part accordingly
-            m_snakeParts.get(i).setX(newX);
-            m_snakeParts.get(i).setY(newY);
+            m_snakeParts.get(i).setX(x);
+            m_snakeParts.get(i).setY(y);
         }
     }
 
