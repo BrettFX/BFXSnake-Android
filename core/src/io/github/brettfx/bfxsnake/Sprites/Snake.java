@@ -6,15 +6,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.HashMap;
-
 /**
  * @author brett
  * @since 12/25/2017
  */
 
 public class Snake {
-    private static final boolean DEBUG_MODE = false;
+    public static boolean DEBUG_MODE = false;
 
     //Increasing the value will slow the speed, i.e., the smaller the number the faster the snake will go
     private static final int INIT_MOVEMENT_SPEED = 10; //Default: 25

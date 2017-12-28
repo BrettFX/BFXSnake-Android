@@ -16,7 +16,7 @@ import io.github.brettfx.bfxsnake.Sprites.SnakePart;
  */
 public class PlayState extends State {
 
-    private static final boolean DEBUG_MODE = false;
+    public static boolean DEBUG_MODE = false;
 
     private Snake m_snake;
 
@@ -45,7 +45,7 @@ public class PlayState extends State {
 
             }else if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || (m_controller.isRightPressed() && Gdx.input.justTouched())){
                 m_snake.setDirection(Snake.Directions.RIGHT);
-            }else if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
+            }else if(Gdx.input.isKeyJustPressed(Input.Keys.A) && DEBUG_MODE){ //Allow debugger to grow snake at will
                 m_snake.grow();
             }else if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
                 m_snake.pause();

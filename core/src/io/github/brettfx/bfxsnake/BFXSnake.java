@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import io.github.brettfx.bfxsnake.Sprites.Snake;
 import io.github.brettfx.bfxsnake.States.GameStateManager;
 import io.github.brettfx.bfxsnake.States.PlayState;
 
@@ -20,6 +21,9 @@ public class BFXSnake extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		Snake.DEBUG_MODE = true;
+		PlayState.DEBUG_MODE = true;
+
 		m_batch = new SpriteBatch();
 		m_gameStateManager = new GameStateManager();
 		m_gameStateManager.push(new PlayState(m_gameStateManager));
