@@ -14,12 +14,10 @@ public class Snake {
     private static final boolean DEBUG_MODE = false;
 
     //Increasing the value will slow the speed, i.e., the smaller the number the faster the snake will go
-    private static final int INIT_MOVEMENT_SPEED = 50; //Default: 25
+    private static final int INIT_MOVEMENT_SPEED = 25; //Default: 25
 
     //Delay between ticks to update snake
     private int m_delay;
-
-    private int m_currentCascadingIndex;
 
     private Vector3 m_position;
     private Vector3 m_velocity;
@@ -32,7 +30,6 @@ public class Snake {
     private ShapeRenderer m_shapeRenderer;
 
     public boolean m_colliding;
-    private boolean m_directionChanged;
 
     public enum Directions {
         LEFT, RIGHT, UP, DOWN, NONE
@@ -56,9 +53,7 @@ public class Snake {
         m_shapeRenderer = new ShapeRenderer();
 
         m_colliding = false;
-        m_directionChanged = false;
         m_delay = 0;
-        m_currentCascadingIndex = 1;
     }
 
     /**
@@ -97,8 +92,6 @@ public class Snake {
 
             //Starts the cascading process
             m_snakeParts.get(0).setDirection(m_currentDirection);
-
-            m_directionChanged = true;
         }
     }
 
@@ -145,18 +138,13 @@ public class Snake {
      * Used when the direction of the snake has been changed. The new direction that the snake is
      * going in will be cascaded through the snake until each snake part is going in the same direction
      * as the head of the snake.
-     *
-     * @param i the current index of the snake part to move to avoid moving all
-     *          snake parts simultaneously in the direction of the head
      * */
-    private void cascade(int i){
-        SnakePart previousPart = m_snakeParts.get(i - 1);
-        m_snakeParts.get(i).setDirection(previousPart.getDirection());
-
-        //Determine when cascading is complete
-//        if(m_snakeParts.get(0).getDirection() == m_snakeParts.get(m_snakeParts.size - 1).getDirection()){
-//            m_currentCascadingIndex = 1;
-//        }
+    private void cascade(){
+        //Start from the end to ensure that only one is updated at a time
+        for(int i = m_snakeParts.size - 1; i > 0; i--){
+            SnakePart previousPart = m_snakeParts.get(i - 1);
+            m_snakeParts.get(i).setDirection(previousPart.getDirection());
+        }
     }
 
     /**
@@ -213,22 +201,12 @@ public class Snake {
 
         //Update snake based on delay value
         if(m_delay > INIT_MOVEMENT_SPEED){
-            if(m_currentCascadingIndex >= m_snakeParts.size){
-                m_currentCascadingIndex = 1;
-            }
-
             move();
 
             //Cascade new direction (if any)
             //Only required when there is more than one snake part
             if(m_snakeParts.size > 1){
-                if(m_directionChanged){
-                    m_currentCascadingIndex = 1;
-                    m_directionChanged = false;
-                }
-
-                cascade(m_currentCascadingIndex);
-                m_currentCascadingIndex++;
+                cascade();
             }
 
             m_delay = 0;
@@ -240,5 +218,4 @@ public class Snake {
     public void dispose(){
         m_shapeRenderer.dispose();
     }
-
 }
