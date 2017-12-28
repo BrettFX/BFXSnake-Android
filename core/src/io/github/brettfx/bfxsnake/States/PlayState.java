@@ -74,4 +74,10 @@ public class PlayState extends State {
 
         m_controller.draw();
     }
+
+    @Override
+    public void dispose() {
+        m_snake.dispose();
+        m_controller.dispose();
+    }
 }

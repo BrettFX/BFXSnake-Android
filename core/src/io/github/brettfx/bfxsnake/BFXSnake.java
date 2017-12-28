@@ -37,5 +37,6 @@ public class BFXSnake extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		m_batch.dispose();
+		m_gameStateManager.dispose();
 	}
 }

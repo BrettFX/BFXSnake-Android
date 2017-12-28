@@ -23,11 +23,13 @@ public class GameStateManager {
     }
 
     public void pop(){
-        m_states.pop();
+        State removedState = m_states.pop();
+        removedState.dispose();
     }
 
     public void set(State state){
-        m_states.pop();
+        State removedState = m_states.pop();
+        removedState.dispose();
         m_states.push(state);
     }
 
@@ -37,5 +39,11 @@ public class GameStateManager {
 
     public void render(SpriteBatch sb){
         m_states.peek().render(sb);
+    }
+
+    public void dispose(){
+        for(State state : m_states){
+            state.dispose();
+        }
     }
 }
