@@ -14,7 +14,7 @@ public class Snake {
     private static final boolean DEBUG_MODE = false;
 
     //Increasing the value will slow the speed, i.e., the smaller the number the faster the snake will go
-    private static final int INIT_MOVEMENT_SPEED = 25;
+    private static final int INIT_MOVEMENT_SPEED = 50; //Default: 25
 
     //Delay between ticks to update snake
     private int m_delay;
@@ -32,6 +32,7 @@ public class Snake {
     private ShapeRenderer m_shapeRenderer;
 
     public boolean m_colliding;
+    private boolean m_directionChanged;
 
     public enum Directions {
         LEFT, RIGHT, UP, DOWN, NONE
@@ -55,6 +56,7 @@ public class Snake {
         m_shapeRenderer = new ShapeRenderer();
 
         m_colliding = false;
+        m_directionChanged = false;
         m_delay = 0;
         m_currentCascadingIndex = 1;
     }
@@ -95,6 +97,8 @@ public class Snake {
 
             //Starts the cascading process
             m_snakeParts.get(0).setDirection(m_currentDirection);
+
+            m_directionChanged = true;
         }
     }
 
@@ -146,8 +150,13 @@ public class Snake {
      *          snake parts simultaneously in the direction of the head
      * */
     private void cascade(int i){
-        SnakePart previousPart = i > 0 ? m_snakeParts.get(i - 1) : m_snakeParts.get(0);
+        SnakePart previousPart = m_snakeParts.get(i - 1);
         m_snakeParts.get(i).setDirection(previousPart.getDirection());
+
+        //Determine when cascading is complete
+//        if(m_snakeParts.get(0).getDirection() == m_snakeParts.get(m_snakeParts.size - 1).getDirection()){
+//            m_currentCascadingIndex = 1;
+//        }
     }
 
     /**
@@ -202,10 +211,8 @@ public class Snake {
             System.out.println("Tick time: " + dt +  "; delay count: " + m_delay);
         }
 
-        m_delay++;
-
         //Update snake based on delay value
-        if(m_delay >= INIT_MOVEMENT_SPEED){
+        if(m_delay > INIT_MOVEMENT_SPEED){
             if(m_currentCascadingIndex >= m_snakeParts.size){
                 m_currentCascadingIndex = 1;
             }
@@ -215,12 +222,19 @@ public class Snake {
             //Cascade new direction (if any)
             //Only required when there is more than one snake part
             if(m_snakeParts.size > 1){
+                if(m_directionChanged){
+                    m_currentCascadingIndex = 1;
+                    m_directionChanged = false;
+                }
+                
                 cascade(m_currentCascadingIndex);
+                m_currentCascadingIndex++;
             }
 
             m_delay = 0;
-            m_currentCascadingIndex++;
         }
+
+        m_delay++;
     }
 
     public void dispose(){
