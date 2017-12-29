@@ -93,7 +93,6 @@ public class Snake {
         return m_shapeRenderer;
     }
 
-    //TODO Fix bug that occurs when changing directions and the snake contains more than one part
     public void setDirection(Directions direction){
         if(!isOpposite(direction)){
             m_currentDirection = direction;
@@ -108,8 +107,8 @@ public class Snake {
      *
      * */
     private void move(){
-        float x;
-        float y;
+        int x;
+        int y;
 
         //Don't update movement if paused
         if(m_paused || m_colliding){
@@ -213,10 +212,10 @@ public class Snake {
         int tail = m_snakeParts.size - 1;
         SnakePart previousPart = m_snakeParts.get(tail);
 
-        float width = previousPart.getWidth();
-        float height = previousPart.getHeight();
-        float x = previousPart.getX();
-        float y = previousPart.getY();
+        int width = previousPart.getWidth();
+        int height = previousPart.getHeight();
+        int x = previousPart.getX();
+        int y = previousPart.getY();
 
         switch (previousPart.getDirection()) {
             case UP:

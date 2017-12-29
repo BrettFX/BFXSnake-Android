@@ -18,10 +18,10 @@ public class SnakePart {
     //Boundary of each snake part to detect collisions
     private Rectangle m_bounds;
 
-    private float m_xLoc;
-    private float m_yLoc;
-    private float m_width;
-    private float m_height;
+    private int m_xLoc;
+    private int m_yLoc;
+    private int m_width;
+    private int m_height;
 
     private Snake.Directions m_direction;
 
@@ -41,7 +41,7 @@ public class SnakePart {
         m_direction = Snake.Directions.NONE;
     }
 
-    public SnakePart(float x, float y, float width, float height){
+    public SnakePart(int x, int y, int width, int height){
         m_part = new Rectangle(x, y, width, height);
         m_bounds = new Rectangle(x, y, width, height);
         m_xLoc = x;
@@ -63,31 +63,31 @@ public class SnakePart {
         return m_part;
     }
 
-    public float getX() {
+    public int getX() {
         return m_xLoc;
     }
 
-    public void setX(float x){
+    public void setX(int x){
         m_xLoc = x;
         m_part.setX(m_xLoc);
         m_bounds.setX(m_xLoc);
     }
 
-    public float getY() {
+    public int getY() {
         return m_yLoc;
     }
 
-    public void setY(float y){
+    public void setY(int y){
         m_yLoc = y;
         m_part.setY(m_yLoc);
         m_bounds.setY(m_yLoc);
     }
 
-    public float getWidth() {
+    public int getWidth() {
         return m_width;
     }
 
-    public float getHeight() {
+    public int getHeight() {
         return m_height;
     }
 

@@ -14,17 +14,20 @@ import java.util.Random;
  * Once the snake has eaten all the pickups a special prize will be won.
  */
 public class Pickup {
+    public static boolean DEBUG_MODE = false;
+
     private Rectangle m_food;
     private Rectangle m_bounds;
     private Random m_rand;
-    private float m_minHeight;
-    private float m_maxHeight;
-    private float m_minWidth;
-    private float m_maxWidth;
+
+    private int m_minHeight;
+    private int m_maxHeight;
+    private int m_minWidth;
+    private int m_maxWidth;
 
     public Pickup(SnakePart part){
-        float width = part.getWidth();
-        float height = part.getHeight();
+        int width = part.getWidth();
+        int height = part.getHeight();
 
         m_maxHeight = Gdx.graphics.getHeight() - width;
         m_maxWidth = Gdx.graphics.getWidth() - height;
@@ -33,8 +36,8 @@ public class Pickup {
 
         m_rand = new Random();
 
-        float randX = m_rand.nextInt((int)m_maxWidth) + m_minWidth;
-        float randY = m_rand.nextInt((int)m_maxHeight) + m_minHeight;
+        int randX = m_rand.nextInt(m_maxWidth) + m_minWidth;
+        int randY = m_rand.nextInt(m_maxHeight) + m_minHeight;
 
         m_food = new Rectangle(randX, randY, width, height);
         m_bounds = new Rectangle(randX, randY, width, height);
@@ -44,8 +47,8 @@ public class Pickup {
      * Collect the pickup when the snake has collided with it.
      * */
     public void collect(){
-        float randX = m_rand.nextInt((int)m_maxWidth) + m_minWidth;
-        float randY = m_rand.nextInt((int)m_maxHeight) + m_minHeight;
+        int randX = m_rand.nextInt(m_maxWidth) + m_minWidth;
+        int randY = m_rand.nextInt(m_maxHeight) + m_minHeight;
 
         m_food.setX(randX);
         m_food.setY(randY);
@@ -60,19 +63,19 @@ public class Pickup {
         return m_bounds.getX() == part.getX() && m_bounds.getY() == part.getY();
     }
 
-    public float getX(){
-        return m_bounds.getX();
+    public int getX(){
+        return (int)m_bounds.getX();
     }
 
-    public float getY(){
-        return m_bounds.getY();
+    public int getY(){
+        return (int)m_bounds.getY();
     }
 
-    public float getWidth(){
-        return m_bounds.getWidth();
+    public int getWidth(){
+        return (int)m_bounds.getWidth();
     }
 
-    public float getHeight(){
-        return m_bounds.getHeight();
+    public int getHeight(){
+        return (int)m_bounds.getHeight();
     }
 }
