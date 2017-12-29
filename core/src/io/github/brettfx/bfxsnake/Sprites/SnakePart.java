@@ -45,9 +45,9 @@ public class SnakePart {
         m_minHeight = 0;
         m_minWidth = 0;
 
-        //Start at random location
-        m_xLoc = (float)Math.random() * m_maxWidth + m_minWidth;
-        m_yLoc = (float)Math.random() * m_maxHeight + m_minHeight;
+        //Start in middle of screen
+        m_xLoc = Gdx.graphics.getWidth() / 2;
+        m_yLoc = Gdx.graphics.getHeight() / 2;
 
         m_part = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
         m_bounds = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
