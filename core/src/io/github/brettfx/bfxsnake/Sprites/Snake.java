@@ -30,7 +30,7 @@ public class Snake {
     //To render individual snake parts
     private ShapeRenderer m_shapeRenderer;
 
-    public boolean m_colliding;
+    private boolean m_colliding;
     private boolean m_paused;
 
     public enum Directions {
@@ -167,6 +167,13 @@ public class Snake {
             m_snakeParts.get(i).setX(x);
             m_snakeParts.get(i).setY(y);
         }
+    }
+
+    /**
+     * Determine if the snake has collided with anything
+     * */
+    public boolean isColliding(){
+        return m_colliding;
     }
 
     /**

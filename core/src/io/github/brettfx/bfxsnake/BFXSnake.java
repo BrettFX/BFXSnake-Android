@@ -16,12 +16,17 @@ import io.github.brettfx.bfxsnake.States.PlayState;
 public class BFXSnake extends ApplicationAdapter {
 	public static final int SCALE_FACTOR = 45;
 
+	public static final String SCORE_FONT = "fonts/score.fnt";
+	public static final String MENU_FONT = "fonts/menu.fnt";
+
+	public static final float FONT_SIZE = 5.0f; //1.4f
+
 	public static SpriteBatch m_batch;
 	private GameStateManager m_gameStateManager;
 	
 	@Override
 	public void create () {
-		Snake.DEBUG_MODE = true;
+		Snake.DEBUG_MODE = false;
 		PlayState.DEBUG_MODE = true;
 
 		m_batch = new SpriteBatch();
