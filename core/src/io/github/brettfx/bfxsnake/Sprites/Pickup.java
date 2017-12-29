@@ -1,9 +1,6 @@
 package io.github.brettfx.bfxsnake.Sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
-
-import java.util.Random;
 
 /**
  * @author brett
@@ -17,6 +14,7 @@ import java.util.Random;
  */
 public class Pickup {
     public static boolean DEBUG_MODE = false;
+    private static final float FACTOR = 0.75f;
 
     private Rectangle m_food;
     private Rectangle m_bounds;
@@ -38,11 +36,11 @@ public class Pickup {
         float randY = (float)Math.random() * m_maxHeight + m_minHeight;
 
         //Attempt to align with snake
-//        randX -= (part.getX() - (int)part.getX());
-        randY -= (part.getY() - (int)part.getY());
+        randX -= (part.getX() - part.getX());
+        randY -= (part.getY() - part.getY());
 
-        m_food = new Rectangle(randX, randY, width, height);
-        m_bounds = new Rectangle(randX, randY, width, height);
+        m_food = new Rectangle(randX, randY, width * FACTOR, height * FACTOR);
+        m_bounds = new Rectangle(randX, randY, width * FACTOR, height * FACTOR);
     }
 
     /**
@@ -62,16 +60,7 @@ public class Pickup {
      * Determine if the snake has collided with the pickup
      * */
     public boolean shouldCollect(SnakePart part){
-        float locDiff = Math.abs((m_bounds.getX() + m_bounds.getY()) - (part.getX() + part.getY()));
-
-        if(DEBUG_MODE){
-            System.out.print("bounds x = " + m_bounds.getX() + "; bounds y = " + m_bounds.getY());
-            System.out.print("\t\tPickup x = " + part.getX() + "; Pickup y = " + part.getY());
-            System.out.println("\t\tLocation Difference = " + locDiff + "; collided = " +
-                    (locDiff <= part.getWidth() / 2));
-        }
-
-        return m_bounds.getX() == part.getX() && m_bounds.getY() == part.getY();
+        return part.getBounds().overlaps(m_bounds);
     }
 
     public float getX(){

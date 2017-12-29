@@ -2,8 +2,6 @@ package io.github.brettfx.bfxsnake.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -19,10 +17,6 @@ public class Snake {
 
     //Delay between ticks to update snake
     private int m_delay;
-
-    private Vector3 m_position;
-    private Vector3 m_velocity;
-    private Rectangle m_bounds;
 
     //The snake (comprised of snake parts)
     private Array<SnakePart> m_snakeParts;
@@ -53,9 +47,6 @@ public class Snake {
 
         //Pass head of snake to pickup for reference
         m_pickup = new Pickup(m_snakeParts.get(0));
-
-        m_position = new Vector3(m_snakeParts.get(0).getX(), m_snakeParts.get(0).getY(), 0);
-        m_velocity = new Vector3(0, 0, 0);
 
         m_shapeRenderer = new ShapeRenderer();
 
@@ -93,7 +84,6 @@ public class Snake {
         return m_shapeRenderer;
     }
 
-    //TODO Fix bug that occurs when changing directions and the snake contains more than one part
     public void setDirection(Directions direction){
         if(!isOpposite(direction)){
             m_currentDirection = direction;
