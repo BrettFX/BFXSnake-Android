@@ -40,6 +40,8 @@ public class Snake {
     //Keep track of the snake's current direction
     private Directions m_currentDirection = Directions.RIGHT;
 
+    private Pickup m_pickup;
+
     /**
      * Constructor
      * */
@@ -47,7 +49,10 @@ public class Snake {
         //Create the initial snake
         m_snakeParts = new Array<SnakePart>();
         m_snakeParts.add(new SnakePart());
-        m_snakeParts.get(m_snakeParts.size - 1).setDirection(m_currentDirection);
+        m_snakeParts.get(0).setDirection(m_currentDirection);
+
+        //Pass head of snake to pickup for reference
+        m_pickup = new Pickup(m_snakeParts.get(0));
 
         m_position = new Vector3(m_snakeParts.get(0).getX(), m_snakeParts.get(0).getY(), 0);
         m_velocity = new Vector3(0, 0, 0);
@@ -163,6 +168,12 @@ public class Snake {
                 return;
             }
 
+            //Collect the pickup if the snake has collided with it
+            if(m_pickup.shouldCollect(part)){
+                m_pickup.collect();
+                grow();
+            }
+
             //Traverse entire snake and update the position of each part accordingly
             m_snakeParts.get(i).setX(x);
             m_snakeParts.get(i).setY(y);
@@ -236,6 +247,13 @@ public class Snake {
 
     public Array<SnakePart> getSnake(){
         return m_snakeParts;
+    }
+
+    /**
+     * Get the snake's pickup
+     * */
+    public Pickup getPickup(){
+        return m_pickup;
     }
 
     /**

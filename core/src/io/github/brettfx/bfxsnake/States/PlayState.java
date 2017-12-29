@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
 import io.github.brettfx.bfxsnake.Scenes.Controller;
+import io.github.brettfx.bfxsnake.Sprites.Pickup;
 import io.github.brettfx.bfxsnake.Sprites.Snake;
 import io.github.brettfx.bfxsnake.Sprites.SnakePart;
 
@@ -116,6 +117,10 @@ public class PlayState extends State {
         for(SnakePart part : m_snake.getSnake()){
             sr.rect(part.getX(), part.getY(), part.getWidth(), part.getHeight());
         }
+
+        sr.setColor(Color.RED);
+        Pickup pickup = m_snake.getPickup();
+        sr.rect(pickup.getX(), pickup.getY(), pickup.getWidth(), pickup.getHeight());
 
         sr.end();
         sb.end();
