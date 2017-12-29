@@ -112,15 +112,18 @@ public class PlayState extends State {
         ShapeRenderer sr = m_snake.getShapeRenderer();
         sr.setProjectionMatrix(sb.getProjectionMatrix());
         sr.begin(ShapeRenderer.ShapeType.Filled);
+
+        //Render pickup
+        sr.setColor(Color.RED);
+        Pickup pickup = m_snake.getPickup();
+        sr.rect(pickup.getX(), pickup.getY(), pickup.getWidth(), pickup.getHeight());
+
+        //Render snake
         sr.setColor(Color.GREEN);
 
         for(SnakePart part : m_snake.getSnake()){
             sr.rect(part.getX(), part.getY(), part.getWidth(), part.getHeight());
         }
-
-        sr.setColor(Color.RED);
-        Pickup pickup = m_snake.getPickup();
-        sr.rect(pickup.getX(), pickup.getY(), pickup.getWidth(), pickup.getHeight());
 
         sr.end();
         sb.end();

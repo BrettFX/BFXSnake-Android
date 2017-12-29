@@ -39,8 +39,8 @@ public class Pickup {
         int randX = m_rand.nextInt(m_maxWidth) + m_minWidth;
         int randY = m_rand.nextInt(m_maxHeight) + m_minHeight;
 
-        m_food = new Rectangle(randX, randY, width, height);
-        m_bounds = new Rectangle(randX, randY, width, height);
+        m_food = new Rectangle(randX, randY, width / 2, height / 2);
+        m_bounds = new Rectangle(randX, randY, width / 2, height / 2);
     }
 
     /**
@@ -60,7 +60,17 @@ public class Pickup {
      * Determine if the snake has collided with the pickup
      * */
     public boolean shouldCollect(SnakePart part){
-        return m_bounds.getX() == part.getX() && m_bounds.getY() == part.getY();
+        int locDiff = Math.abs(((int)m_bounds.getX() + (int)m_bounds.getY()) - (part.getX() + part.getY()));
+
+        if(DEBUG_MODE){
+            System.out.print("bounds x = " + (int)m_bounds.getX() + "; bounds y = " + (int)m_bounds.getY());
+            System.out.print("\t\tPickup x = " + part.getX() + "; Pickup y = " + part.getY());
+            System.out.print("\t\tLocation Difference = " + locDiff);
+            //System.out.println("; collided = " + (locDiff <= part.getWidth() / 2));
+            System.out.println();
+        }
+
+        return part.getBounds().overlaps(m_bounds);
     }
 
     public int getX(){
