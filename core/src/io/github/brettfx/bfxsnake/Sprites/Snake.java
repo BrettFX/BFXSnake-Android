@@ -160,7 +160,7 @@ public class Snake {
 
             //Collect the pickup if the snake has collided with it
             if(m_pickup.shouldCollect(part)){
-                m_pickup.collect();
+                m_pickup.collect(part);
                 grow();
             }
 

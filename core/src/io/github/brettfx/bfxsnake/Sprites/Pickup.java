@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
  */
 public class Pickup {
     public static boolean DEBUG_MODE = false;
-    private static final float FACTOR = 0.75f;
+    private static final float FACTOR = 1.0f;
 
     private Rectangle m_food;
     private Rectangle m_bounds;
@@ -46,9 +46,13 @@ public class Pickup {
     /**
      * Collect the pickup when the snake has collided with it.
      * */
-    public void collect(){
+    public void collect(SnakePart part){
         float randX = (float)Math.random() * m_maxWidth + m_minWidth;
         float randY = (float)Math.random() * m_maxHeight + m_minHeight;
+
+        //Attempt to align with snake
+        randX -= (part.getX() - part.getX());
+        randY -= (part.getY() - part.getY());
 
         m_food.setX(randX);
         m_food.setY(randY);
