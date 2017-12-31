@@ -32,10 +32,19 @@ public class SnakePart {
      * scale factor set in the BGXSnake class
      * */
     public SnakePart(){
-        m_width = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
-        m_height = m_width;
-        m_xLoc = Gdx.graphics.getWidth() / 2;
-        m_yLoc = Gdx.graphics.getHeight() / 2;
+        int screenWidth = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
+        int adjustmentValue = screenWidth % 2 != 0 ? screenWidth + 1 : screenWidth;
+
+        m_width = adjustmentValue;
+        m_height = adjustmentValue;
+
+        int xCenter = Gdx.graphics.getWidth() / 2;
+        int yCenter = Gdx.graphics.getHeight() / 2;
+
+        //Make sure x and y locations are even
+        m_xLoc = (xCenter % 2) != 0 ? xCenter + 1 : xCenter;
+        m_yLoc = (yCenter % 2) != 0 ? yCenter + 1 : yCenter;
+
         m_part = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
         m_bounds = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
         m_direction = Snake.Directions.NONE;

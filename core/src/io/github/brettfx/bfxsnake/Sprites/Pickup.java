@@ -29,60 +29,105 @@ public class Pickup {
         int width = part.getWidth();
         int height = part.getHeight();
 
-        m_maxHeight = Gdx.graphics.getHeight() - width;
-        m_maxWidth = Gdx.graphics.getWidth() - height;
-        m_minHeight = 0;
-        m_minWidth = 0;
+        m_maxHeight = Gdx.graphics.getHeight() - height;
+        m_maxWidth = Gdx.graphics.getWidth() - width;
+        m_minHeight = height;
+        m_minWidth = width;
 
         m_rand = new Random();
 
+        m_food = new Rectangle(0, 0, width, height);
+        m_bounds = new Rectangle(0, 0, width, height);
+
         int randX = m_rand.nextInt(m_maxWidth) + m_minWidth;
         int randY = m_rand.nextInt(m_maxHeight) + m_minHeight;
 
-        while(true){
-            if(randX == 0){
-                randX = m_rand.nextInt(m_maxWidth) + m_minWidth;
-                continue;
-            }
-
-            if((part.getX() % randX) != 0){
-                randX = m_rand.nextInt(m_maxWidth) + m_minWidth;
-                continue;
-            }
-
-            if(randY == 0){
-                randY = m_rand.nextInt(m_maxHeight) + m_minHeight;
-                continue;
-            }
-
-            if((part.getY() % randY) != 0){
-                randY = m_rand.nextInt(m_maxHeight) + m_minHeight;
-                continue;
-            }
-
-            break;
-        }
-
-        if(DEBUG_MODE){
-            System.out.print("x: " + part.getX() % randX);
-            System.out.println(", y: " + part.getY() % randY);
-        }
-
-        m_food = new Rectangle(randX, randY, width, height);
-        m_bounds = new Rectangle(randX, randY, width, height);
+        align(part, randX, randY);
     }
 
     /**
-     * Collect the pickup when the snake has collided with it.
+     * Process the location of the randomly spawned pickup by means of
+     * ensuring it will be in alignment with the snake's head
+     *
+     * @param part the current snake head
      * */
-    public void collect(){
-        int randX = m_rand.nextInt(m_maxWidth) + m_minWidth;
-        int randY = m_rand.nextInt(m_maxHeight) + m_minHeight;
+    private void align(SnakePart part, int randX, int randY){
+//        while(true){
+//            if(randX == 0){
+//                randX = m_rand.nextInt(m_maxWidth) + m_minWidth;
+//                continue;
+//            }
+//
+//            if((part.getX() % randX) != 0){
+//                randX = m_rand.nextInt(m_maxWidth) + m_minWidth;
+//                continue;
+//            }
+//
+//            if(randY == 0){
+//                randY = m_rand.nextInt(m_maxHeight) + m_minHeight;
+//                continue;
+//            }
+//
+//            if((part.getY() % randY) != 0){
+//                randY = m_rand.nextInt(m_maxHeight) + m_minHeight;
+//                continue;
+//            }
+//
+//            break;
+//        }
+
+        boolean xGreater = randX > part.getX();
+        boolean yGreater = randY > part.getY();
+
+        int xOffset = randX % part.getWidth();
+        int yOffset = randY % part.getHeight();
+
+        if(DEBUG_MODE){
+            System.out.println("====PART DETAILS====");
+            System.out.println("x: " + part.getX() + ", y: " + part.getY());
+            System.out.println("x location is even? " + (part.getY() % 2 == 0) + "\n");
+
+            System.out.println("====PICKUP DETAILS====");
+            System.out.println("x: " + randX + ", y: " + randY + "\n");
+
+            System.out.println("====OFFSET DETAILS====");
+            System.out.println("x-offset: " + xOffset + ", y-offset: " + yOffset);
+        }
+
+        //Determine if greater or not to prevent going out of bounds
+        randX = xGreater ? randX - (part.getWidth() - xOffset) : randX + (part.getWidth() - xOffset);
+        randY = yGreater ? randY - (part.getHeight() - yOffset) : randY + (part.getHeight() - yOffset);
+
+        //Test 2
+        xOffset = randX % part.getWidth();
+        yOffset = randY % part.getHeight();
+
+        if(DEBUG_MODE){
+            System.out.println("====NEW PART DETAILS====");
+            System.out.println("x: " + part.getX() + ", y: " + part.getY());
+            System.out.println("x location is even? " + (part.getY() % 2 == 0) + "\n");
+
+            System.out.println("====NEW PICKUP DETAILS====");
+            System.out.println("x: " + randX + ", y: " + randY + "\n");
+
+            System.out.println("====NEW OFFSET DETAILS====");
+            System.out.println("x-offset: " + xOffset + ", y-offset: " + yOffset);
+        }
 
         m_food.setX(randX);
         m_food.setY(randY);
         m_bounds.setX(randX);
         m_bounds.setY(randY);
+    }
+
+    /**
+     * Collect the pickup when the snake has collided with it.
+     * */
+    public void collect(SnakePart currentHeadPart){
+        int randX = m_rand.nextInt(m_maxWidth) + m_minWidth;
+        int randY = m_rand.nextInt(m_maxHeight) + m_minHeight;
+
+        align(currentHeadPart, randX, randY);
     }
 
     /**
