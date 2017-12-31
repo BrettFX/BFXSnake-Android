@@ -1,6 +1,9 @@
 package io.github.brettfx.bfxsnake.Sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
+
+import java.util.Random;
 
 /**
  * @author brett
@@ -14,7 +17,13 @@ import com.badlogic.gdx.math.Rectangle;
  */
 public class Pickup {
     public static boolean DEBUG_MODE = false;
-    private static final float FACTOR = 1.0f;
+
+    //Control the size of the pickup. The greater the number the larger and vice versa
+    private static final float PICKUP_SIZE_FACTOR = 1.0f;
+
+    //Control the number of random steps to be generated in accordance with pickup spawn
+    //relative to snake head location
+    private static final int NUM_RAND_STEPS = 100;
 
     private Rectangle m_food;
     private Rectangle m_bounds;
@@ -26,38 +35,98 @@ public class Pickup {
     public Pickup(SnakePart part){
         float width = part.getWidth();
         float height = part.getHeight();
+//
+//        m_maxHeight = part.getMaxHeight();
+//        m_maxWidth = part.getMaxWidth();
+//        m_minHeight = part.getMinHeight();
+//        m_minWidth = part.getMinWidth();
+//
+//        float randX = (float)Math.random() * m_maxWidth + m_minWidth;
+//        float randY = (float)Math.random() * m_maxHeight + m_minHeight;
+//
+//        //Attempt to align with snake
+//        randX -= (part.getX() - part.getX());
+//        randY -= (part.getY() - part.getY());
 
-        m_maxHeight = part.getMaxHeight();
-        m_maxWidth = part.getMaxWidth();
-        m_minHeight = part.getMinHeight();
-        m_minWidth = part.getMinWidth();
+        m_food = new Rectangle(width, height, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
+        m_bounds = new Rectangle(width, height, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
 
-        float randX = (float)Math.random() * m_maxWidth + m_minWidth;
-        float randY = (float)Math.random() * m_maxHeight + m_minHeight;
-
-        //Attempt to align with snake
-        randX -= (part.getX() - part.getX());
-        randY -= (part.getY() - part.getY());
-
-        m_food = new Rectangle(randX, randY, width * FACTOR, height * FACTOR);
-        m_bounds = new Rectangle(randX, randY, width * FACTOR, height * FACTOR);
+        spawn(part);
     }
 
     /**
      * Collect the pickup when the snake has collided with it.
      * */
     public void collect(SnakePart part){
-        float randX = (float)Math.random() * m_maxWidth + m_minWidth;
-        float randY = (float)Math.random() * m_maxHeight + m_minHeight;
+        spawn(part);
+    }
 
-        //Attempt to align with snake
-        randX -= (part.getX() - part.getX());
-        randY -= (part.getY() - part.getY());
+    /**
+     * Spawn a pickup based on a random path with respect to the current location of the
+     * snake's head
+     *
+     * @param part the head of the snake
+     * */
+    private void spawn(SnakePart part){
+        Snake.Directions directions[] = Snake.Directions.values();
+        Snake.Directions randDirection = directions[(int)(Math.random() * directions.length)];
 
-        m_food.setX(randX);
-        m_food.setY(randY);
-        m_bounds.setX(randX);
-        m_bounds.setY(randY);
+        float x = m_food.getX();
+        float y = m_food.getY();
+
+        //Traverse random path relative to current location of snake head
+        for(int i = 0; i < NUM_RAND_STEPS; i++){
+            switch (randDirection){
+                case UP:
+                    if(y >= Gdx.graphics.getHeight() - part.getHeight()){
+                        randDirection = directions[(int)(Math.random() * directions.length)];
+                        i = i <= 0 ? -1 : i - 1;
+                        continue;
+                    }
+
+                    y = part.getY() + part.getHeight();
+                    break;
+
+                case DOWN:
+                    if(y <= 0){
+                        randDirection = directions[(int)(Math.random() * directions.length)];
+                        i = i <= 0 ? -1 : i - 1;
+                        continue;
+                    }
+
+                    y = part.getY() - part.getHeight();
+                    break;
+
+                case LEFT:
+                    if(x <= 0){
+                        randDirection = directions[(int)(Math.random() * directions.length)];
+                        i = i <= 0 ? -1 : i - 1;
+                        continue;
+                    }
+
+                    x = part.getX() - part.getWidth();
+                    break;
+
+                case RIGHT:
+                    if(x >= Gdx.graphics.getWidth() - part.getWidth()){
+                        randDirection = directions[(int)(Math.random() * directions.length)];
+                        i = i <= 0 ? -1 : i - 1;
+                        continue;
+                    }
+
+                    x = part.getX() + part.getWidth();
+                    break;
+
+                default:
+                    break;
+            }
+
+            //Set intermediate location of pickup and adjust bounds accordingly
+            m_food.setX(x);
+            m_food.setY(y);
+            m_bounds.setX(x);
+            m_bounds.setY(y);
+        }
     }
 
     /**
