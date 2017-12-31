@@ -69,7 +69,11 @@ public class Pickup {
      * */
     private void spawn(SnakePart part){
         Snake.Directions directions[] = Snake.Directions.values();
-        Snake.Directions randDirection = directions[(int)(Math.random() * directions.length)];
+
+        //Don't include NONE as a possible direction
+        Snake.Directions randDirection = directions[(int)(Math.random() * (directions.length - 1))];
+
+        Snake.Directions prevDirection = Snake.Directions.NONE;
 
         float x = m_food.getX();
         float y = m_food.getY();
@@ -79,6 +83,12 @@ public class Pickup {
             switch (randDirection){
                 case UP:
                     if(y >= Gdx.graphics.getHeight() - part.getHeight()){
+                        randDirection = directions[(int)(Math.random() * directions.length)];
+                        i = i <= 0 ? -1 : i - 1;
+                        continue;
+                    }
+
+                    if(isOpposite(prevDirection, randDirection)){
                         randDirection = directions[(int)(Math.random() * directions.length)];
                         i = i <= 0 ? -1 : i - 1;
                         continue;
@@ -94,11 +104,23 @@ public class Pickup {
                         continue;
                     }
 
+                    if(isOpposite(prevDirection, randDirection)){
+                        randDirection = directions[(int)(Math.random() * directions.length)];
+                        i = i <= 0 ? -1 : i - 1;
+                        continue;
+                    }
+
                     y = part.getY() - part.getHeight();
                     break;
 
                 case LEFT:
                     if(x <= 0){
+                        randDirection = directions[(int)(Math.random() * directions.length)];
+                        i = i <= 0 ? -1 : i - 1;
+                        continue;
+                    }
+
+                    if(isOpposite(prevDirection, randDirection)){
                         randDirection = directions[(int)(Math.random() * directions.length)];
                         i = i <= 0 ? -1 : i - 1;
                         continue;
@@ -114,6 +136,12 @@ public class Pickup {
                         continue;
                     }
 
+                    if(isOpposite(prevDirection, randDirection)){
+                        randDirection = directions[(int)(Math.random() * directions.length)];
+                        i = i <= 0 ? -1 : i - 1;
+                        continue;
+                    }
+
                     x = part.getX() + part.getWidth();
                     break;
 
@@ -122,10 +150,43 @@ public class Pickup {
             }
 
             //Set intermediate location of pickup and adjust bounds accordingly
-            m_food.setX(x);
-            m_food.setY(y);
-            m_bounds.setX(x);
-            m_bounds.setY(y);
+            if(!isOpposite(prevDirection, randDirection)){
+                m_food.setX(x);
+                m_food.setY(y);
+                m_bounds.setX(x);
+                m_bounds.setY(y);
+
+                prevDirection = randDirection;
+                randDirection = directions[(int)(Math.random() * directions.length)];
+            }else{
+                i = i <= 0 ? -1 : i - 1;
+            }
+        }
+    }
+
+    /**
+     * Determine if the direction the user is attempting to go in is
+     * the opposite direction that they are currently going (not permitted)
+     *
+     * @param currentDirection the current direction to compare to
+     * @param nextDirection the direction to compare with the current direction
+     * */
+    private boolean isOpposite(Snake.Directions currentDirection, Snake.Directions nextDirection){
+        switch (nextDirection){
+            case UP:
+                return currentDirection == Snake.Directions.DOWN;
+
+            case DOWN:
+                return currentDirection == Snake.Directions.UP;
+
+            case LEFT:
+                return currentDirection == Snake.Directions.RIGHT;
+
+            case RIGHT:
+                return currentDirection == Snake.Directions.LEFT;
+
+            default:
+                return false;
         }
     }
 
