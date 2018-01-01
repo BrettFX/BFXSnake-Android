@@ -3,8 +3,6 @@ package io.github.brettfx.bfxsnake.Sprites;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 
-import java.util.Random;
-
 /**
  * @author brett
  * @since 12/25/2017
@@ -27,29 +25,18 @@ public class Pickup {
 
     private Rectangle m_food;
     private Rectangle m_bounds;
-    private float m_minHeight;
-    private float m_maxHeight;
-    private float m_minWidth;
-    private float m_maxWidth;
+
+    private float m_xStart;
+    private float m_yStart;
 
     public Pickup(SnakePart part){
         float width = part.getWidth();
         float height = part.getHeight();
-//
-//        m_maxHeight = part.getMaxHeight();
-//        m_maxWidth = part.getMaxWidth();
-//        m_minHeight = part.getMinHeight();
-//        m_minWidth = part.getMinWidth();
-//
-//        float randX = (float)Math.random() * m_maxWidth + m_minWidth;
-//        float randY = (float)Math.random() * m_maxHeight + m_minHeight;
-//
-//        //Attempt to align with snake
-//        randX -= (part.getX() - part.getX());
-//        randY -= (part.getY() - part.getY());
+        m_xStart = part.getXStart();
+        m_yStart = part.getYStart();
 
-        m_food = new Rectangle(width, height, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
-        m_bounds = new Rectangle(width, height, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
+        m_food = new Rectangle(m_xStart, m_yStart, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
+        m_bounds = new Rectangle(m_xStart, m_yStart, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
 
         spawn(part);
     }
@@ -75,8 +62,8 @@ public class Pickup {
 
         Snake.Directions prevDirection = Snake.Directions.NONE;
 
-        float x = m_food.getX();
-        float y = m_food.getY();
+        float x = m_xStart;
+        float y = m_yStart;
 
         //Traverse random path relative to current location of snake head
         for(int i = 0; i < NUM_RAND_STEPS; i++){
@@ -94,7 +81,7 @@ public class Pickup {
                         continue;
                     }
 
-                    y = part.getY() + part.getHeight();
+                    y = m_food.getY() + m_food.getHeight();
                     break;
 
                 case DOWN:
@@ -110,7 +97,7 @@ public class Pickup {
                         continue;
                     }
 
-                    y = part.getY() - part.getHeight();
+                    y = m_food.getY() - m_food.getHeight();
                     break;
 
                 case LEFT:
@@ -126,7 +113,7 @@ public class Pickup {
                         continue;
                     }
 
-                    x = part.getX() - part.getWidth();
+                    x = m_food.getX() - m_food.getWidth();
                     break;
 
                 case RIGHT:
@@ -142,7 +129,7 @@ public class Pickup {
                         continue;
                     }
 
-                    x = part.getX() + part.getWidth();
+                    x = m_food.getX() + m_food.getWidth();
                     break;
 
                 default:

@@ -18,15 +18,13 @@ public class SnakePart {
     //Boundary of each snake part to detect collisions
     private Rectangle m_bounds;
 
+    private float m_xStart;
+    private float m_yStart;
+
     private float m_xLoc;
     private float m_yLoc;
     private float m_width;
     private float m_height;
-
-    private float m_minHeight;
-    private float m_maxHeight;
-    private float m_minWidth;
-    private float m_maxWidth;
 
     private Snake.Directions m_direction;
 
@@ -38,16 +36,14 @@ public class SnakePart {
      * */
     public SnakePart(){
         m_width = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
-        m_height = m_width;
-
-        m_maxHeight = Gdx.graphics.getHeight() - m_width;
-        m_maxWidth = Gdx.graphics.getWidth() - m_height;
-        m_minHeight = 0;
-        m_minWidth = 0;
+        m_height = m_width * 1; //Prevent warnings
 
         //Start in middle of screen
-        m_xLoc = Gdx.graphics.getWidth() / 2;
-        m_yLoc = Gdx.graphics.getHeight() / 2;
+        m_xStart = Gdx.graphics.getWidth() / 2;
+        m_yStart = Gdx.graphics.getHeight() / 2;
+
+        m_xLoc = m_xStart;
+        m_yLoc = m_yStart;
 
         m_part = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
         m_bounds = new Rectangle(m_xLoc, m_yLoc, m_width, m_height);
@@ -57,11 +53,21 @@ public class SnakePart {
     public SnakePart(float x, float y, float width, float height){
         m_part = new Rectangle(x, y, width, height);
         m_bounds = new Rectangle(x, y, width, height);
+        m_xStart = x;
+        m_yStart = y;
         m_xLoc = x;
         m_yLoc = y;
         m_width = width;
         m_height = height;
         m_direction = Snake.Directions.NONE;
+    }
+
+    public float getXStart(){
+        return m_xStart;
+    }
+
+    public float getYStart(){
+        return m_yStart;
     }
 
     public void setDirection(Snake.Directions direction){
@@ -106,21 +112,5 @@ public class SnakePart {
 
     public Rectangle getBounds(){
         return m_bounds;
-    }
-
-    public float getMinHeight() {
-        return m_minHeight;
-    }
-
-    public float getMaxHeight() {
-        return m_maxHeight;
-    }
-
-    public float getMinWidth() {
-        return m_minWidth;
-    }
-
-    public float getMaxWidth() {
-        return m_maxWidth;
     }
 }

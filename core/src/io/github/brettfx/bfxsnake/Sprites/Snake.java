@@ -107,7 +107,9 @@ public class Snake {
         }
 
         for(int i = 0; i < m_snakeParts.size; i++){
+            SnakePart head = m_snakeParts.get(0);
             SnakePart part = m_snakeParts.get(i);
+
             x = part.getX();
             y = part.getY();
 
@@ -158,9 +160,9 @@ public class Snake {
                 return;
             }
 
-            //Collect the pickup if the snake has collided with it
-            if(m_pickup.shouldCollect(part)){
-                m_pickup.collect(part);
+            //Collect the pickup if the snake's head has collided with it
+            if(m_pickup.shouldCollect(head)){
+                m_pickup.collect(head);
                 grow();
             }
 
