@@ -163,6 +163,7 @@ public class Snake {
             //Collect the pickup if the snake's head has collided with it
             if(m_pickup.shouldCollect(head)){
                 m_pickup.collect(head);
+                m_pickup.validateSpawn(m_snakeParts);
                 grow();
             }
 

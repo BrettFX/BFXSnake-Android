@@ -2,6 +2,7 @@ package io.github.brettfx.bfxsnake.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * @author brett
@@ -21,22 +22,19 @@ public class Pickup {
 
     //Control the number of random steps to be generated in accordance with pickup spawn
     //relative to snake head location
-    private static final int NUM_RAND_STEPS = 100;
+    private static final int NUM_RAND_STEPS = 50;
 
     private Rectangle m_food;
     private Rectangle m_bounds;
 
-    private float m_xStart;
-    private float m_yStart;
-
     public Pickup(SnakePart part){
+        float x = part.getXStart();
+        float y = part.getYStart();
         float width = part.getWidth();
         float height = part.getHeight();
-        m_xStart = part.getXStart();
-        m_yStart = part.getYStart();
 
-        m_food = new Rectangle(m_xStart, m_yStart, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
-        m_bounds = new Rectangle(m_xStart, m_yStart, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
+        m_food = new Rectangle(x, y, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
+        m_bounds = new Rectangle(x, y, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
 
         spawn(part);
     }
@@ -62,21 +60,20 @@ public class Pickup {
 
         Snake.Directions prevDirection = Snake.Directions.NONE;
 
-        float x = m_xStart;
-        float y = m_yStart;
+        //Starting x and y coordinates are based on the current location of the part
+        float x = part.getX();
+        float y = part.getY();
+
+        boolean outOfBounds;
 
         //Traverse random path relative to current location of snake head
         for(int i = 0; i < NUM_RAND_STEPS; i++){
             switch (randDirection){
                 case UP:
-                    if(y >= Gdx.graphics.getHeight() - part.getHeight()){
-                        randDirection = directions[(int)(Math.random() * directions.length)];
-                        i = i <= 0 ? -1 : i - 1;
-                        continue;
-                    }
+                    outOfBounds = y >= Gdx.graphics.getHeight() - part.getHeight();
 
-                    if(isOpposite(prevDirection, randDirection)){
-                        randDirection = directions[(int)(Math.random() * directions.length)];
+                    if(outOfBounds || isOpposite(prevDirection, randDirection)){
+                        randDirection = directions[(int)(Math.random() * directions.length - 1)];
                         i = i <= 0 ? -1 : i - 1;
                         continue;
                     }
@@ -85,14 +82,10 @@ public class Pickup {
                     break;
 
                 case DOWN:
-                    if(y <= 0){
-                        randDirection = directions[(int)(Math.random() * directions.length)];
-                        i = i <= 0 ? -1 : i - 1;
-                        continue;
-                    }
+                    outOfBounds = y <= 0;
 
-                    if(isOpposite(prevDirection, randDirection)){
-                        randDirection = directions[(int)(Math.random() * directions.length)];
+                    if(outOfBounds || isOpposite(prevDirection, randDirection)){
+                        randDirection = directions[(int)(Math.random() * directions.length - 1)];
                         i = i <= 0 ? -1 : i - 1;
                         continue;
                     }
@@ -101,14 +94,10 @@ public class Pickup {
                     break;
 
                 case LEFT:
-                    if(x <= 0){
-                        randDirection = directions[(int)(Math.random() * directions.length)];
-                        i = i <= 0 ? -1 : i - 1;
-                        continue;
-                    }
+                    outOfBounds = x <= 0;
 
-                    if(isOpposite(prevDirection, randDirection)){
-                        randDirection = directions[(int)(Math.random() * directions.length)];
+                    if(outOfBounds || isOpposite(prevDirection, randDirection)){
+                        randDirection = directions[(int)(Math.random() * directions.length - 1)];
                         i = i <= 0 ? -1 : i - 1;
                         continue;
                     }
@@ -117,14 +106,10 @@ public class Pickup {
                     break;
 
                 case RIGHT:
-                    if(x >= Gdx.graphics.getWidth() - part.getWidth()){
-                        randDirection = directions[(int)(Math.random() * directions.length)];
-                        i = i <= 0 ? -1 : i - 1;
-                        continue;
-                    }
+                    outOfBounds = x >= Gdx.graphics.getWidth() - part.getWidth();
 
-                    if(isOpposite(prevDirection, randDirection)){
-                        randDirection = directions[(int)(Math.random() * directions.length)];
+                    if(outOfBounds || isOpposite(prevDirection, randDirection)){
+                        randDirection = directions[(int)(Math.random() * directions.length - 1)];
                         i = i <= 0 ? -1 : i - 1;
                         continue;
                     }
@@ -144,9 +129,26 @@ public class Pickup {
                 m_bounds.setY(y);
 
                 prevDirection = randDirection;
-                randDirection = directions[(int)(Math.random() * directions.length)];
+                randDirection = directions[(int)(Math.random() * directions.length - 1)];
             }else{
                 i = i <= 0 ? -1 : i - 1;
+            }
+        }
+    }
+
+    /**
+     * Ensures that the currently spawned pickup is not overlapped by any part of the
+     * snake.
+     *
+     * If there is one part that violates this constrain, a new pickup will be spawned.
+     *
+     * @param snakeParts the entire snake
+     * */
+    public void validateSpawn(Array<SnakePart> snakeParts){
+        for(int i = 0; i < snakeParts.size; i++){
+            if(snakeParts.get(i).getBounds().overlaps(m_food)){
+                spawn(snakeParts.get(0));
+                i = 0;
             }
         }
     }
