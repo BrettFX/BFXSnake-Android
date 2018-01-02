@@ -60,7 +60,7 @@ public class PlayState extends State {
         table.add(gameOverLabel).expandX();
 
         //Create a play again label
-        Label playAgainLabel = new Label("Click to Play Again", font);
+        Label playAgainLabel = new Label("Tap to Play Again", font);
         table.row();
 
         //Add a bit of padding to top of play again label

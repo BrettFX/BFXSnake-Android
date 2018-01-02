@@ -140,7 +140,7 @@ public class Pickup {
      * Ensures that the currently spawned pickup is not overlapped by any part of the
      * snake.
      *
-     * If there is one part that violates this constrain, a new pickup will be spawned.
+     * If there is one part that violates this constraint, a new pickup will be spawned.
      *
      * @param snakeParts the entire snake
      * */
