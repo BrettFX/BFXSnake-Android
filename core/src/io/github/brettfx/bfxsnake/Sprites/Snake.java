@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
+import io.github.brettfx.bfxsnake.Scenes.Controller;
+
 /**
  * @author brett
  * @since 12/25/2017
@@ -36,17 +38,29 @@ public class Snake {
 
     private Pickup m_pickup;
 
+    private float m_maxHeight;
+    private float m_maxWidth;
+    private float m_minHeight;
+    private float m_minWidth;
+
     /**
      * Constructor
      * */
-    public Snake(){
+    public Snake(Controller controller){
         //Create the initial snake
         m_snakeParts = new Array<SnakePart>();
         m_snakeParts.add(new SnakePart());
         m_snakeParts.get(0).setDirection(m_currentDirection);
 
+        SnakePart head = m_snakeParts.get(0);
+
+        m_maxHeight = Gdx.graphics.getHeight() - head.getHeight();
+        m_maxWidth = Gdx.graphics.getWidth() - head.getWidth();
+        m_minHeight = 0;
+        m_minWidth = controller.isUsingController() ? controller.getWidth() + head.getWidth() : 0;
+
         //Pass head of snake to pickup for reference
-        m_pickup = new Pickup(m_snakeParts.get(0));
+        m_pickup = new Pickup(m_snakeParts.get(0), this);
 
         m_shapeRenderer = new ShapeRenderer();
 
@@ -115,7 +129,7 @@ public class Snake {
 
             switch (part.getDirection()){
                 case UP:
-                    if(y >= Gdx.graphics.getHeight() - part.getHeight()){
+                    if(y >= m_maxHeight){
                         m_colliding = true;
                         return;
                     }
@@ -124,7 +138,7 @@ public class Snake {
                     break;
 
                 case DOWN:
-                    if(y <= 0){
+                    if(y <= m_minHeight){
                         m_colliding = true;
                         return;
                     }
@@ -133,7 +147,7 @@ public class Snake {
                     break;
 
                 case LEFT:
-                    if(x <= 0){
+                    if(x <= m_minWidth){
                         m_colliding = true;
                         return;
                     }
@@ -142,7 +156,7 @@ public class Snake {
                     break;
 
                 case RIGHT:
-                    if(x >= Gdx.graphics.getWidth() - part.getWidth()){
+                    if(x >= m_maxWidth){
                         m_colliding = true;
                         return;
                     }
@@ -268,6 +282,22 @@ public class Snake {
      * */
     public boolean isPaused(){
         return m_paused;
+    }
+
+    public float getMaxHeight() {
+        return m_maxHeight;
+    }
+
+    public float getMaxWidth() {
+        return m_maxWidth;
+    }
+
+    public float getMinHeight() {
+        return m_minHeight;
+    }
+
+    public float getMinWidth() {
+        return m_minWidth;
     }
 
     /**

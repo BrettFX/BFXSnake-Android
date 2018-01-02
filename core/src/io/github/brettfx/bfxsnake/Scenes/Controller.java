@@ -24,10 +24,10 @@ public class Controller {
     private static final String LEFT = "directional_pad/left_arrow_transparent.png";
     private static final String RIGHT = "directional_pad/right_arrow_transparent.png";
 
-    private static final float PADDING_TOP = 5f;
-    private static final float PADDING_LEFT = 5f;
-    private static final float PADDING_BOTTOM = 5f;
-    private static final float PADDING_RIGHT = 5f;
+    private static final float PADDING_TOP = 20f; //5
+    private static final float PADDING_LEFT = 20f; //5
+    private static final float PADDING_BOTTOM = 20f; //5
+    private static final float PADDING_RIGHT = 20f; //5
 
     private static final float ARROW_WIDTH = 150f; //40
     private static final float ARROW_HEIGHT = 150f; //40
@@ -35,91 +35,39 @@ public class Controller {
     private Viewport m_viewport;
     private Stage m_stage;
 
+    private Image m_leftImg;
+    private Image m_rightImg;
+    private Image m_downImg;
+    private Image m_upImg;
+
+    private boolean m_usingController;
+
     private boolean m_upPressed,
             m_downPressed,
             m_leftPressed,
             m_rightPressed;
 
-    public Controller(){
+    public Controller(boolean usingController){
         OrthographicCamera cam = new OrthographicCamera();
         m_viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cam);
 
         m_stage = new Stage(m_viewport, BFXSnake.m_batch);
 
-        /*m_stage.addListener(new InputListener()
-        {
-            @Override
-            public boolean keyDown(InputEvent event, int keycode)
-            {
-                switch (keycode)
-                {
-                    case Input.Keys.UP:
-                    case Input.Keys.W:
-                        m_upPressed = true;
-                        break;
-
-                    case Input.Keys.DOWN:
-                    case Input.Keys.S:
-                        m_downPressed = true;
-                        break;
-
-                    case Input.Keys.LEFT:
-                    case Input.Keys.A:
-                        m_leftPressed = true;
-                        break;
-
-                    case Input.Keys.RIGHT:
-                    case Input.Keys.D:
-                        m_rightPressed = true;
-                        break;
-                }
-
-                return true;
-            }
-
-            @Override
-            public boolean keyUp(InputEvent event, int keycode)
-            {
-                switch (keycode)
-                {
-                    case Input.Keys.UP:
-                    case Input.Keys.W:
-                        m_upPressed = false;
-                        break;
-
-                    case Input.Keys.DOWN:
-                    case Input.Keys.S:
-                        m_downPressed = false;
-                        break;
-
-                    case Input.Keys.LEFT:
-                    case Input.Keys.A:
-                        m_leftPressed = false;
-                        break;
-
-                    case Input.Keys.RIGHT:
-                    case Input.Keys.D:
-                        m_rightPressed = false;
-                        break;
-                }
-
-                return true;
-            }
-        });*/
-
         Gdx.input.setInputProcessor(m_stage);
+
+        m_usingController = usingController;
 
         //Create a table that will hold the controller arrows (3x3 matrix)
         Table table = new Table();
         table.left().bottom();
 
         //Create up_arrow image
-        Image upImg = new Image(new Texture(UP));
-        upImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
+        m_upImg = new Image(new Texture(UP));
+        m_upImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
 
 
         //Add input listener to up_arrow image to act as a button
-        upImg.addListener(new InputListener()
+        m_upImg.addListener(new InputListener()
         {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
@@ -138,11 +86,11 @@ public class Controller {
         });
 
         //Create down_arrow image
-        Image downImg = new Image(new Texture(DOWN));
-        downImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
+        m_downImg = new Image(new Texture(DOWN));
+        m_downImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
 
         //Add input listener to down_arrow image to act as a button
-        downImg.addListener(new InputListener()
+        m_downImg.addListener(new InputListener()
         {
 
 
@@ -163,11 +111,11 @@ public class Controller {
         });
 
         //Create left_arrow image
-        Image leftImg = new Image(new Texture(LEFT));
-        leftImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
+        m_leftImg = new Image(new Texture(LEFT));
+        m_leftImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
 
         //Add input listener to left_arrow image to act as a button
-        leftImg.addListener(new InputListener()
+        m_leftImg.addListener(new InputListener()
         {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
@@ -186,11 +134,11 @@ public class Controller {
         });
 
         //Create right_arrow image
-        Image rightImg = new Image(new Texture(RIGHT));
-        rightImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
+        m_rightImg = new Image(new Texture(RIGHT));
+        m_rightImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
 
         //Add input listener to right_arrow image to act as a button
-        rightImg.addListener(new InputListener()
+        m_rightImg.addListener(new InputListener()
         {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
@@ -210,25 +158,33 @@ public class Controller {
 
         //Populate the 3x3 table with arrow images to simulate directional pad controller
         table.add();
-        table.add(upImg).size(upImg.getWidth(), upImg.getHeight());
+        table.add(m_upImg).size(m_upImg.getWidth(), m_upImg.getHeight());
         table.add();
 
         table.row().pad(PADDING_TOP, PADDING_LEFT, PADDING_BOTTOM, PADDING_RIGHT);
 
-        table.add(leftImg).size(leftImg.getWidth(), leftImg.getHeight());
+        table.add(m_leftImg).size(m_leftImg.getWidth(), m_leftImg.getHeight());
         table.add();
-        table.add(rightImg).size(rightImg.getWidth(), rightImg.getHeight());
+        table.add(m_rightImg).size(m_rightImg.getWidth(), m_rightImg.getHeight());
 
         table.row().padBottom(PADDING_BOTTOM);
 
         table.add();
-        table.add(downImg).size(downImg.getWidth(), downImg.getHeight());
+        table.add(m_downImg).size(m_downImg.getWidth(), m_downImg.getHeight());
         table.add();
 
         table.pack();
 
         //Add the table to the m_stage
         m_stage.addActor(table);
+    }
+
+    public boolean isUsingController(){
+        return m_usingController;
+    }
+
+    public void toggleUse(){
+        m_usingController = !m_usingController;
     }
 
     public void draw()
@@ -259,6 +215,11 @@ public class Controller {
     public void resize(int width, int height)
     {
         m_viewport.update(width, height);
+    }
+
+    public float getWidth(){
+        float widths = m_rightImg.getWidth() + m_leftImg.getHeight() + m_upImg.getWidth() + m_downImg.getWidth();
+        return widths - (PADDING_RIGHT);
     }
 
     public void dispose()

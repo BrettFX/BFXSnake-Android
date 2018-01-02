@@ -37,8 +37,9 @@ public class PlayState extends State {
     public PlayState(GameStateManager gsm) {
         super(gsm);
 
-        m_snake = new Snake();
-        m_controller = new Controller();
+        m_controller = new Controller(true);
+
+        m_snake = new Snake(m_controller);
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
         m_stage = new Stage(viewport);
@@ -85,13 +86,21 @@ public class PlayState extends State {
 
             }else if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || (m_controller.isRightPressed() && Gdx.input.justTouched())){
                 m_snake.setDirection(Snake.Directions.RIGHT);
-            }else if(Gdx.input.isKeyJustPressed(Input.Keys.A) && DEBUG_MODE){ //Allow debugger to grow snake at will
-                m_snake.grow();
             }else if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
                 m_snake.pause();
             }else if(m_gameOver && Gdx.input.justTouched()){
                 m_gsm.set(new PlayState(m_gsm));
             }
+
+            //Debugging tools
+            if(DEBUG_MODE){
+                if(Gdx.input.isKeyJustPressed(Input.Keys.A)) { //Allow debugger to grow snake at will
+                    m_snake.grow();
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.C)){ //Toggle controller
+                    m_controller.toggleUse();
+                }
+            }
+
         }else if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
             m_snake.resume();
         }
@@ -113,6 +122,12 @@ public class PlayState extends State {
         sr.setProjectionMatrix(sb.getProjectionMatrix());
         sr.begin(ShapeRenderer.ShapeType.Filled);
 
+        //Render controller's overlay
+        if(m_controller.isUsingController()){
+            sr.setColor(Color.GRAY);
+            sr.rect(0, 0, m_controller.getWidth(), Gdx.graphics.getHeight());
+        }
+
         //Render pickup
         sr.setColor(Color.RED);
         Pickup pickup = m_snake.getPickup();
@@ -128,7 +143,9 @@ public class PlayState extends State {
         sr.end();
         sb.end();
 
-        m_controller.draw();
+        if(m_controller.isUsingController()){
+            m_controller.draw();
+        }
 
         //Determine if game over and show game over if it is game over
         if(m_gameOver){

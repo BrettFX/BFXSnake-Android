@@ -27,11 +27,15 @@ public class Pickup {
     private Rectangle m_food;
     private Rectangle m_bounds;
 
-    public Pickup(SnakePart part){
+    private Snake m_snake;
+
+    public Pickup(SnakePart part, Snake snake){
         float x = part.getXStart();
         float y = part.getYStart();
         float width = part.getWidth();
         float height = part.getHeight();
+
+        m_snake = snake;
 
         m_food = new Rectangle(x, y, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
         m_bounds = new Rectangle(x, y, width * PICKUP_SIZE_FACTOR, height * PICKUP_SIZE_FACTOR);
@@ -70,7 +74,7 @@ public class Pickup {
         for(int i = 0; i < NUM_RAND_STEPS; i++){
             switch (randDirection){
                 case UP:
-                    outOfBounds = y >= Gdx.graphics.getHeight() - part.getHeight();
+                    outOfBounds = y >= m_snake.getMaxHeight();
 
                     if(outOfBounds || isOpposite(prevDirection, randDirection)){
                         randDirection = directions[(int)(Math.random() * directions.length - 1)];
@@ -82,7 +86,7 @@ public class Pickup {
                     break;
 
                 case DOWN:
-                    outOfBounds = y <= 0;
+                    outOfBounds = y <= m_snake.getMinHeight();
 
                     if(outOfBounds || isOpposite(prevDirection, randDirection)){
                         randDirection = directions[(int)(Math.random() * directions.length - 1)];
@@ -94,7 +98,7 @@ public class Pickup {
                     break;
 
                 case LEFT:
-                    outOfBounds = x <= 0;
+                    outOfBounds = x <= m_snake.getMinWidth();
 
                     if(outOfBounds || isOpposite(prevDirection, randDirection)){
                         randDirection = directions[(int)(Math.random() * directions.length - 1)];
@@ -106,7 +110,7 @@ public class Pickup {
                     break;
 
                 case RIGHT:
-                    outOfBounds = x >= Gdx.graphics.getWidth() - part.getWidth();
+                    outOfBounds = x >= m_snake.getMaxWidth();
 
                     if(outOfBounds || isOpposite(prevDirection, randDirection)){
                         randDirection = directions[(int)(Math.random() * directions.length - 1)];
