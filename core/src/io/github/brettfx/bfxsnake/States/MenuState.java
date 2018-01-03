@@ -1,6 +1,8 @@
 package io.github.brettfx.bfxsnake.States;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,6 +34,10 @@ public class MenuState extends State {
     private BitmapFont m_titleFont;
     private GameStateManager m_gsm;
 
+    private Label m_playLabel;
+    private Label m_highScoreLabel;
+    private Label m_difficultyLabel;
+
     public MenuState(GameStateManager gsm) {
         super(gsm);
 
@@ -48,8 +54,8 @@ public class MenuState extends State {
         m_titleFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
         m_titleFont.getData().setScale(FONT_SIZE, FONT_SIZE);
 
-        Label playLabel =  new Label("PLAY", new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
-        playLabel.addListener(new InputListener()
+        m_playLabel =  new Label("PLAY", new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
+        m_playLabel.addListener(new InputListener()
         {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
@@ -65,13 +71,13 @@ public class MenuState extends State {
             }
         });
 
-        final Label highScoreLabel =  new Label("HIGH SCORE: " + String.format(Locale.getDefault(), "%02d", Score.getHighScore()),
+        m_highScoreLabel =  new Label("HIGH SCORE: " + String.format(Locale.getDefault(), "%02d", Score.getHighScore()),
                 new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
 
-        final Label difficultyLabel =  new Label("DIFFICULTY: " + DIFFICULTIES[m_gsm.getDifficulty()],
+        m_difficultyLabel =  new Label("DIFFICULTY: " + DIFFICULTIES[m_gsm.getDifficulty()],
                 new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
 
-        difficultyLabel.addListener(new InputListener()
+        m_difficultyLabel.addListener(new InputListener()
         {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
@@ -87,7 +93,7 @@ public class MenuState extends State {
                 System.out.println("Current difficulties: " + DIFFICULTIES[m_gsm.getDifficulty()] +
                         " (" + m_gsm.getDifficulty() + ")");
 
-                difficultyLabel.setText("DIFFICULTY: " + DIFFICULTIES[m_gsm.getDifficulty()]);
+                m_difficultyLabel.setText("DIFFICULTY: " + DIFFICULTIES[m_gsm.getDifficulty()]);
             }
         });
 
@@ -96,9 +102,9 @@ public class MenuState extends State {
         GlyphLayout glyphLayout = new GlyphLayout();
         glyphLayout.setText(m_menuFont,
                 titleLabel.getText() + "\n" +
-                        playLabel.getText() + "\n" +
-                        highScoreLabel.getText() + "\n" +
-                        difficultyLabel.getText());
+                        m_playLabel.getText() + "\n" +
+                        m_highScoreLabel.getText() + "\n" +
+                        m_difficultyLabel.getText());
 
         Table titleTable = new Table();
 
@@ -114,13 +120,13 @@ public class MenuState extends State {
         selectionTable.top().padTop(Gdx.graphics.getHeight() / 2);
         selectionTable.setFillParent(true);
 
-        selectionTable.add(playLabel);
+        selectionTable.add(m_playLabel);
         selectionTable.row().padTop(5f);
 
-        selectionTable.add(highScoreLabel);
+        selectionTable.add(m_highScoreLabel);
         selectionTable.row().padTop(5f);
 
-        selectionTable.add(difficultyLabel);
+        selectionTable.add(m_difficultyLabel);
 
         m_menuStage.addActor(selectionTable);
     }
@@ -137,6 +143,25 @@ public class MenuState extends State {
 
     @Override
     public void render(SpriteBatch sb) {
+        Color buttonColor = Color.RED;
+
+        int width = (int)(m_difficultyLabel.getWidth() + (m_playLabel.getWidth() / 2));
+        int height = (int)m_difficultyLabel.getHeight();
+        float x = m_difficultyLabel.getX() - (m_playLabel.getWidth() / 4);
+
+        Texture playLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, buttonColor));
+
+        sb.begin();
+        sb.draw(playLabelTexture, x, m_playLabel.getY());
+
+        Texture highScoreTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, buttonColor));
+        sb.draw(highScoreTexture, x, m_highScoreLabel.getY());
+
+        Texture difficultyTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, buttonColor));
+        sb.draw(difficultyTexture, x, m_difficultyLabel.getY());
+
+        sb.end();
+
         m_menuStage.draw();
     }
 
