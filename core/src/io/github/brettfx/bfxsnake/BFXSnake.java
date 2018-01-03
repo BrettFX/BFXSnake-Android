@@ -12,9 +12,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.github.brettfx.bfxsnake.Sprites.Pickup;
 import io.github.brettfx.bfxsnake.Sprites.Snake;
 import io.github.brettfx.bfxsnake.States.GameStateManager;
+import io.github.brettfx.bfxsnake.States.MenuState;
 import io.github.brettfx.bfxsnake.States.PlayState;
 
 public class BFXSnake extends ApplicationAdapter {
+	public static final String PREFS_NAME = "BFXSnake_Preferences";
+	public static final String TITLE = "BFXSnake";
+
 	public static final int SCALE_FACTOR = 45;
 
 	public static final String SCORE_FONT = "fonts/score.fnt";
@@ -33,7 +37,7 @@ public class BFXSnake extends ApplicationAdapter {
 
 		m_batch = new SpriteBatch();
 		m_gameStateManager = new GameStateManager();
-		m_gameStateManager.push(new PlayState(m_gameStateManager));
+		m_gameStateManager.push(new MenuState(m_gameStateManager));
 	}
 
 	@Override
