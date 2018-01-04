@@ -31,6 +31,9 @@ public class GameStateManager {
 
     public void setDifficulty(int difficulty){
         m_difficulty = difficulty;
+    }
+
+    public void saveDifficulty(){
         m_preferences.putInteger("Difficulty", m_difficulty);
         m_preferences.flush();
     }

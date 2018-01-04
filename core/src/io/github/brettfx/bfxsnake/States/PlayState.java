@@ -37,6 +37,8 @@ public class PlayState extends State {
     public PlayState(GameStateManager gsm) {
         super(gsm);
 
+        m_gsm.saveDifficulty();
+
         m_controller = new Controller(true);
 
         m_snake = new Snake(m_controller);
