@@ -1,6 +1,7 @@
 package io.github.brettfx.bfxsnake.States;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -33,6 +34,8 @@ public class SettingsState extends State{
     //Toggle the controller as enabled or disabled
     private Label m_controllerState;
 
+    private Label m_backLabel;
+
     private Stage m_settingsStage;
 
     private BitmapFont m_settingsFont;
@@ -63,13 +66,26 @@ public class SettingsState extends State{
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-                //TODO change snake color
                 m_gsm.setSnakeColor((m_gsm.getSnakeColorIndex() + 1) % BFXSnake.COLORS.length);
             }
         });
 
+        m_backLabel = new Label("BACK", settingsLabelStyle);
+        m_backLabel.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.set(new MenuState(m_gsm));
+            }
+        });
+
         GlyphLayout glyphLayout = new GlyphLayout();
-        glyphLayout.setText(m_settingsFont, m_snakeColorLabel.getText());
+        glyphLayout.setText(m_settingsFont, m_snakeColorLabel.getText() + "\n" +
+        m_backLabel.getText());
 
         Table selectionTable = new Table();
 
@@ -77,6 +93,9 @@ public class SettingsState extends State{
         selectionTable.setFillParent(true);
 
         selectionTable.add(m_snakeColorLabel);
+        selectionTable.row().padTop(5f);
+
+        selectionTable.add(m_backLabel);
         selectionTable.row().padTop(5f);
 
         m_settingsStage.addActor(selectionTable);
@@ -94,14 +113,19 @@ public class SettingsState extends State{
 
     @Override
     public void render(SpriteBatch sb) {
-        int width = (int)m_snakeColorLabel.getWidth();
+        int width = (int)(m_snakeColorLabel.getWidth() + (m_snakeColorLabel.getWidth() / 2));
         int height = (int)m_snakeColorLabel.getHeight();
         float x = m_snakeColorLabel.getX() - (m_snakeColorLabel.getWidth() / 4);
 
         sb.begin();
 
-        Texture playLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
-        sb.draw(playLabelTexture, x, m_snakeColorLabel.getY());
+        Texture snakeColorTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                m_gsm.getSnakeColor()));
+        sb.draw(snakeColorTexture, x, m_snakeColorLabel.getY());
+
+        Texture backLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                BUTTON_COLOR));
+        sb.draw(backLabelTexture, x, m_backLabel.getY());
 
         sb.end();
 
