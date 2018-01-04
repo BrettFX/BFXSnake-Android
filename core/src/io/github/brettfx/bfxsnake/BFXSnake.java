@@ -6,6 +6,7 @@ package io.github.brettfx.bfxsnake;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -28,6 +29,17 @@ public class BFXSnake extends ApplicationAdapter {
 
 	public static SpriteBatch m_batch;
 	private GameStateManager m_gameStateManager;
+
+	public static final Color BUTTON_COLOR = Color.RED;
+
+	public static final Color COLORS[] = {
+		Color.GREEN, Color.BROWN, Color.CHARTREUSE, Color.CORAL, Color.CYAN,
+		Color.FIREBRICK, Color.FOREST, Color.GOLD, Color.GOLDENROD, Color.GRAY,
+		Color.BLUE, Color.LIME, Color.MAGENTA, Color.MAROON, Color.NAVY,
+		Color.OLIVE, Color.ORANGE, Color.PINK, Color.PURPLE, Color.RED,
+		Color.ROYAL, Color.SALMON, Color.SCARLET, Color.SKY, Color.SLATE,
+		Color.TAN, Color.TEAL, Color.VIOLET, Color.WHITE, Color.YELLOW
+	};
 	
 	@Override
 	public void create () {

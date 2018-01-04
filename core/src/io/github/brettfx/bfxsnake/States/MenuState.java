@@ -19,6 +19,7 @@ import java.util.Locale;
 import io.github.brettfx.bfxsnake.BFXSnake;
 import io.github.brettfx.bfxsnake.Components.Score;
 
+import static io.github.brettfx.bfxsnake.BFXSnake.BUTTON_COLOR;
 import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
 
 /**
@@ -80,7 +81,7 @@ public class MenuState extends State {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
                 //Go to settings state
-                //TODO go to settings state
+                m_gsm.set(new SettingsState(m_gsm));
             }
         });
 
@@ -156,24 +157,22 @@ public class MenuState extends State {
 
     @Override
     public void render(SpriteBatch sb) {
-        Color buttonColor = Color.RED;
-
         int width = (int)(m_difficultyLabel.getWidth() + (m_playLabel.getWidth() / 2));
         int height = (int)m_difficultyLabel.getHeight();
         float x = m_difficultyLabel.getX() - (m_playLabel.getWidth() / 4);
 
-        Texture playLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, buttonColor));
-
         sb.begin();
+
+        Texture playLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
         sb.draw(playLabelTexture, x, m_playLabel.getY());
 
-        Texture settingsTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, buttonColor));
+        Texture settingsTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
         sb.draw(settingsTexture, x, m_settingsLabel.getY());
 
-        Texture highScoreTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, buttonColor));
+        Texture highScoreTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
         sb.draw(highScoreTexture, x, m_highScoreLabel.getY());
 
-        Texture difficultyTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, buttonColor));
+        Texture difficultyTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
         sb.draw(difficultyTexture, x, m_difficultyLabel.getY());
 
         sb.end();
