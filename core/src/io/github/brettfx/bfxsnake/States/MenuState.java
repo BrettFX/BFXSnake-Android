@@ -45,6 +45,8 @@ public class MenuState extends State {
 
         m_gsm = gsm;
 
+        m_gsm.saveSnakeColor();
+
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
         m_menuStage = new Stage(viewport);
 

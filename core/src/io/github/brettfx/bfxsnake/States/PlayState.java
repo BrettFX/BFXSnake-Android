@@ -34,8 +34,12 @@ public class PlayState extends State {
 
     private Stage m_stage;
 
+    private GameStateManager m_gsm;
+
     public PlayState(GameStateManager gsm) {
         super(gsm);
+
+        m_gsm = gsm;
 
         m_gsm.saveDifficulty();
 
@@ -136,7 +140,7 @@ public class PlayState extends State {
         sr.rect(pickup.getX(), pickup.getY(), pickup.getWidth(), pickup.getHeight());
 
         //Render snake
-        sr.setColor(Color.GREEN);
+        sr.setColor(m_gsm.getSnakeColor());
 
         for(SnakePart part : m_snake.getSnake()){
             sr.rect(part.getX(), part.getY(), part.getWidth(), part.getHeight());
