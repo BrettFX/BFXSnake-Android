@@ -33,10 +33,10 @@ public class BFXSnake extends ApplicationAdapter {
 	public static final Color BUTTON_COLOR = Color.RED;
 
 	public static final Color COLORS[] = {
-		Color.GREEN, Color.BROWN, Color.CHARTREUSE, Color.CORAL, Color.CYAN,
+		Color.GREEN, Color.RED, Color.CHARTREUSE, Color.CORAL, Color.CYAN,
 		Color.FIREBRICK, Color.FOREST, Color.GOLD, Color.GOLDENROD, Color.GRAY,
 		Color.BLUE, Color.LIME, Color.MAGENTA, Color.MAROON, Color.NAVY,
-		Color.OLIVE, Color.ORANGE, Color.PINK, Color.PURPLE, Color.RED,
+		Color.OLIVE, Color.ORANGE, Color.PINK, Color.PURPLE, Color.BROWN,
 		Color.ROYAL, Color.SALMON, Color.SCARLET, Color.SKY, Color.SLATE,
 		Color.TAN, Color.TEAL, Color.VIOLET, Color.WHITE, Color.YELLOW
 	};

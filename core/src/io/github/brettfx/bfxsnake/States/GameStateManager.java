@@ -27,11 +27,19 @@ public class GameStateManager {
     private int m_snakeColorIndex;
     private Color m_snakeColor;
 
+    private int m_pickupColorIndex;
+    private Color m_pickupColor;
+
     public GameStateManager(){
         m_states = new Stack<State>();
+
         m_difficulty = m_preferences.getInteger("Difficulty", 0);
+
         m_snakeColorIndex = m_preferences.getInteger("SnakeColor", 0);
         m_snakeColor = new Color(BFXSnake.COLORS[m_snakeColorIndex]);
+
+        m_pickupColorIndex = m_preferences.getInteger("PickupColor", 1);
+        m_pickupColor = new Color(BFXSnake.COLORS[m_pickupColorIndex]);
     }
 
     public void setDifficulty(int difficulty){
@@ -63,6 +71,20 @@ public class GameStateManager {
 
     public Color getSnakeColor(){
         return m_snakeColor;
+    }
+
+    public void setPickupColor(int i){
+        m_pickupColorIndex = i;
+        m_pickupColor.set(BFXSnake.COLORS[m_pickupColorIndex]);
+    }
+
+    public void savePickupColor(){
+        m_preferences.putInteger("PickupColor", m_pickupColorIndex);
+        m_preferences.flush();
+    }
+
+    public int getPickupColorIndex(){
+        return m_pickupColorIndex;
     }
 
     public void push(State state){

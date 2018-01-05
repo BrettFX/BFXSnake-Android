@@ -1,7 +1,6 @@
 package io.github.brettfx.bfxsnake.States;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -34,6 +33,10 @@ public class SettingsState extends State{
     //Toggle the controller as enabled or disabled
     private Label m_controllerState;
 
+    //To restore everything back to default
+    private Label m_restoreDefaults;
+
+    //To go back to the previous state (menu)
     private Label m_backLabel;
 
     private Stage m_settingsStage;
@@ -83,9 +86,28 @@ public class SettingsState extends State{
             }
         });
 
+        m_restoreDefaults = new Label("RESTORE DEFAULT VALUES", settingsLabelStyle);
+        m_restoreDefaults.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.setSnakeColor(0);
+                m_gsm.setSnakeColor(m_gsm.getSnakeColorIndex());
+
+                m_gsm.setPickupColor(1);
+                m_gsm.setPickupColor(m_gsm.getPickupColorIndex());
+            }
+        });
+
         GlyphLayout glyphLayout = new GlyphLayout();
-        glyphLayout.setText(m_settingsFont, m_snakeColorLabel.getText() + "\n" +
-        m_backLabel.getText());
+        glyphLayout.setText(m_settingsFont,
+                m_snakeColorLabel.getText() + "\n" +
+                   m_restoreDefaults.getText() + "\n" +
+                   m_backLabel.getText());
 
         Table selectionTable = new Table();
 
