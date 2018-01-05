@@ -18,7 +18,7 @@ import io.github.brettfx.bfxsnake.States.PlayState;
 
 public class BFXSnake extends ApplicationAdapter {
 	public static final String PREFS_NAME = "BFXSnake_Preferences";
-	public static final String TITLE = "BFXSnake";
+	public static final String TITLE = "BFX SNAKE";
 
 	public static final int SCALE_FACTOR = 45;
 

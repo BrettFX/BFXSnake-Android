@@ -73,6 +73,32 @@ public class SettingsState extends State{
             }
         });
 
+        m_pickupColorLabel = new Label("PICKUP COLOR", settingsLabelStyle);
+        m_pickupColorLabel.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.setPickupColor((m_gsm.getPickupColorIndex() + 1) % BFXSnake.COLORS.length);
+            }
+        });
+
+        m_controllerState = new Label("CONTROLLER: " + m_gsm.getControllerState(), settingsLabelStyle);
+        m_controllerState.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.toggleControllerState();
+            }
+        });
+
         m_backLabel = new Label("BACK", settingsLabelStyle);
         m_backLabel.addListener(new InputListener(){
             @Override
@@ -86,7 +112,7 @@ public class SettingsState extends State{
             }
         });
 
-        m_restoreDefaults = new Label("RESTORE DEFAULT VALUES", settingsLabelStyle);
+        m_restoreDefaults = new Label("RESTORE DEFAULTS", settingsLabelStyle);
         m_restoreDefaults.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -100,14 +126,32 @@ public class SettingsState extends State{
 
                 m_gsm.setPickupColor(1);
                 m_gsm.setPickupColor(m_gsm.getPickupColorIndex());
+
+                if(!m_gsm.isControllerOn()){
+                    m_gsm.toggleControllerState();
+                }
             }
         });
 
+        Label titleLabel = new Label("SETTINGS", settingsLabelStyle);
+
         GlyphLayout glyphLayout = new GlyphLayout();
         glyphLayout.setText(m_settingsFont,
-                m_snakeColorLabel.getText() + "\n" +
+                titleLabel.getText() + "\n" +
+                   m_snakeColorLabel.getText() + "\n" +
+                   m_pickupColorLabel.getText() + "\n" +
+                   m_controllerState.getText() + "\n" +
                    m_restoreDefaults.getText() + "\n" +
                    m_backLabel.getText());
+
+        Table titleTable = new Table();
+
+        titleTable.top();
+        titleTable.setFillParent(true);
+
+        titleTable.add(titleLabel);
+
+        m_settingsStage.addActor(titleTable);
 
         Table selectionTable = new Table();
 
@@ -115,6 +159,15 @@ public class SettingsState extends State{
         selectionTable.setFillParent(true);
 
         selectionTable.add(m_snakeColorLabel);
+        selectionTable.row().padTop(5f);
+
+        selectionTable.add(m_pickupColorLabel);
+        selectionTable.row().padTop(5f);
+
+        selectionTable.add(m_controllerState);
+        selectionTable.row().padTop(5f);
+
+        selectionTable.add(m_restoreDefaults);
         selectionTable.row().padTop(5f);
 
         selectionTable.add(m_backLabel);
@@ -130,21 +183,38 @@ public class SettingsState extends State{
 
     @Override
     public void update(float dt) {
-
+        m_controllerState.setText("CONTROLLER: " + m_gsm.getControllerState());
     }
 
     @Override
     public void render(SpriteBatch sb) {
-        int width = (int)(m_snakeColorLabel.getWidth() + (m_snakeColorLabel.getWidth() / 2));
-        int height = (int)m_snakeColorLabel.getHeight();
-        float x = m_snakeColorLabel.getX() - (m_snakeColorLabel.getWidth() / 4);
+        int width = (int)(m_restoreDefaults.getWidth() + (m_backLabel.getWidth() / 2));
+        int height = (int)m_restoreDefaults.getHeight();
+        float x = m_restoreDefaults.getX() - (m_backLabel.getWidth() / 4);
 
         sb.begin();
 
+        //Render snake color button
         Texture snakeColorTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
                 m_gsm.getSnakeColor()));
         sb.draw(snakeColorTexture, x, m_snakeColorLabel.getY());
 
+        //Render pickup color button
+        Texture pickupColorTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                m_gsm.getPickupColor()));
+        sb.draw(pickupColorTexture, x, m_pickupColorLabel.getY());
+
+        //Render controller state button
+        Texture controllerStateTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                BUTTON_COLOR));
+        sb.draw(controllerStateTexture, x, m_controllerState.getY());
+
+        //Render restore default values button
+        Texture restoreDefValTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                BUTTON_COLOR));
+        sb.draw(restoreDefValTexture, x, m_restoreDefaults.getY());
+
+        //Render back button
         Texture backLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
                 BUTTON_COLOR));
         sb.draw(backLabelTexture, x, m_backLabel.getY());

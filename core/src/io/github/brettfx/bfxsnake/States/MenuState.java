@@ -1,7 +1,6 @@
 package io.github.brettfx.bfxsnake.States;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -47,6 +46,8 @@ public class MenuState extends State {
 
         m_gsm.saveSnakeColor();
         m_gsm.savePickupColor();
+        m_gsm.saveControllerState();
+        m_gsm.flush();
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
         m_menuStage = new Stage(viewport);

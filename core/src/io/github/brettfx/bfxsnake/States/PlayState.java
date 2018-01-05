@@ -42,8 +42,9 @@ public class PlayState extends State {
         m_gsm = gsm;
 
         m_gsm.saveDifficulty();
+        m_gsm.flush();
 
-        m_controller = new Controller(true);
+        m_controller = new Controller(m_gsm.isControllerOn());
 
         m_snake = new Snake(m_controller);
 
@@ -135,7 +136,7 @@ public class PlayState extends State {
         }
 
         //Render pickup
-        sr.setColor(Color.RED);
+        sr.setColor(m_gsm.getPickupColor());
         Pickup pickup = m_snake.getPickup();
         sr.rect(pickup.getX(), pickup.getY(), pickup.getWidth(), pickup.getHeight());
 

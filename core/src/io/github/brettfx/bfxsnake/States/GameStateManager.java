@@ -30,6 +30,8 @@ public class GameStateManager {
     private int m_pickupColorIndex;
     private Color m_pickupColor;
 
+    private boolean controllerOn;
+
     public GameStateManager(){
         m_states = new Stack<State>();
 
@@ -40,6 +42,8 @@ public class GameStateManager {
 
         m_pickupColorIndex = m_preferences.getInteger("PickupColor", 1);
         m_pickupColor = new Color(BFXSnake.COLORS[m_pickupColorIndex]);
+
+        controllerOn = m_preferences.getBoolean("ControllerState", true);
     }
 
     public void setDifficulty(int difficulty){
@@ -48,7 +52,6 @@ public class GameStateManager {
 
     public void saveDifficulty(){
         m_preferences.putInteger("Difficulty", m_difficulty);
-        m_preferences.flush();
     }
 
     public int getDifficulty(){
@@ -62,7 +65,6 @@ public class GameStateManager {
 
     public void saveSnakeColor(){
         m_preferences.putInteger("SnakeColor", m_snakeColorIndex);
-        m_preferences.flush();
     }
 
     public int getSnakeColorIndex(){
@@ -80,11 +82,34 @@ public class GameStateManager {
 
     public void savePickupColor(){
         m_preferences.putInteger("PickupColor", m_pickupColorIndex);
-        m_preferences.flush();
     }
 
     public int getPickupColorIndex(){
         return m_pickupColorIndex;
+    }
+
+    public Color getPickupColor(){
+        return m_pickupColor;
+    }
+
+    public void toggleControllerState(){
+        controllerOn = !controllerOn;
+    }
+
+    public void saveControllerState(){
+        m_preferences.putBoolean("ControllerState", controllerOn);
+    }
+
+    public boolean isControllerOn(){
+        return controllerOn;
+    }
+
+    public String getControllerState(){
+        return controllerOn ? "ON" : "OFF";
+    }
+
+    public void flush(){
+        m_preferences.flush();
     }
 
     public void push(State state){
