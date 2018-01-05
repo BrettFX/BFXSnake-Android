@@ -23,6 +23,7 @@ public class Controller {
     private static final String DOWN = "directional_pad/down_arrow_transparent.png";
     private static final String LEFT = "directional_pad/left_arrow_transparent.png";
     private static final String RIGHT = "directional_pad/right_arrow_transparent.png";
+    private static final String PAUSE_BUTTON = "pause_play_img.png";
 
     private static final float PADDING_TOP = 20f; //5
     private static final float PADDING_LEFT = 20f; //5
@@ -39,15 +40,18 @@ public class Controller {
     private Image m_rightImg;
     private Image m_downImg;
     private Image m_upImg;
+    private Image m_pauseButton;
 
     private boolean m_usingController;
 
     private boolean m_upPressed,
             m_downPressed,
             m_leftPressed,
-            m_rightPressed;
+            m_rightPressed,
+            m_pausedPressed;
 
     //TODO Render a pause button to allow the user to pause the game on mobile device
+
 
     public Controller(boolean usingController){
         OrthographicCamera cam = new OrthographicCamera();
@@ -67,17 +71,14 @@ public class Controller {
         m_upImg = new Image(new Texture(UP));
         m_upImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
 
-
         //Add input listener to up_arrow image to act as a button
         m_upImg.addListener(new InputListener()
         {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                m_upPressed = true;
-
                 //Need to return true in order for touchUp event to fire
-                return true;
+                return (m_upPressed = true);
             }
 
             @Override
@@ -99,10 +100,8 @@ public class Controller {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                m_downPressed = true;
-
                 //Need to return true in order for touchUp event to fire
-                return true;
+                return (m_downPressed = true);
             }
 
             @Override
@@ -122,10 +121,8 @@ public class Controller {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                m_leftPressed = true;
-
                 //Need to return true in order for touchUp event to fire
-                return true;
+                return (m_leftPressed = true);
             }
 
             @Override
@@ -145,16 +142,34 @@ public class Controller {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                m_rightPressed = true;
-
                 //Need to return true in order for touchUp event to fire
-                return true;
+                return (m_rightPressed = true);
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 m_rightPressed = false;
+            }
+        });
+
+        //Create the pause button to be the same size of the arrow buttons
+        m_pauseButton = new Image(new Texture(PAUSE_BUTTON));
+        m_pauseButton.setSize(ARROW_WIDTH, ARROW_HEIGHT);
+
+        m_pauseButton.addListener(new InputListener()
+        {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                //Need to return true in order for touchUp event to fire
+                return (m_pausedPressed = true);
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                m_pausedPressed = false;
             }
         });
 
