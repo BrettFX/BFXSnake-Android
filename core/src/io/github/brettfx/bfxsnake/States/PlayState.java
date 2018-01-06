@@ -81,22 +81,74 @@ public class PlayState extends State {
 
     @Override
     public void handleInput() {
+        if(DEBUG_MODE){
+            if(Gdx.input.justTouched()){
+                System.out.println("Just touched at: x = " + Gdx.input.getX() + ", y = " + Gdx.input.getY());
+                System.out.print("Current snake head location: x = " + m_snake.getSnake().get(0).getX());
+                System.out.println(", y = " + m_snake.getSnake().get(0).getY());
+                System.out.println();
+            }
+        }
+
         if(!m_snake.isPaused()){
-            if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || (m_controller.isDownPressed() && Gdx.input.justTouched())){
-                m_snake.setDirection(Snake.Directions.DOWN);
+            if(m_controller.isUsingController()){
+                if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || (m_controller.isDownPressed() && Gdx.input.justTouched())){
+                    m_snake.setDirection(Snake.Directions.DOWN);
 
-            }else if(Gdx.input.isKeyJustPressed(Input.Keys.UP) || (m_controller.isUpPressed() && Gdx.input.justTouched())){
-                m_snake.setDirection(Snake.Directions.UP);
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.UP) || (m_controller.isUpPressed() && Gdx.input.justTouched())){
+                    m_snake.setDirection(Snake.Directions.UP);
 
-            }else if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || (m_controller.isLeftPressed() && Gdx.input.justTouched())){
-                m_snake.setDirection(Snake.Directions.LEFT);
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || (m_controller.isLeftPressed() && Gdx.input.justTouched())){
+                    m_snake.setDirection(Snake.Directions.LEFT);
 
-            }else if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || (m_controller.isRightPressed() && Gdx.input.justTouched())){
-                m_snake.setDirection(Snake.Directions.RIGHT);
-            }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
-                m_snake.pause();
-            }else if(m_gameOver && Gdx.input.justTouched()){
-                m_gsm.set(new PlayState(m_gsm));
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || (m_controller.isRightPressed() && Gdx.input.justTouched())){
+                    m_snake.setDirection(Snake.Directions.RIGHT);
+                }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
+                    m_snake.pause();
+                }else if(m_gameOver && Gdx.input.justTouched()){
+                    m_gsm.set(new PlayState(m_gsm));
+                }
+            }else{ //Handle case when controller is disabled
+                if(Gdx.input.justTouched()){
+                    SnakePart head = m_snake.getSnake().get(0);
+
+                    int touchLocX = Gdx.input.getX();
+                    int touchLocY = Gdx.input.getY();
+                    int snakeHeadX = (int)head.getX();
+                    int snakeHeadY = (int)head.getY();
+
+                    //By default, assume same location
+                    Snake.Directions currentDirection = head.getDirection();
+                    Snake.Directions d1 = currentDirection;
+                    Snake.Directions d2 = currentDirection;
+                    Snake.Directions deducedDirection;
+
+                    //Calculate as best as possible, the two most logical directions that the user meant the snake to go in.
+                    if(touchLocX < snakeHeadX){
+                        d1 = Snake.Directions.LEFT;
+                    }else if(touchLocX > snakeHeadX){
+                        d1 = Snake.Directions.RIGHT;
+                    }
+
+                    if(touchLocY < snakeHeadY){
+                        d2 = Snake.Directions.DOWN;
+                    }else if(touchLocY > snakeHeadY){
+                        d2 = Snake.Directions.UP;
+                    }
+
+                    //Eliminate one of those directions by determining which one is an opposite direction or the same as the
+                    //current direction
+                    //NB: by mathematical deduction, one of the two directions will always be either an opposite direction
+                    //or the same as the current direction
+                    if(d1 != currentDirection && !m_snake.isOpposite(d1)){
+                        deducedDirection = d1;
+                    }else{
+                        deducedDirection = d2;
+                    }
+
+                    //Make the snake go in the deduced direction
+                    m_snake.setDirection(deducedDirection);
+                }
             }
 
             //Debugging tools

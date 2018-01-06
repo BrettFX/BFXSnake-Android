@@ -75,7 +75,7 @@ public class Snake {
      *
      * @param direction the direction to compare with the current direction
      * */
-    private boolean isOpposite(Directions direction){
+    public boolean isOpposite(Directions direction){
         switch (direction){
             case UP:
                 return m_currentDirection == Directions.DOWN;
