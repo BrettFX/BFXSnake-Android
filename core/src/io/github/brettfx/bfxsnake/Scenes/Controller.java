@@ -177,31 +177,33 @@ public class Controller {
 
         m_stage.addActor(pauseTable);
 
-        //Create a table that will hold the controller arrows (3x3 matrix)
-        Table controlsTable = new Table();
-        controlsTable.left().bottom();
+        //Create a table that will hold the controller arrows (3x3 matrix) if the controller is enabled
+        if(m_usingController){
+            Table controlsTable = new Table();
+            controlsTable.left().bottom();
 
-        //Populate the 3x3 table with arrow images to simulate directional pad controller
-        controlsTable.add();
-        controlsTable.add(m_upImg).size(m_upImg.getWidth(), m_upImg.getHeight());
-        controlsTable.add();
+            //Populate the 3x3 table with arrow images to simulate directional pad controller
+            controlsTable.add();
+            controlsTable.add(m_upImg).size(m_upImg.getWidth(), m_upImg.getHeight());
+            controlsTable.add();
 
-        controlsTable.row().pad(PADDING_TOP, PADDING_LEFT, PADDING_BOTTOM, PADDING_RIGHT);
+            controlsTable.row().pad(PADDING_TOP, PADDING_LEFT, PADDING_BOTTOM, PADDING_RIGHT);
 
-        controlsTable.add(m_leftImg).size(m_leftImg.getWidth(), m_leftImg.getHeight());
-        controlsTable.add();
-        controlsTable.add(m_rightImg).size(m_rightImg.getWidth(), m_rightImg.getHeight());
+            controlsTable.add(m_leftImg).size(m_leftImg.getWidth(), m_leftImg.getHeight());
+            controlsTable.add();
+            controlsTable.add(m_rightImg).size(m_rightImg.getWidth(), m_rightImg.getHeight());
 
-        controlsTable.row().padBottom(PADDING_BOTTOM);
+            controlsTable.row().padBottom(PADDING_BOTTOM);
 
-        controlsTable.add();
-        controlsTable.add(m_downImg).size(m_downImg.getWidth(), m_downImg.getHeight());
-        controlsTable.add();
+            controlsTable.add();
+            controlsTable.add(m_downImg).size(m_downImg.getWidth(), m_downImg.getHeight());
+            controlsTable.add();
 
-        controlsTable.pack();
+            controlsTable.pack();
 
-        //Add the table to the m_stage
-        m_stage.addActor(controlsTable);
+            //Add the table to the m_stage
+            m_stage.addActor(controlsTable);
+        }
     }
 
     public boolean isUsingController(){

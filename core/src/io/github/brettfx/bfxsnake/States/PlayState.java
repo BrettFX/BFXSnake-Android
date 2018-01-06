@@ -150,9 +150,8 @@ public class PlayState extends State {
         sr.end();
         sb.end();
 
-        if(m_controller.isUsingController()){
-            m_controller.draw();
-        }
+        //Draw the controller
+        m_controller.draw();
 
         //Determine if game over and show game over if it is game over
         if(m_gameOver){
