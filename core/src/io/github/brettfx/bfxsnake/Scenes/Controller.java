@@ -23,7 +23,7 @@ public class Controller {
     private static final String DOWN = "directional_pad/down_arrow_transparent.png";
     private static final String LEFT = "directional_pad/left_arrow_transparent.png";
     private static final String RIGHT = "directional_pad/right_arrow_transparent.png";
-    private static final String PAUSE_BUTTON = "pause_play_img.png";
+    private static final String PAUSE_BUTTON = "pause_button/pause_play_img_white.png";
 
     private static final float PADDING_TOP = 20f; //5
     private static final float PADDING_LEFT = 20f; //5
@@ -62,10 +62,6 @@ public class Controller {
         Gdx.input.setInputProcessor(m_stage);
 
         m_usingController = usingController;
-
-        //Create a table that will hold the controller arrows (3x3 matrix)
-        Table table = new Table();
-        table.left().bottom();
 
         //Create up_arrow image
         m_upImg = new Image(new Texture(UP));
@@ -173,27 +169,39 @@ public class Controller {
             }
         });
 
+        //Create a table for the pause button
+        Table pauseTable = new Table();
+        pauseTable.setFillParent(true);
+        pauseTable.top().right();
+        pauseTable.add(m_pauseButton).size(m_pauseButton.getWidth(), m_pauseButton.getHeight());
+
+        m_stage.addActor(pauseTable);
+
+        //Create a table that will hold the controller arrows (3x3 matrix)
+        Table controlsTable = new Table();
+        controlsTable.left().bottom();
+
         //Populate the 3x3 table with arrow images to simulate directional pad controller
-        table.add();
-        table.add(m_upImg).size(m_upImg.getWidth(), m_upImg.getHeight());
-        table.add();
+        controlsTable.add();
+        controlsTable.add(m_upImg).size(m_upImg.getWidth(), m_upImg.getHeight());
+        controlsTable.add();
 
-        table.row().pad(PADDING_TOP, PADDING_LEFT, PADDING_BOTTOM, PADDING_RIGHT);
+        controlsTable.row().pad(PADDING_TOP, PADDING_LEFT, PADDING_BOTTOM, PADDING_RIGHT);
 
-        table.add(m_leftImg).size(m_leftImg.getWidth(), m_leftImg.getHeight());
-        table.add();
-        table.add(m_rightImg).size(m_rightImg.getWidth(), m_rightImg.getHeight());
+        controlsTable.add(m_leftImg).size(m_leftImg.getWidth(), m_leftImg.getHeight());
+        controlsTable.add();
+        controlsTable.add(m_rightImg).size(m_rightImg.getWidth(), m_rightImg.getHeight());
 
-        table.row().padBottom(PADDING_BOTTOM);
+        controlsTable.row().padBottom(PADDING_BOTTOM);
 
-        table.add();
-        table.add(m_downImg).size(m_downImg.getWidth(), m_downImg.getHeight());
-        table.add();
+        controlsTable.add();
+        controlsTable.add(m_downImg).size(m_downImg.getWidth(), m_downImg.getHeight());
+        controlsTable.add();
 
-        table.pack();
+        controlsTable.pack();
 
         //Add the table to the m_stage
-        m_stage.addActor(table);
+        m_stage.addActor(controlsTable);
     }
 
     public boolean isUsingController(){
@@ -227,6 +235,10 @@ public class Controller {
     public boolean isRightPressed()
     {
         return m_rightPressed;
+    }
+
+    public boolean isPausedPressed(){
+        return m_pausedPressed;
     }
 
     public void resize(int width, int height)

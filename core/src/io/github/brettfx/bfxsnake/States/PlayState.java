@@ -93,7 +93,7 @@ public class PlayState extends State {
 
             }else if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || (m_controller.isRightPressed() && Gdx.input.justTouched())){
                 m_snake.setDirection(Snake.Directions.RIGHT);
-            }else if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
                 m_snake.pause();
             }else if(m_gameOver && Gdx.input.justTouched()){
                 m_gsm.set(new PlayState(m_gsm));
@@ -108,7 +108,7 @@ public class PlayState extends State {
                 }
             }
 
-        }else if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+        }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
             m_snake.resume();
         }
     }
