@@ -115,6 +115,11 @@ public class PlayState extends State {
                         return;
                     }
 
+                    if(m_controller.isPausedPressed()){
+                        m_snake.pause();
+                        return;
+                    }
+
                     SnakePart head = m_snake.getSnake().get(0);
 
                     int touchLocX = Gdx.input.getX();
