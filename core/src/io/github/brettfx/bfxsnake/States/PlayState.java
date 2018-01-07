@@ -110,10 +110,15 @@ public class PlayState extends State {
                 }
             }else{ //Handle case when controller is disabled
                 if(Gdx.input.justTouched()){
+                    if(m_gameOver){
+                        m_gsm.set(new PlayState(m_gsm));
+                        return;
+                    }
+
                     SnakePart head = m_snake.getSnake().get(0);
 
                     int touchLocX = Gdx.input.getX();
-                    int touchLocY = Gdx.input.getY();
+                    int touchLocY = Gdx.graphics.getHeight() - Gdx.input.getY(); //Invert y-axis
                     int snakeHeadX = (int)head.getX();
                     int snakeHeadY = (int)head.getY();
 
@@ -124,6 +129,7 @@ public class PlayState extends State {
                     Snake.Directions deducedDirection;
 
                     //Calculate as best as possible, the two most logical directions that the user meant the snake to go in.
+                    //NB: should not do anything if the user taps directly on the snake head
                     if(touchLocX < snakeHeadX){
                         d1 = Snake.Directions.LEFT;
                     }else if(touchLocX > snakeHeadX){
