@@ -15,7 +15,8 @@ public class Snake {
     public static boolean DEBUG_MODE = false;
 
     //Increasing the value will slow the speed, i.e., the smaller the number the faster the snake will go
-    private static final int INIT_MOVEMENT_SPEED = 10; //Default: 25
+    private static final int INIT_MOVEMENT_SPEED = 25; //Default: 25 (Easy mode)
+    public static final int DIFFICULTY_MULTIPLIER = 8;
 
     //Delay between ticks to update snake
     private int m_delay;
@@ -28,6 +29,8 @@ public class Snake {
 
     private boolean m_colliding;
     private boolean m_paused;
+
+    private int m_difficultyVal;
 
     public enum Directions {
         LEFT, RIGHT, UP, DOWN, NONE
@@ -52,6 +55,8 @@ public class Snake {
         m_snakeParts.add(new SnakePart());
         m_snakeParts.get(0).setDirection(m_currentDirection);
 
+        m_difficultyVal = 0;
+
         SnakePart head = m_snakeParts.get(0);
 
         m_maxHeight = Gdx.graphics.getHeight() - head.getHeight();
@@ -67,6 +72,10 @@ public class Snake {
         m_colliding = false;
         m_paused = false;
         m_delay = 0;
+    }
+
+    public void setDifficultyVal(int difficultyVal){
+        m_difficultyVal = difficultyVal;
     }
 
     /**
@@ -304,12 +313,12 @@ public class Snake {
      * Updates location of snake
      * */
     public void update(float dt){
-        if(DEBUG_MODE && m_delay > INIT_MOVEMENT_SPEED){
+        if(DEBUG_MODE && m_delay > (INIT_MOVEMENT_SPEED - m_difficultyVal)){
             System.out.println("Tick time: " + dt +  "; delay count: " + m_delay);
         }
 
         //Update snake based on delay value
-        if(m_delay > INIT_MOVEMENT_SPEED){
+        if(m_delay > (INIT_MOVEMENT_SPEED - m_difficultyVal)){
             move();
 
             //Cascade new direction (if any)
