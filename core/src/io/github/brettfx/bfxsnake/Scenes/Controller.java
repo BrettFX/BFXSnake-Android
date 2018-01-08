@@ -50,9 +50,6 @@ public class Controller {
             m_rightPressed,
             m_pausedPressed;
 
-    //TODO Render a pause button to allow the user to pause the game on mobile device
-
-
     public Controller(boolean usingController){
         OrthographicCamera cam = new OrthographicCamera();
         m_viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cam);

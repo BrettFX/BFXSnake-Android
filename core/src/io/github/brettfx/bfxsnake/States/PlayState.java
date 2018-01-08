@@ -4,8 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -32,7 +35,10 @@ public class PlayState extends State {
 
     private boolean m_gameOver;
 
-    private Stage m_stage;
+    private Label m_exitLabel;
+    private Stage m_exitStage;
+
+    private Stage m_gameOverStage;
 
     private GameStateManager m_gsm;
 
@@ -53,32 +59,61 @@ public class PlayState extends State {
         m_snake.setDifficultyVal(m_gsm.getDifficulty() * Snake.DIFFICULTY_MULTIPLIER);
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
-        m_stage = new Stage(viewport);
+        m_gameOverStage = new Stage(viewport);
+        m_exitStage = new Stage(viewport);
+
+        Gdx.input.setInputProcessor(m_exitStage);
 
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
         bitmapFont.getData().setScale(BFXSnake.FONT_SIZE, BFXSnake.FONT_SIZE);
 
         //Setting up the font of the text to be displayed on the gameover screen
-        Label.LabelStyle font = new Label.LabelStyle(bitmapFont, bitmapFont.getColor());
+        Label.LabelStyle gameOverLabelStyle = new Label.LabelStyle(bitmapFont, bitmapFont.getColor());
+        Label.LabelStyle exitLabelStyle = new Label.LabelStyle(bitmapFont, Color.RED);
 
-        Table table = new Table();
-        table.center();
+        m_exitLabel = new Label("EXIT", exitLabelStyle);
+        m_exitLabel.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.set(new MenuState(m_gsm));
+            }
+        });
+
+        GlyphLayout glyphLayout = new GlyphLayout();
+        glyphLayout.setText(bitmapFont, m_exitLabel.getText());
+
+        //Create the exit table
+        Table exitTable = new Table();
+        exitTable.top();
+        exitTable.setFillParent(true);
+
+        exitTable.add(m_exitLabel);
+
+        m_exitStage.addActor(exitTable);
+
+        Table gameOverTable = new Table();
+        gameOverTable.center();
 
         //Table will take up entire stage
-        table.setFillParent(true);
+        gameOverTable.setFillParent(true);
 
         //Create game over label
-        Label gameOverLabel = new Label("GAME OVER", font);
-        table.add(gameOverLabel).expandX();
+        Label gameOverLabel = new Label("GAME OVER", gameOverLabelStyle);
+        gameOverTable.add(gameOverLabel).expandX();
 
         //Create a play again label
-        Label playAgainLabel = new Label("Tap to Play Again", font);
-        table.row();
+        Label playAgainLabel = new Label("Tap to Play Again", gameOverLabelStyle);
+        gameOverTable.row();
 
         //Add a bit of padding to top of play again label
-        table.add(playAgainLabel).expandX().padTop(10f);
+        gameOverTable.add(playAgainLabel).expandX().padTop(10f);
 
-        m_stage.addActor(table);
+        m_gameOverStage.addActor(gameOverTable);
 
         m_gameOver = false;
     }
@@ -113,13 +148,13 @@ public class PlayState extends State {
                     m_gsm.set(new PlayState(m_gsm));
                 }
             }else{ //Handle case when controller is disabled
-                if(Gdx.input.justTouched()){
+                if(Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.P)){
                     if(m_gameOver){
                         m_gsm.set(new PlayState(m_gsm));
                         return;
                     }
 
-                    if(m_controller.isPausedPressed()){
+                    if(m_controller.isPausedPressed()|| Gdx.input.isKeyJustPressed(Input.Keys.P)){
                         m_snake.pause();
                         return;
                     }
@@ -222,7 +257,12 @@ public class PlayState extends State {
 
         //Determine if game over and show game over if it is game over
         if(m_gameOver){
-            m_stage.draw();
+            m_gameOverStage.draw();
+        }
+
+        //Draw the exit stage if the game is paused
+        if(m_snake.isPaused()){
+            m_exitStage.draw();
         }
     }
 
@@ -230,6 +270,7 @@ public class PlayState extends State {
     public void dispose() {
         m_snake.dispose();
         m_controller.dispose();
-        m_stage.dispose();
+        m_gameOverStage.dispose();
+        m_exitStage.dispose();
     }
 }
