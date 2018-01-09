@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -32,7 +34,7 @@ public class PlayState extends State {
 
     private boolean m_gameOver;
 
-    private Stage m_stage;
+    private Stage m_gameOverStage;
 
     private GameStateManager m_gsm;
 
@@ -83,7 +85,9 @@ public class PlayState extends State {
         m_snake.setDifficultyVal(difficultyVal);
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
-        m_stage = new Stage(viewport);
+        m_gameOverStage = new Stage(viewport);
+
+        Gdx.input.setInputProcessor(m_gameOverStage);
 
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
         bitmapFont.getData().setScale(BFXSnake.FONT_SIZE, BFXSnake.FONT_SIZE);
@@ -91,24 +95,59 @@ public class PlayState extends State {
         //Setting up the font of the text to be displayed on the gameover screen
         Label.LabelStyle font = new Label.LabelStyle(bitmapFont, bitmapFont.getColor());
 
-        Table table = new Table();
-        table.center();
+        Table gameOverTable = new Table();
+
+        gameOverTable.center();
 
         //Table will take up entire stage
-        table.setFillParent(true);
+        gameOverTable.setFillParent(true);
 
         //Create game over label
         Label gameOverLabel = new Label("GAME OVER", font);
-        table.add(gameOverLabel).expandX();
+        gameOverTable.add(gameOverLabel).expandX();
 
         //Create a play again label
-        Label playAgainLabel = new Label("Tap to Play Again", font);
-        table.row();
+        Label playAgainLabel = new Label("PLAY AGAIN", font);
+        playAgainLabel.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                //Need to return true in order for touchUp event to fire
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.set(new PlayState(m_gsm));
+            }
+        });
+
+        gameOverTable.row();
 
         //Add a bit of padding to top of play again label
-        table.add(playAgainLabel).expandX().padTop(10f);
+        gameOverTable.add(playAgainLabel).expandX().padTop(10f);
 
-        m_stage.addActor(table);
+        Label backLabel = new Label("BACK TO MENU", font);
+        backLabel.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                //Need to return true in order for touchUp event to fire
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.set(new MenuState(m_gsm));
+            }
+        });
+
+        gameOverTable.row();
+        gameOverTable.add(backLabel).expandX();
+
+        m_gameOverStage.addActor(gameOverTable);
+
+        if(DEBUG_MODE){
+            m_gameOverStage.setDebugAll(true);
+        }
 
         m_gameOver = false;
     }
@@ -148,13 +187,10 @@ public class PlayState extends State {
                     
                 }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
                     m_snake.pause();
-                }else if(m_gameOver && Gdx.input.justTouched()){
-                    m_gsm.set(new PlayState(m_gsm));
                 }
             }else{ //Handle case when controller is disabled
                 if(Gdx.input.justTouched()){
                     if(m_gameOver){
-                        m_gsm.set(new PlayState(m_gsm));
                         return;
                     }
 
@@ -280,7 +316,7 @@ public class PlayState extends State {
 
         //Determine if game over and show game over if it is game over
         if(m_gameOver){
-            m_stage.draw();
+            m_gameOverStage.draw();
         }
     }
 
@@ -288,6 +324,6 @@ public class PlayState extends State {
     public void dispose() {
         m_snake.dispose();
         m_controller.dispose();
-        m_stage.dispose();
+        m_gameOverStage.dispose();
     }
 }
