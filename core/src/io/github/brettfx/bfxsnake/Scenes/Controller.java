@@ -1,17 +1,22 @@
 package io.github.brettfx.bfxsnake.Scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
+import io.github.brettfx.bfxsnake.States.MenuState;
+import io.github.brettfx.bfxsnake.States.PlayState;
 
 /**
  * @author brett
@@ -42,16 +47,16 @@ public class Controller {
     private Image m_upImg;
     private Image m_pauseButton;
 
+    private Label m_exitLabel;
+
     private boolean m_usingController;
 
     private boolean m_upPressed,
             m_downPressed,
             m_leftPressed,
             m_rightPressed,
-            m_pausedPressed;
-
-    //TODO Render a pause button to allow the user to pause the game on mobile device
-
+            m_pausedPressed,
+            m_exitPressed;
 
     public Controller(boolean usingController){
         OrthographicCamera cam = new OrthographicCamera();
@@ -146,6 +151,36 @@ public class Controller {
             }
         });
 
+        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
+        bitmapFont.getData().setScale(BFXSnake.FONT_SIZE, BFXSnake.FONT_SIZE);
+
+        //Setting up the font of the text to be displayed on the gameover screen
+        Label.LabelStyle exitLabelStyle = new Label.LabelStyle(bitmapFont, Color.RED);
+
+        m_exitLabel = new Label("EXIT", exitLabelStyle);
+        m_exitLabel.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                return (m_exitPressed = true);
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_exitPressed = false;
+            }
+        });
+
+        //Initially the exit label should not be visible
+        m_exitLabel.setVisible(false);
+
+        //Create a table for the exit button
+        Table exitTable = new Table();
+        exitTable.setFillParent(true);
+        exitTable.top();
+        exitTable.add(m_exitLabel).size(m_exitLabel.getWidth(), m_exitLabel.getHeight());
+
+        m_stage.addActor(exitTable);
+
         //Create the pause button to be the same size of the arrow buttons
         m_pauseButton = new Image(new Texture(PAUSE_BUTTON));
         m_pauseButton.setSize(ARROW_WIDTH, ARROW_HEIGHT);
@@ -200,6 +235,10 @@ public class Controller {
             //Add the table to the m_stage
             m_stage.addActor(controlsTable);
         }
+
+        if(PlayState.DEBUG_MODE){
+            m_stage.setDebugAll(true);
+        }
     }
 
     public boolean isUsingController(){
@@ -232,6 +271,14 @@ public class Controller {
 
     public boolean isPausedPressed(){
         return m_pausedPressed;
+    }
+
+    public boolean isExitPressed(){
+        return m_exitPressed;
+    }
+
+    public void setExitVisibility(boolean b){
+        m_exitLabel.setVisible(b);
     }
 
     public void resize(int width, int height){

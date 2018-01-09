@@ -96,17 +96,26 @@ public class PlayState extends State {
 
         if(!m_snake.isPaused()){
             if(m_controller.isUsingController()){
-                if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || (m_controller.isDownPressed() && Gdx.input.justTouched())){
+                if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN ) || Gdx.input.isKeyJustPressed(Input.Keys.S)
+                        || (m_controller.isDownPressed() && Gdx.input.justTouched())){
+
                     m_snake.setDirection(Snake.Directions.DOWN);
 
-                }else if(Gdx.input.isKeyJustPressed(Input.Keys.UP) || (m_controller.isUpPressed() && Gdx.input.justTouched())){
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)
+                        || (m_controller.isUpPressed() && Gdx.input.justTouched())){
+
                     m_snake.setDirection(Snake.Directions.UP);
 
-                }else if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || (m_controller.isLeftPressed() && Gdx.input.justTouched())){
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.A)
+                        || (m_controller.isLeftPressed() && Gdx.input.justTouched())){
+
                     m_snake.setDirection(Snake.Directions.LEFT);
 
-                }else if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || (m_controller.isRightPressed() && Gdx.input.justTouched())){
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || Gdx.input.isKeyJustPressed(Input.Keys.D)
+                        || (m_controller.isRightPressed() && Gdx.input.justTouched())){
+
                     m_snake.setDirection(Snake.Directions.RIGHT);
+                    
                 }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
                     m_snake.pause();
                 }else if(m_gameOver && Gdx.input.justTouched()){
@@ -121,6 +130,7 @@ public class PlayState extends State {
 
                     if(m_controller.isPausedPressed()){
                         m_snake.pause();
+                        m_controller.setExitVisibility(true);
                         return;
                     }
 
@@ -163,12 +173,27 @@ public class PlayState extends State {
 
                     //Make the snake go in the deduced direction
                     m_snake.setDirection(deducedDirection);
+
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN ) || Gdx.input.isKeyJustPressed(Input.Keys.S)){
+                    m_snake.setDirection(Snake.Directions.DOWN);
+
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)){
+                    m_snake.setDirection(Snake.Directions.UP);
+
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.A)){
+                    m_snake.setDirection(Snake.Directions.LEFT);
+
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT) || Gdx.input.isKeyJustPressed(Input.Keys.D)){
+                    m_snake.setDirection(Snake.Directions.RIGHT);
+                }else if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+                    m_snake.pause();
+                    m_controller.setExitVisibility(true);
                 }
             }
 
             //Debugging tools
             if(DEBUG_MODE){
-                if(Gdx.input.isKeyJustPressed(Input.Keys.A)) { //Allow debugger to grow snake at will
+                if(Gdx.input.isKeyJustPressed(Input.Keys.G)) { //Allow debugger to grow snake at will
                     m_snake.grow();
                 }else if(Gdx.input.isKeyJustPressed(Input.Keys.C)){ //Toggle controller
                     m_controller.toggleUse();
@@ -177,6 +202,9 @@ public class PlayState extends State {
 
         }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
             m_snake.resume();
+            m_controller.setExitVisibility(false);
+        }else if(m_controller.isExitPressed() && Gdx.input.justTouched()){
+            m_gsm.set(new MenuState(m_gsm));
         }
     }
 
