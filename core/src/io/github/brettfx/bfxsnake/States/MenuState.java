@@ -27,7 +27,7 @@ import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
  */
 public class MenuState extends State {
 
-    private static final String[] DIFFICULTIES = {"EASY", "MEDIUM", "HARD", "PRO", "IMPOSSIBLE"};
+    public static final String[] DIFFICULTIES = {"EASY", "MEDIUM", "HARD", "PRO", "IMPOSSIBLE"};
 
     private Stage m_menuStage;
     private BitmapFont m_menuFont;

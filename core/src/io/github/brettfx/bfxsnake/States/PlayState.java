@@ -49,8 +49,36 @@ public class PlayState extends State {
         m_snake = new Snake(m_controller);
 
         //Determine difficulty value
+        int difficultyVal = 0;
+
         //Possible difficulty vlaues: 0, 1, 2, 3, 4
-        m_snake.setDifficultyVal(m_gsm.getDifficulty() * Snake.DIFFICULTY_MULTIPLIER);
+        //Diffculty value will be subtracted from snake's initial movement speed
+        switch(m_gsm.getDifficulty()){
+            case 0: //EASY
+                difficultyVal = 0;
+                break;
+
+            case 1: //MEDIUM
+                difficultyVal = 8;
+                break;
+
+            case 2: //HARD
+                difficultyVal = 16;
+                break;
+
+            case 3: //PRO
+                difficultyVal = 20;
+                break;
+
+            case 4: //INSANE
+                difficultyVal = 24;
+                break;
+
+            default:
+                break;
+        }
+
+        m_snake.setDifficultyVal(difficultyVal);
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
         m_stage = new Stage(viewport);
