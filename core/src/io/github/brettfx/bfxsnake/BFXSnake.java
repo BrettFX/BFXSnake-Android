@@ -30,7 +30,7 @@ public class BFXSnake extends ApplicationAdapter {
 	public static SpriteBatch m_batch;
 	private GameStateManager m_gameStateManager;
 
-	public static final Color BUTTON_COLOR = Color.RED;
+	public static final Color BUTTON_COLOR = Color.GRAY;
 
 	public static final Color COLORS[] = {
 		Color.GREEN, Color.RED, Color.CHARTREUSE, Color.CORAL, Color.CYAN,

@@ -329,12 +329,12 @@ public class PlayState extends State {
 
             //Render button overlay for play again button
             Texture playAgainTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                    Color.RED));
+                    BFXSnake.BUTTON_COLOR));
             sb.draw(playAgainTexture, x, m_playAgainLabel.getY());
 
             //Render button overlay for back button
             Texture backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                    Color.RED));
+                    BFXSnake.BUTTON_COLOR));
             sb.draw(backTexture, x, m_backLabel.getY());
 
             sb.end();

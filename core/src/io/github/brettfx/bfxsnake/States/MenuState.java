@@ -135,14 +135,16 @@ public class MenuState extends State {
         selectionTable.top().padTop(Gdx.graphics.getHeight() / 4);
         selectionTable.setFillParent(true);
 
+        float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
+
         selectionTable.add(m_playLabel);
-        selectionTable.row().padTop(5f);
+        selectionTable.row().padTop(padding);
 
         selectionTable.add(m_settingsLabel);
-        selectionTable.row().padTop(5f);
+        selectionTable.row().padTop(padding);
 
         selectionTable.add(m_highScoreLabel);
-        selectionTable.row().padTop(5f);
+        selectionTable.row().padTop(padding);
 
         selectionTable.add(m_difficultyLabel);
 

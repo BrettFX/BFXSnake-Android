@@ -155,23 +155,25 @@ public class SettingsState extends State{
 
         Table selectionTable = new Table();
 
-        selectionTable.top().padTop(Gdx.graphics.getHeight() / 4);
+        selectionTable.top().padTop(Gdx.graphics.getHeight() / 6);
         selectionTable.setFillParent(true);
 
+        float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
+
         selectionTable.add(m_snakeColorLabel);
-        selectionTable.row().padTop(5f);
+        selectionTable.row().padTop(padding);
 
         selectionTable.add(m_pickupColorLabel);
-        selectionTable.row().padTop(5f);
+        selectionTable.row().padTop(padding);
 
         selectionTable.add(m_controllerState);
-        selectionTable.row().padTop(5f);
+        selectionTable.row().padTop(padding);
 
         selectionTable.add(m_restoreDefaults);
-        selectionTable.row().padTop(5f);
+        selectionTable.row().padTop(padding);
 
         selectionTable.add(m_backLabel);
-        selectionTable.row().padTop(5f);
+        selectionTable.row().padTop(padding);
 
         m_settingsStage.addActor(selectionTable);
     }
