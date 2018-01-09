@@ -36,6 +36,8 @@ public class PlayState extends State {
 
     private GameStateManager m_gsm;
 
+    //TODO display score while playing and update high score when needed
+
     public PlayState(GameStateManager gsm) {
         super(gsm);
 
@@ -59,7 +61,7 @@ public class PlayState extends State {
                 break;
 
             case 1: //MEDIUM
-                difficultyVal = 8;
+                difficultyVal = 10;
                 break;
 
             case 2: //HARD
