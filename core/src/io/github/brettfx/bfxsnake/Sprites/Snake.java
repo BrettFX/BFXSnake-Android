@@ -16,7 +16,7 @@ public class Snake {
 
     //Increasing the value will slow the speed, i.e., the smaller the number the faster the snake will go
     private static final int INIT_MOVEMENT_SPEED = 25; //Default: 25 (Easy mode)
-    public static final int DIFFICULTY_MULTIPLIER = 8;
+    public static final int DIFFICULTY_MULTIPLIER = 6;
 
     //Delay between ticks to update snake
     private int m_delay;
