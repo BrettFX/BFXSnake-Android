@@ -3,6 +3,7 @@ package io.github.brettfx.bfxsnake.States;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -39,6 +40,8 @@ public class PlayState extends State {
     private GameStateManager m_gsm;
 
     //TODO display score while playing and update high score when needed
+    private Label m_playAgainLabel;
+    private Label m_backLabel;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -97,7 +100,7 @@ public class PlayState extends State {
 
         Table gameOverTable = new Table();
 
-        gameOverTable.center();
+        gameOverTable.top().padTop(Gdx.graphics.getHeight() / 4);
 
         //Table will take up entire stage
         gameOverTable.setFillParent(true);
@@ -107,8 +110,8 @@ public class PlayState extends State {
         gameOverTable.add(gameOverLabel).expandX();
 
         //Create a play again label
-        Label playAgainLabel = new Label("PLAY AGAIN", font);
-        playAgainLabel.addListener(new InputListener(){
+        m_playAgainLabel = new Label("PLAY AGAIN", font);
+        m_playAgainLabel.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 //Need to return true in order for touchUp event to fire
@@ -124,10 +127,10 @@ public class PlayState extends State {
         gameOverTable.row();
 
         //Add a bit of padding to top of play again label
-        gameOverTable.add(playAgainLabel).expandX().padTop(10f);
+        gameOverTable.add(m_playAgainLabel).expandX().padTop(Gdx.graphics.getHeight() / 8);
 
-        Label backLabel = new Label("BACK TO MENU", font);
-        backLabel.addListener(new InputListener(){
+        m_backLabel = new Label("BACK TO MENU", font);
+        m_backLabel.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 //Need to return true in order for touchUp event to fire
@@ -141,7 +144,9 @@ public class PlayState extends State {
         });
 
         gameOverTable.row();
-        gameOverTable.add(backLabel).expandX();
+
+        //Add padding that is equivalent to the height of the head of the snake
+        gameOverTable.add(m_backLabel).expandX().padTop(m_snake.getSnake().get(0).getHeight());
 
         m_gameOverStage.addActor(gameOverTable);
 
@@ -316,6 +321,24 @@ public class PlayState extends State {
 
         //Determine if game over and show game over if it is game over
         if(m_gameOver){
+            int width = (int)(m_backLabel.getWidth() + (m_playAgainLabel.getWidth() / 2));
+            int height = (int)m_backLabel.getHeight();
+            float x = m_backLabel.getX() - (m_playAgainLabel.getWidth() / 4);
+
+            sb.begin();
+
+            //Render button overlay for play again button
+            Texture playAgainTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                    Color.RED));
+            sb.draw(playAgainTexture, x, m_playAgainLabel.getY());
+
+            //Render button overlay for back button
+            Texture backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                    Color.RED));
+            sb.draw(backTexture, x, m_backLabel.getY());
+
+            sb.end();
+
             m_gameOverStage.draw();
         }
     }
