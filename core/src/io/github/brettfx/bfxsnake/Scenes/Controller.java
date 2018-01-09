@@ -89,8 +89,7 @@ public class Controller {
         m_downImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
 
         //Add input listener to down_arrow image to act as a button
-        m_downImg.addListener(new InputListener()
-        {
+        m_downImg.addListener(new InputListener(){
 
 
             @Override
@@ -112,8 +111,7 @@ public class Controller {
         m_leftImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
 
         //Add input listener to left_arrow image to act as a button
-        m_leftImg.addListener(new InputListener()
-        {
+        m_leftImg.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -133,8 +131,7 @@ public class Controller {
         m_rightImg.setSize(ARROW_WIDTH, ARROW_HEIGHT);
 
         //Add input listener to right_arrow image to act as a button
-        m_rightImg.addListener(new InputListener()
-        {
+        m_rightImg.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -153,8 +150,7 @@ public class Controller {
         m_pauseButton = new Image(new Texture(PAUSE_BUTTON));
         m_pauseButton.setSize(ARROW_WIDTH, ARROW_HEIGHT);
 
-        m_pauseButton.addListener(new InputListener()
-        {
+        m_pauseButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -214,28 +210,23 @@ public class Controller {
         m_usingController = !m_usingController;
     }
 
-    public void draw()
-    {
+    public void draw(){
         m_stage.draw();
     }
 
-    public boolean isDownPressed()
-    {
+    public boolean isDownPressed(){
         return m_downPressed;
     }
 
-    public boolean isLeftPressed()
-    {
+    public boolean isLeftPressed(){
         return m_leftPressed;
     }
 
-    public boolean isUpPressed()
-    {
+    public boolean isUpPressed(){
         return m_upPressed;
     }
 
-    public boolean isRightPressed()
-    {
+    public boolean isRightPressed(){
         return m_rightPressed;
     }
 
@@ -243,8 +234,7 @@ public class Controller {
         return m_pausedPressed;
     }
 
-    public void resize(int width, int height)
-    {
+    public void resize(int width, int height){
         m_viewport.update(width, height);
     }
 
@@ -253,8 +243,7 @@ public class Controller {
         return widths - (PADDING_RIGHT);
     }
 
-    public void dispose()
-    {
+    public void dispose(){
         m_stage.dispose();
     }
 }
