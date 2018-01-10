@@ -24,6 +24,7 @@ import io.github.brettfx.bfxsnake.Sprites.Snake;
 import io.github.brettfx.bfxsnake.Sprites.SnakePart;
 
 import static io.github.brettfx.bfxsnake.BFXSnake.NOTIFICATION_COLOR;
+import static io.github.brettfx.bfxsnake.BFXSnake.OPACITY;
 
 /**
  * @author brett
@@ -176,10 +177,14 @@ public class PlayState extends State {
         m_highScoreNotified = false;
 
         Table scoreTable = new Table();
-        scoreTable.bottom().right();
+        scoreTable.top().left();
         scoreTable.setFillParent(true);
 
         m_scoreLabel = new Label(String.valueOf(m_snake.getScore().getCurrentScore()), font);
+        m_scoreLabel.setColor(m_scoreLabel.getColor().r,
+                m_scoreLabel.getColor().g,
+                m_scoreLabel.getColor().b,
+                OPACITY);
 
         scoreTable.add(m_scoreLabel);
 

@@ -26,6 +26,7 @@ public class BFXSnake extends ApplicationAdapter {
 	public static final String MENU_FONT = "fonts/menu.fnt";
 
 	public static final float FONT_SIZE = 5.0f; //1.4f
+	public static final float OPACITY = 0.75f;
 
 	public static SpriteBatch m_batch;
 	private GameStateManager m_gameStateManager;

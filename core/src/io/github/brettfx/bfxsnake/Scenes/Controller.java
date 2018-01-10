@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
-import io.github.brettfx.bfxsnake.States.MenuState;
 import io.github.brettfx.bfxsnake.States.PlayState;
 
 /**
@@ -183,6 +182,11 @@ public class Controller {
 
         //Create the pause button to be the same size of the arrow buttons
         m_pauseButton = new Image(new Texture(PAUSE_BUTTON));
+        m_pauseButton.setColor(m_pauseButton.getColor().r,
+                m_pauseButton.getColor().g,
+                m_pauseButton.getColor().b,
+                BFXSnake.OPACITY);
+
         m_pauseButton.setSize(ARROW_WIDTH, ARROW_HEIGHT);
 
         m_pauseButton.addListener(new InputListener(){
