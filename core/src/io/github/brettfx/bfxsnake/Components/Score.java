@@ -16,6 +16,8 @@ import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
  *  this class also writes to a file so that a high score can be recorded.
  */
 public class Score{
+    //Object values used for incrementing score
+    private static final int PICKUP_VALUE = 1;
 
     //Store the high score for future use
     private static Preferences preferences = Gdx.app.getPreferences(BFXSnake.PREFS_NAME);
@@ -54,7 +56,7 @@ public class Score{
     }
 
     public void add(){
-        currentScore++;
+        currentScore += PICKUP_VALUE;
         setHighScore();
     }
 
