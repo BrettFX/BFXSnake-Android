@@ -29,7 +29,10 @@ public class LearderboardState extends State {
     private GameStateManager m_gsm;
 
     private Label m_resetLabel;
+    private Texture m_resetTexture;
+
     private Label m_backLabel;
+    private Texture m_backTexture;
 
     private Stage m_stage;
 
@@ -56,8 +59,8 @@ public class LearderboardState extends State {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-                m_resetLabel.setText("HIGHSCORE IS NOW " + Score.getHighScore());
                 Score.resetHighScore();
+                m_resetLabel.setText("HIGHSCORE IS NOW " + Score.getHighScore());
             }
         });
 
@@ -82,22 +85,33 @@ public class LearderboardState extends State {
                         m_resetLabel.getText() + "\n" +
                         m_backLabel.getText());
 
+        Table titleTable = new Table();
+
+        titleTable.top();
+        titleTable.setFillParent(true);
+
+        titleTable.add(titleLabel);
+
+        m_stage.addActor(titleTable);
+
         Table leaderboardTable = new Table();
-        leaderboardTable.top();
+        leaderboardTable.top().padTop(Gdx.graphics.getHeight() / 4);;
         leaderboardTable.setFillParent(true);
 
         float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
-
-        leaderboardTable.add(titleLabel);
-        leaderboardTable.row().padTop(padding);
 
         leaderboardTable.add(m_resetLabel);
         leaderboardTable.row().padTop(padding);
 
         leaderboardTable.add(m_backLabel);
-        leaderboardTable.row().padTop(padding);
 
         m_stage.addActor(leaderboardTable);
+
+        int width = (int)(m_resetLabel.getWidth() + (m_backLabel.getWidth() / 2));
+        int height = (int)m_resetLabel.getHeight();
+
+        m_resetTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, Color.RED));
+        m_backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
     }
 
     @Override
@@ -112,26 +126,22 @@ public class LearderboardState extends State {
 
     @Override
     public void render(SpriteBatch sb) {
-        int width = (int)(m_resetLabel.getWidth() + (m_backLabel.getWidth() / 2));
-        int height = (int)m_resetLabel.getHeight();
         float x = m_resetLabel.getX() - (m_backLabel.getWidth() / 4);
 
         sb.begin();
 
-        Texture resetTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, Color.RED));
-        sb.draw(resetTexture, x, m_resetLabel.getY());
-
-        Texture backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
-        sb.draw(backTexture, x, m_backLabel.getY());
+        sb.draw(m_resetTexture, x, m_resetLabel.getY());
+        sb.draw(m_backTexture, x, m_backLabel.getY());
 
         sb.end();
 
-        resetTexture.dispose();
-        backTexture.dispose();
+        m_stage.draw();
     }
 
     @Override
     public void dispose() {
         m_stage.dispose();
+        m_resetTexture.dispose();
+        m_backTexture.dispose();
     }
 }
