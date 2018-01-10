@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Stack;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
+import io.github.brettfx.bfxsnake.Components.Score;
 
 /**
  * @author Brett Allen
@@ -30,6 +31,8 @@ public class GameStateManager {
     private int m_pickupColorIndex;
     private Color m_pickupColor;
 
+    private Score m_score;
+
     private boolean controllerOn;
 
     public GameStateManager(){
@@ -44,6 +47,12 @@ public class GameStateManager {
         m_pickupColor = new Color(BFXSnake.COLORS[m_pickupColorIndex]);
 
         controllerOn = m_preferences.getBoolean("ControllerState", true);
+
+        m_score = new Score(BFXSnake.SCORE_COLOR);
+    }
+
+    public Score getScore(){
+        return m_score;
     }
 
     public void setDifficulty(int difficulty){

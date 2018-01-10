@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
+import io.github.brettfx.bfxsnake.Components.Score;
 import io.github.brettfx.bfxsnake.Scenes.Controller;
 import io.github.brettfx.bfxsnake.Sprites.Pickup;
 import io.github.brettfx.bfxsnake.Sprites.Snake;
@@ -36,12 +37,15 @@ public class PlayState extends State {
     private boolean m_gameOver;
 
     private Stage m_gameOverStage;
+    private Stage m_scoreStage;
 
     private GameStateManager m_gsm;
 
-    //TODO display score while playing and update high score when needed
     private Label m_playAgainLabel;
     private Label m_backLabel;
+
+    //TODO display score while playing and update high score when needed
+    private Label m_scoreLabel;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -87,8 +91,11 @@ public class PlayState extends State {
 
         m_snake.setDifficultyVal(difficultyVal);
 
-        Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
-        m_gameOverStage = new Stage(viewport);
+        Viewport gameOverViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
+        m_gameOverStage = new Stage(gameOverViewport);
+
+        Viewport scoreViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
+        m_scoreStage = new Stage(scoreViewport);
 
         Gdx.input.setInputProcessor(m_gameOverStage);
 
@@ -150,11 +157,22 @@ public class PlayState extends State {
 
         m_gameOverStage.addActor(gameOverTable);
 
+        m_gameOver = false;
+
+        Table scoreTable = new Table();
+        scoreTable.bottom().right();
+        scoreTable.setFillParent(true);
+
+        m_scoreLabel = new Label(String.valueOf(m_gsm.getScore().getCurrentScore()), font);
+
+        scoreTable.add(m_scoreLabel);
+
+        m_scoreStage.addActor(scoreTable);
+
         if(DEBUG_MODE){
             m_gameOverStage.setDebugAll(true);
+            m_scoreStage.setDebugAll(true);
         }
-
-        m_gameOver = false;
     }
 
     @Override
@@ -319,6 +337,9 @@ public class PlayState extends State {
         //Draw the controller
         m_controller.draw();
 
+        //Draw the score
+        m_scoreStage.draw();
+
         //Determine if game over and show game over if it is game over
         if(m_gameOver){
             int width = (int)(m_backLabel.getWidth() + (m_playAgainLabel.getWidth() / 2));
@@ -348,5 +369,6 @@ public class PlayState extends State {
         m_snake.dispose();
         m_controller.dispose();
         m_gameOverStage.dispose();
+        m_scoreStage.dispose();
     }
 }
