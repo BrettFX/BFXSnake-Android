@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
+import io.github.brettfx.bfxsnake.BFXSnake;
+import io.github.brettfx.bfxsnake.Components.Score;
 import io.github.brettfx.bfxsnake.Scenes.Controller;
 
 /**
@@ -16,7 +18,6 @@ public class Snake {
 
     //Increasing the value will slow the speed, i.e., the smaller the number the faster the snake will go
     private static final int INIT_MOVEMENT_SPEED = 25; //Default: 25 (Easy mode)
-    public static final int DIFFICULTY_MULTIPLIER = 6;
 
     //Delay between ticks to update snake
     private int m_delay;
@@ -46,6 +47,8 @@ public class Snake {
     private float m_minHeight;
     private float m_minWidth;
 
+    private Score m_score;
+
     /**
      * Constructor
      * */
@@ -72,6 +75,12 @@ public class Snake {
         m_colliding = false;
         m_paused = false;
         m_delay = 0;
+
+        m_score = new Score(BFXSnake.SCORE_COLOR);
+    }
+
+    public Score getScore(){
+        return m_score;
     }
 
     public void setDifficultyVal(int difficultyVal){
@@ -259,6 +268,9 @@ public class Snake {
 
         //Have the newly inserted snake part follow the previous part
         m_snakeParts.get(m_snakeParts.size - 1).setDirection(previousPart.getDirection());
+
+        //Increment the current score
+        m_score.add();
     }
 
     public Array<SnakePart> getSnake(){

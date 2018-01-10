@@ -169,7 +169,7 @@ public class PlayState extends State {
         scoreTable.bottom().right();
         scoreTable.setFillParent(true);
 
-        m_scoreLabel = new Label(String.valueOf(m_gsm.getScore().getCurrentScore()), font);
+        m_scoreLabel = new Label(String.valueOf(m_snake.getScore().getCurrentScore()), font);
 
         scoreTable.add(m_scoreLabel);
 
@@ -308,6 +308,7 @@ public class PlayState extends State {
         handleInput();
         m_snake.update(dt);
         m_gameOver = m_snake.isColliding();
+        m_scoreLabel.setText(String.valueOf(m_snake.getScore().getCurrentScore()));
     }
 
     @Override

@@ -26,8 +26,7 @@ public class Score{
 
     private int currentScore;
 
-    public Score(Color color)
-    {
+    public Score(Color color){
         currentScore = 0;
 
         //Get highScore from filed
@@ -40,40 +39,34 @@ public class Score{
         System.out.println("High Score: " + preferences.getInteger("HighScore", 0));
     }
 
-    private void setHighScore()
-    {
-        if(currentScore > highScore)
+    private void setHighScore(){
+        if(currentScore > highScore) {
             highScore = currentScore;
 
-        preferences.putInteger("HighScore", highScore);
-        preferences.flush();
+            preferences.putInteger("HighScore", highScore);
+            preferences.flush();
+        }
     }
 
-    public static void resetHighScore()
-    {
+    public static void resetHighScore(){
         preferences.putInteger("HighScore", 0);
         preferences.flush();
     }
 
-    public void add()
-    {
+    public void add(){
         currentScore++;
-
         setHighScore();
     }
 
-    public int getCurrentScore()
-    {
+    public int getCurrentScore(){
         return currentScore;
     }
 
-    public static int getHighScore()
-    {
+    public static int getHighScore(){
         return highScore;
     }
 
-    public BitmapFont getScoreFont()
-    {
+    public BitmapFont getScoreFont(){
         return scoreFont;
     }
 }
