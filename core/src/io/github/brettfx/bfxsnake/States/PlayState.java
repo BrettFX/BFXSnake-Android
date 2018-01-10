@@ -331,7 +331,23 @@ public class PlayState extends State {
     @Override
     public void update(float dt) {
         handleInput();
+
+        int prevHighscore = Score.getHighScore();
+
         m_snake.update(dt);
+
+        //Draw the notification table if required
+        //Show new high score notification if the high score has changed and the notification has not be shown yet
+        if(prevHighscore != Score.getHighScore() && !m_highScoreNotified){
+            m_notificationLabel.setText("NEW HIGH SCORE!");
+            m_notificationAlpha = 1.0f;
+            m_highScoreNotified = true;
+        }
+
+        //Displays a fade-out animation for the notification
+        m_notificationLabel.setColor(NOTIFICATION_COLOR.r, NOTIFICATION_COLOR.g, NOTIFICATION_COLOR.b, m_notificationAlpha);
+        m_notificationAlpha = m_notificationAlpha >= 0 ? m_notificationAlpha - NOTIFICATION_FADE_SPEED : 0.0f;
+
         m_gameOver = m_snake.isColliding();
         m_scoreLabel.setText(String.valueOf(m_snake.getScore().getCurrentScore()));
     }
@@ -372,17 +388,7 @@ public class PlayState extends State {
         //Draw the score
         m_scoreStage.draw();
 
-        //Draw the notification table if required
-        //Show new high score notification
-        if(m_snake.getScore().getCurrentScore() == Score.getHighScore() && !m_highScoreNotified){
-            m_notificationLabel.setText("NEW HIGH SCORE!");
-            m_notificationAlpha = 1.0f;
-            m_highScoreNotified = true;
-        }
-
-        //Displays a fade-out animation for the notification
-        m_notificationLabel.setColor(NOTIFICATION_COLOR.r, NOTIFICATION_COLOR.g, NOTIFICATION_COLOR.b, m_notificationAlpha);
-        m_notificationAlpha = m_notificationAlpha >= 0 ? m_notificationAlpha - NOTIFICATION_FADE_SPEED : 0.0f;
+        //Draw the notification stage (may be invisible)
         m_notificationStage.draw();
 
         //Determine if game over and show game over if it is game over
