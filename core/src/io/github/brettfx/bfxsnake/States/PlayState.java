@@ -2,6 +2,7 @@ package io.github.brettfx.bfxsnake.States;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -97,7 +98,12 @@ public class PlayState extends State {
         Viewport scoreViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
         m_scoreStage = new Stage(scoreViewport);
 
-        Gdx.input.setInputProcessor(m_gameOverStage);
+        //Need to create an input multiplexer to prevent from overwriting other input processors
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(m_gameOverStage);
+        inputMultiplexer.addProcessor(m_controller.getStage());
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
         bitmapFont.getData().setScale(BFXSnake.FONT_SIZE, BFXSnake.FONT_SIZE);

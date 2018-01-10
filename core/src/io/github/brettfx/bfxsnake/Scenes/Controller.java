@@ -64,7 +64,7 @@ public class Controller {
 
         m_stage = new Stage(m_viewport, BFXSnake.m_batch);
 
-        Gdx.input.setInputProcessor(m_stage);
+        //Gdx.input.setInputProcessor(m_stage);
 
         m_usingController = usingController;
 
@@ -239,6 +239,10 @@ public class Controller {
         if(PlayState.DEBUG_MODE){
             m_stage.setDebugAll(true);
         }
+    }
+
+    public Stage getStage(){
+        return m_stage;
     }
 
     public boolean isUsingController(){
