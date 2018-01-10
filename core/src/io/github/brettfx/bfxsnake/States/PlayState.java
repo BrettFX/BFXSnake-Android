@@ -133,6 +133,7 @@ public class PlayState extends State {
 
         //Create a play again label
         m_playAgainLabel = new Label("PLAY AGAIN", font);
+        m_playAgainLabel.setVisible(false);
         m_playAgainLabel.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -152,6 +153,7 @@ public class PlayState extends State {
         gameOverTable.add(m_playAgainLabel).expandX().padTop(Gdx.graphics.getHeight() / 8);
 
         m_backLabel = new Label("BACK TO MENU", font);
+        m_backLabel.setVisible(false);
         m_backLabel.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -405,11 +407,13 @@ public class PlayState extends State {
             sb.begin();
 
             //Render button overlay for play again button
+            m_playAgainLabel.setVisible(true);
             Texture playAgainTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
                     BFXSnake.BUTTON_COLOR));
             sb.draw(playAgainTexture, x, m_playAgainLabel.getY());
 
             //Render button overlay for back button
+            m_backLabel.setVisible(true);
             Texture backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
                     BFXSnake.BUTTON_COLOR));
             sb.draw(backTexture, x, m_backLabel.getY());

@@ -38,7 +38,7 @@ public class Controller {
     private static final float ARROW_HEIGHT = 150f; //40
 
     private Viewport m_viewport;
-    private Stage m_stage;
+    private Stage m_touchStage;
 
     private Image m_leftImg;
     private Image m_rightImg;
@@ -61,9 +61,9 @@ public class Controller {
         OrthographicCamera cam = new OrthographicCamera();
         m_viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cam);
 
-        m_stage = new Stage(m_viewport, BFXSnake.m_batch);
+        m_touchStage = new Stage(m_viewport);
 
-        //Gdx.input.setInputProcessor(m_stage);
+        //Gdx.input.setInputProcessor(m_touchStage);
 
         m_usingController = usingController;
 
@@ -178,7 +178,7 @@ public class Controller {
         exitTable.top();
         exitTable.add(m_exitLabel).size(m_exitLabel.getWidth(), m_exitLabel.getHeight());
 
-        m_stage.addActor(exitTable);
+        m_touchStage.addActor(exitTable);
 
         //Create the pause button to be the same size of the arrow buttons
         m_pauseButton = new Image(new Texture(PAUSE_BUTTON));
@@ -210,7 +210,7 @@ public class Controller {
         pauseTable.top().right();
         pauseTable.add(m_pauseButton).size(m_pauseButton.getWidth(), m_pauseButton.getHeight());
 
-        m_stage.addActor(pauseTable);
+        m_touchStage.addActor(pauseTable);
 
         //Create a table that will hold the controller arrows (3x3 matrix) if the controller is enabled
         if(m_usingController){
@@ -236,17 +236,17 @@ public class Controller {
 
             controlsTable.pack();
 
-            //Add the table to the m_stage
-            m_stage.addActor(controlsTable);
+            //Add the table to the m_touchStage
+            m_touchStage.addActor(controlsTable);
         }
 
         if(PlayState.DEBUG_MODE){
-            m_stage.setDebugAll(true);
+            m_touchStage.setDebugAll(true);
         }
     }
 
     public Stage getStage(){
-        return m_stage;
+        return m_touchStage;
     }
 
     public boolean isUsingController(){
@@ -258,7 +258,7 @@ public class Controller {
     }
 
     public void draw(){
-        m_stage.draw();
+        m_touchStage.draw();
     }
 
     public boolean isDownPressed(){
@@ -299,6 +299,6 @@ public class Controller {
     }
 
     public void dispose(){
-        m_stage.dispose();
+        m_touchStage.dispose();
     }
 }

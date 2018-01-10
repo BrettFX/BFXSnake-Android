@@ -47,8 +47,8 @@ public class BFXSnake extends ApplicationAdapter {
 	@Override
 	public void create () {
 		Snake.DEBUG_MODE = false;
-		MenuState.DEBUG_MODE = true;
-		PlayState.DEBUG_MODE = false;
+		MenuState.DEBUG_MODE = false;
+		PlayState.DEBUG_MODE = true;
 		Pickup.DEBUG_MODE = false;
 
 		m_batch = new SpriteBatch();
