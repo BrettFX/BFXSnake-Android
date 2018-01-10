@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -95,20 +96,14 @@ public class MenuState extends State {
                 menuLabelStyle);
         m_highScoreLabel.addListener(new InputListener(){
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                int timeHeldDown = 0;
-                timeHeldDown++;
-
-                if(DEBUG_MODE){
-                    System.out.println(timeHeldDown);
-                }
-
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
             }
 
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                //Go to leaderboard state
+                m_gsm.set(new LearderboardState(m_gsm));
             }
         });
 
