@@ -27,6 +27,8 @@ import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
  */
 public class MenuState extends State {
 
+    public static boolean DEBUG_MODE = false;
+
     public static final String[] DIFFICULTIES = {"EASY", "MEDIUM", "HARD", "PRO", "IMPOSSIBLE"};
 
     private Stage m_menuStage;
@@ -91,6 +93,24 @@ public class MenuState extends State {
 
         m_highScoreLabel =  new Label("HIGH SCORE: " + String.format(Locale.getDefault(), "%02d", Score.getHighScore()),
                 menuLabelStyle);
+        m_highScoreLabel.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                int timeHeldDown = 0;
+                timeHeldDown++;
+
+                if(DEBUG_MODE){
+                    System.out.println(timeHeldDown);
+                }
+
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+
+            }
+        });
 
         m_difficultyLabel =  new Label("DIFFICULTY: " + DIFFICULTIES[m_gsm.getDifficulty()], menuLabelStyle);
 
