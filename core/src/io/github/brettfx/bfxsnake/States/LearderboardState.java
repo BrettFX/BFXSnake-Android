@@ -29,14 +29,12 @@ public class LearderboardState extends State {
     private GameStateManager m_gsm;
 
     private Label m_resetLabel;
-    private Texture m_resetTexture;
 
     private Label m_backLabel;
-    private Texture m_backTexture;
 
     private Stage m_stage;
 
-    protected LearderboardState(GameStateManager gsm) {
+    protected LearderboardState(final GameStateManager gsm) {
         super(gsm);
         m_gsm = gsm;
 
@@ -50,7 +48,7 @@ public class LearderboardState extends State {
 
         Label.LabelStyle leaderboardLabelStyle = new Label.LabelStyle(leaderboardFont, leaderboardFont.getColor());
 
-        m_resetLabel = new Label("RESET HIGHSCORE", leaderboardLabelStyle);
+        m_resetLabel = new Label("RESET", leaderboardLabelStyle);
         m_resetLabel.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -60,11 +58,11 @@ public class LearderboardState extends State {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
                 Score.resetHighScore();
-                m_resetLabel.setText("HIGHSCORE IS NOW " + Score.getHighScore());
+                m_gsm.set(new MenuState(m_gsm));
             }
         });
 
-        m_backLabel = new Label("BACK TO MENU", leaderboardLabelStyle);
+        m_backLabel = new Label("CANCEL", leaderboardLabelStyle);
         m_backLabel.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -77,7 +75,7 @@ public class LearderboardState extends State {
             }
         });
 
-        Label titleLabel = new Label("LEADERBOARD", leaderboardLabelStyle);
+        Label titleLabel = new Label("RESET HIGHSCORE?", leaderboardLabelStyle);
 
         GlyphLayout glyphLayout = new GlyphLayout();
         glyphLayout.setText(leaderboardFont,
@@ -106,12 +104,6 @@ public class LearderboardState extends State {
         leaderboardTable.add(m_backLabel);
 
         m_stage.addActor(leaderboardTable);
-
-        int width = (int)(m_resetLabel.getWidth() + (m_backLabel.getWidth() / 2));
-        int height = (int)m_resetLabel.getHeight();
-
-        m_resetTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, Color.RED));
-        m_backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
     }
 
     @Override
@@ -127,13 +119,21 @@ public class LearderboardState extends State {
     @Override
     public void render(SpriteBatch sb) {
         float x = m_resetLabel.getX() - (m_backLabel.getWidth() / 4);
+        int width = (int)(m_resetLabel.getWidth() + (m_backLabel.getWidth() / 2));
+        int height = (int)m_resetLabel.getHeight();
+
+        Texture resetTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, Color.RED));
+        Texture backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
 
         sb.begin();
 
-        sb.draw(m_resetTexture, x, m_resetLabel.getY());
-        sb.draw(m_backTexture, x, m_backLabel.getY());
+        sb.draw(resetTexture, x, m_resetLabel.getY());
+        sb.draw(backTexture, x, m_backLabel.getY());
 
         sb.end();
+
+        resetTexture.dispose();
+        backTexture.dispose();
 
         m_stage.draw();
     }
@@ -141,7 +141,5 @@ public class LearderboardState extends State {
     @Override
     public void dispose() {
         m_stage.dispose();
-        m_resetTexture.dispose();
-        m_backTexture.dispose();
     }
 }
