@@ -17,10 +17,13 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
+import io.github.brettfx.bfxsnake.Components.Score;
 import io.github.brettfx.bfxsnake.Scenes.Controller;
 import io.github.brettfx.bfxsnake.Sprites.Pickup;
 import io.github.brettfx.bfxsnake.Sprites.Snake;
 import io.github.brettfx.bfxsnake.Sprites.SnakePart;
+
+import static io.github.brettfx.bfxsnake.BFXSnake.NOTIFICATION_COLOR;
 
 /**
  * @author brett
@@ -38,6 +41,7 @@ public class PlayState extends State {
 
     private Stage m_gameOverStage;
     private Stage m_scoreStage;
+    private Stage m_notificationStage;
 
     private GameStateManager m_gsm;
 
@@ -45,6 +49,9 @@ public class PlayState extends State {
     private Label m_backLabel;
 
     private Label m_scoreLabel;
+
+    private Label m_notificationLabel;
+    private float m_notificationAlpha;
 
     private BitmapFont m_bitmapFont;
 
@@ -92,11 +99,10 @@ public class PlayState extends State {
 
         m_snake.setDifficultyVal(difficultyVal);
 
-        Viewport gameOverViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
-        m_gameOverStage = new Stage(gameOverViewport);
-
-        Viewport scoreViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
-        m_scoreStage = new Stage(scoreViewport);
+        Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
+        m_gameOverStage = new Stage(viewport);
+        m_scoreStage = new Stage(viewport);
+        m_notificationStage = new Stage(viewport);
 
         //Need to create an input multiplexer to prevent from overwriting other input processors
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
@@ -175,9 +181,24 @@ public class PlayState extends State {
 
         m_scoreStage.addActor(scoreTable);
 
+        Table notificationTable = new Table();
+        notificationTable.center();
+        notificationTable.setFillParent(true);
+
+        m_notificationLabel = new Label("NEW HIGH SCORE!", font);
+        m_notificationLabel.setColor(Color.GREEN);
+
+        notificationTable.add(m_notificationLabel);
+
+        m_notificationStage.addActor(notificationTable);
+
+        //Initially invisible
+        m_notificationAlpha = 0.0f;
+
         if(DEBUG_MODE){
             m_gameOverStage.setDebugAll(true);
             m_scoreStage.setDebugAll(true);
+            m_notificationStage.setDebugAll(true);
         }
     }
 
@@ -347,6 +368,18 @@ public class PlayState extends State {
         //Draw the score
         m_scoreStage.draw();
 
+        //Draw the notification table if required
+        //Show new high score notification
+        if(m_snake.getScore().getCurrentScore() == Score.getHighScore() + 1){
+            m_notificationLabel.setText("NEW HIGH SCORE!");
+            m_notificationAlpha = 1.0f;
+        }
+
+        //Displays a fade-out animation for the notification
+        m_notificationLabel.setColor(NOTIFICATION_COLOR.r, NOTIFICATION_COLOR.g, NOTIFICATION_COLOR.b, m_notificationAlpha);
+        m_notificationAlpha = m_notificationAlpha >= 0 ? m_notificationAlpha - 0.1f : 0.0f;
+        m_notificationStage.draw();
+
         //Determine if game over and show game over if it is game over
         if(m_gameOver){
             int width = (int)(m_backLabel.getWidth() + (m_playAgainLabel.getWidth() / 2));
@@ -381,5 +414,6 @@ public class PlayState extends State {
         m_bitmapFont.dispose();
         m_gameOverStage.dispose();
         m_scoreStage.dispose();
+        m_notificationStage.dispose();
     }
 }

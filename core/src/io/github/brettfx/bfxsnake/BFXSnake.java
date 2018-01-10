@@ -32,6 +32,7 @@ public class BFXSnake extends ApplicationAdapter {
 
 	public static final Color BUTTON_COLOR = Color.GRAY;
 	public static final Color SCORE_COLOR = Color.WHITE;
+	public static final Color NOTIFICATION_COLOR = Color.GREEN;
 
 	public static final Color COLORS[] = {
 		Color.GREEN, Color.RED, Color.CHARTREUSE, Color.CORAL, Color.CYAN,
