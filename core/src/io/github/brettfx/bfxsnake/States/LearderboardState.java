@@ -34,6 +34,8 @@ public class LearderboardState extends State {
 
     private Stage m_stage;
 
+    private BitmapFont m_leaderboardFont;
+
     protected LearderboardState(final GameStateManager gsm) {
         super(gsm);
         m_gsm = gsm;
@@ -43,10 +45,10 @@ public class LearderboardState extends State {
 
         Gdx.input.setInputProcessor(m_stage);
 
-        BitmapFont leaderboardFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
-        leaderboardFont.getData().setScale(FONT_SIZE, FONT_SIZE);
+        m_leaderboardFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
+        m_leaderboardFont.getData().setScale(FONT_SIZE, FONT_SIZE);
 
-        Label.LabelStyle leaderboardLabelStyle = new Label.LabelStyle(leaderboardFont, leaderboardFont.getColor());
+        Label.LabelStyle leaderboardLabelStyle = new Label.LabelStyle(m_leaderboardFont, m_leaderboardFont.getColor());
 
         m_resetLabel = new Label("RESET", leaderboardLabelStyle);
         m_resetLabel.addListener(new InputListener(){
@@ -78,7 +80,7 @@ public class LearderboardState extends State {
         Label titleLabel = new Label("RESET HIGHSCORE?", leaderboardLabelStyle);
 
         GlyphLayout glyphLayout = new GlyphLayout();
-        glyphLayout.setText(leaderboardFont,
+        glyphLayout.setText(m_leaderboardFont,
                 titleLabel.getText() + "\n" +
                         m_resetLabel.getText() + "\n" +
                         m_backLabel.getText());
@@ -140,6 +142,7 @@ public class LearderboardState extends State {
 
     @Override
     public void dispose() {
+        m_leaderboardFont.dispose();
         m_stage.dispose();
     }
 }

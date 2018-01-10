@@ -198,6 +198,11 @@ public class MenuState extends State {
 
         sb.end();
 
+        playLabelTexture.dispose();
+        settingsTexture.dispose();
+        highScoreTexture.dispose();
+        difficultyTexture.dispose();
+
         m_menuStage.draw();
     }
 

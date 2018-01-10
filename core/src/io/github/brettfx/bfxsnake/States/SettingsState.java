@@ -223,11 +223,18 @@ public class SettingsState extends State{
 
         sb.end();
 
+        snakeColorTexture.dispose();
+        pickupColorTexture.dispose();
+        controllerStateTexture.dispose();
+        restoreDefValTexture.dispose();
+        backLabelTexture.dispose();
+
         m_settingsStage.draw();
     }
 
     @Override
     public void dispose() {
+        m_settingsFont.dispose();
         m_settingsStage.dispose();
     }
 }

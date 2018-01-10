@@ -17,7 +17,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
-import io.github.brettfx.bfxsnake.Components.Score;
 import io.github.brettfx.bfxsnake.Scenes.Controller;
 import io.github.brettfx.bfxsnake.Sprites.Pickup;
 import io.github.brettfx.bfxsnake.Sprites.Snake;
@@ -45,8 +44,9 @@ public class PlayState extends State {
     private Label m_playAgainLabel;
     private Label m_backLabel;
 
-    //TODO display score while playing and update high score when needed
     private Label m_scoreLabel;
+
+    private BitmapFont m_bitmapFont;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -105,11 +105,11 @@ public class PlayState extends State {
 
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
-        bitmapFont.getData().setScale(BFXSnake.FONT_SIZE, BFXSnake.FONT_SIZE);
+        m_bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
+        m_bitmapFont.getData().setScale(BFXSnake.FONT_SIZE, BFXSnake.FONT_SIZE);
 
         //Setting up the font of the text to be displayed on the gameover screen
-        Label.LabelStyle font = new Label.LabelStyle(bitmapFont, bitmapFont.getColor());
+        Label.LabelStyle font = new Label.LabelStyle(m_bitmapFont, m_bitmapFont.getColor());
 
         Table gameOverTable = new Table();
 
@@ -367,6 +367,9 @@ public class PlayState extends State {
 
             sb.end();
 
+            playAgainTexture.dispose();
+            backTexture.dispose();
+
             m_gameOverStage.draw();
         }
     }
@@ -375,6 +378,7 @@ public class PlayState extends State {
     public void dispose() {
         m_snake.dispose();
         m_controller.dispose();
+        m_bitmapFont.dispose();
         m_gameOverStage.dispose();
         m_scoreStage.dispose();
     }
