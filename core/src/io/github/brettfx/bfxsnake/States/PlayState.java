@@ -248,6 +248,7 @@ public class PlayState extends State {
                     
                 }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
                     m_snake.pause();
+                    m_controller.setExitVisibility(true);
                 }
             }else{ //Handle case when controller is disabled
                 if(Gdx.input.justTouched()){
@@ -370,7 +371,8 @@ public class PlayState extends State {
 
         //Render controller's overlay
         if(m_controller.isUsingController()){
-            sr.setColor(Color.GRAY);
+            final Color baseColor = Color.DARK_GRAY;
+            sr.setColor(baseColor.r, baseColor.g, baseColor.b, BFXSnake.OPACITY);
             sr.rect(0, 0, m_controller.getWidth(), Gdx.graphics.getHeight());
         }
 

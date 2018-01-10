@@ -23,10 +23,10 @@ import io.github.brettfx.bfxsnake.States.PlayState;
  */
 
 public class Controller {
-    private static final String UP = "directional_pad/up_arrow_transparent.png";
-    private static final String DOWN = "directional_pad/down_arrow_transparent.png";
-    private static final String LEFT = "directional_pad/left_arrow_transparent.png";
-    private static final String RIGHT = "directional_pad/right_arrow_transparent.png";
+    private static final String UP = "directional_pad/up_arrow.png";
+    private static final String DOWN = "directional_pad/down_arrow.png";
+    private static final String LEFT = "directional_pad/left_arrow.png";
+    private static final String RIGHT = "directional_pad/right_arrow.png";
     private static final String PAUSE_BUTTON = "pause_button/pause_play_img_white.png";
 
     private static final float PADDING_TOP = 20f; //5
