@@ -31,6 +31,7 @@ import static io.github.brettfx.bfxsnake.BFXSnake.NOTIFICATION_COLOR;
  */
 public class PlayState extends State {
 
+    private static final float NOTIFICATION_FADE_SPEED = 0.01f;
     public static boolean DEBUG_MODE = false;
 
     private Snake m_snake;
@@ -49,6 +50,7 @@ public class PlayState extends State {
     private Label m_backLabel;
 
     private Label m_scoreLabel;
+    private boolean m_highScoreNotified;
 
     private Label m_notificationLabel;
     private float m_notificationAlpha;
@@ -170,6 +172,8 @@ public class PlayState extends State {
         m_gameOverStage.addActor(gameOverTable);
 
         m_gameOver = false;
+
+        m_highScoreNotified = false;
 
         Table scoreTable = new Table();
         scoreTable.bottom().right();
@@ -370,14 +374,15 @@ public class PlayState extends State {
 
         //Draw the notification table if required
         //Show new high score notification
-        if(m_snake.getScore().getCurrentScore() == Score.getHighScore() + 1){
+        if(m_snake.getScore().getCurrentScore() == Score.getHighScore() && !m_highScoreNotified){
             m_notificationLabel.setText("NEW HIGH SCORE!");
             m_notificationAlpha = 1.0f;
+            m_highScoreNotified = true;
         }
 
         //Displays a fade-out animation for the notification
         m_notificationLabel.setColor(NOTIFICATION_COLOR.r, NOTIFICATION_COLOR.g, NOTIFICATION_COLOR.b, m_notificationAlpha);
-        m_notificationAlpha = m_notificationAlpha >= 0 ? m_notificationAlpha - 0.1f : 0.0f;
+        m_notificationAlpha = m_notificationAlpha >= 0 ? m_notificationAlpha - NOTIFICATION_FADE_SPEED : 0.0f;
         m_notificationStage.draw();
 
         //Determine if game over and show game over if it is game over
