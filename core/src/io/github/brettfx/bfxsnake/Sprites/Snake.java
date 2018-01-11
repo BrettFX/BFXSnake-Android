@@ -12,7 +12,7 @@ import io.github.brettfx.bfxsnake.Scenes.Controller;
  * @author brett
  * @since 12/25/2017
  */
-
+//TODO Only allow the user to input one direction change command per snake move to prevent unnecessary game over
 public class Snake {
     public static boolean DEBUG_MODE = false;
 
