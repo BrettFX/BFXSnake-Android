@@ -56,10 +56,10 @@ public class Pickup {
      * @param part the head of the snake
      * */
     private void spawn(SnakePart part){
-        Snake.Directions directions[] = Snake.Directions.values();
+
 
         //Don't include NONE as a possible direction
-        Snake.Directions randDirection = directions[(int)(Math.random() * (directions.length - 1))];
+        Snake.Directions randDirection = Snake.getRandomDirection();
 
         Snake.Directions prevDirection = Snake.Directions.NONE;
 
@@ -76,7 +76,7 @@ public class Pickup {
                     outOfBounds = y >= m_snake.getMaxHeight();
 
                     if(outOfBounds || isOpposite(prevDirection, randDirection)){
-                        randDirection = directions[(int)(Math.random() * directions.length - 1)];
+                        randDirection = Snake.getRandomDirection();
                         i = i <= 0 ? -1 : i - 1;
                         continue;
                     }
@@ -88,7 +88,7 @@ public class Pickup {
                     outOfBounds = y <= m_snake.getMinHeight();
 
                     if(outOfBounds || isOpposite(prevDirection, randDirection)){
-                        randDirection = directions[(int)(Math.random() * directions.length - 1)];
+                        randDirection = Snake.getRandomDirection();
                         i = i <= 0 ? -1 : i - 1;
                         continue;
                     }
@@ -100,7 +100,7 @@ public class Pickup {
                     outOfBounds = x <= m_snake.getMinWidth();
 
                     if(outOfBounds || isOpposite(prevDirection, randDirection)){
-                        randDirection = directions[(int)(Math.random() * directions.length - 1)];
+                        randDirection = Snake.getRandomDirection();
                         i = i <= 0 ? -1 : i - 1;
                         continue;
                     }
@@ -112,7 +112,7 @@ public class Pickup {
                     outOfBounds = x >= m_snake.getMaxWidth();
 
                     if(outOfBounds || isOpposite(prevDirection, randDirection)){
-                        randDirection = directions[(int)(Math.random() * directions.length - 1)];
+                        randDirection = Snake.getRandomDirection();
                         i = i <= 0 ? -1 : i - 1;
                         continue;
                     }
@@ -132,7 +132,7 @@ public class Pickup {
                 m_bounds.setY(y);
 
                 prevDirection = randDirection;
-                randDirection = directions[(int)(Math.random() * directions.length - 1)];
+                randDirection = Snake.getRandomDirection();
             }else{
                 i = i <= 0 ? -1 : i - 1;
             }

@@ -37,7 +37,7 @@ public class Snake {
     }
 
     //Keep track of the snake's current direction
-    private Directions m_currentDirection = Directions.RIGHT;
+    private Directions m_currentDirection = Directions.NONE;
 
     private Pickup m_pickup;
 
@@ -55,6 +55,10 @@ public class Snake {
         //Create the initial snake
         m_snakeParts = new Array<SnakePart>();
         m_snakeParts.add(new SnakePart());
+
+        //Make the snake start going in a random direction
+        m_currentDirection = getRandomDirection();
+
         m_snakeParts.get(0).setDirection(m_currentDirection);
 
         m_difficultyVal = 0;
@@ -329,6 +333,13 @@ public class Snake {
 
     public float getMinWidth() {
         return m_minWidth;
+    }
+
+    public static Directions getRandomDirection(){
+        Snake.Directions directions[] = Snake.Directions.values();
+
+        //Don't include NONE as a possible direction
+        return directions[(int)(Math.random() * (directions.length - 1))];
     }
 
     /**
