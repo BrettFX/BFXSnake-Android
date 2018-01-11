@@ -184,9 +184,9 @@ public class SettingsState extends State{
         int height = (int)m_restoreDefaults.getHeight();
 
         m_snakeColorTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                m_gsm.getSnakeColor()));
+               BUTTON_COLOR));
         m_pickupColorTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                m_gsm.getPickupColor()));
+                BUTTON_COLOR));
         m_controllerStateTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
                 BUTTON_COLOR));
         m_restoreDefValTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
@@ -203,6 +203,8 @@ public class SettingsState extends State{
     @Override
     public void update(float dt) {
         m_controllerState.setText("CONTROLLER: " + m_gsm.getControllerState());
+        m_snakeColorLabel.setColor(m_gsm.getSnakeColor());
+        m_pickupColorLabel.setColor(m_gsm.getPickupColor());
     }
 
     @Override
