@@ -195,8 +195,8 @@ public class PlayState extends State {
         notificationTable.center();
         notificationTable.setFillParent(true);
 
-        m_notificationLabel = new Label("NEW HIGH SCORE!", font);
-        m_notificationLabel.setColor(Color.GREEN);
+        m_notificationLabel = new Label("", font);
+        m_notificationLabel.setColor(NOTIFICATION_COLOR);
 
         notificationTable.add(m_notificationLabel);
 

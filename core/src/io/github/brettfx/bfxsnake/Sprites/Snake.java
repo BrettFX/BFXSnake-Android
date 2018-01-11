@@ -12,7 +12,6 @@ import io.github.brettfx.bfxsnake.Scenes.Controller;
  * @author brett
  * @since 12/25/2017
  */
-//TODO Only allow the user to input one direction change command per snake move to prevent unnecessary game over
 public class Snake {
     public static boolean DEBUG_MODE = false;
 
@@ -116,12 +115,23 @@ public class Snake {
         return m_shapeRenderer;
     }
 
+    /**
+     * Need a parameterless version of setting the direction so that the user
+     * cannot change the direction more than once before the snake has actually moved
+     * in the direction that it was supposed to be moved in.
+     *
+     * Sets the direction of the entire snake to the direction of the the head.
+     * */
+    private void setDirection(){
+        m_currentDirection = m_snakeParts.get(0).getDirection();
+    }
+
     public void setDirection(Directions direction){
         if(!isOpposite(direction)){
-            m_currentDirection = direction;
+            //m_currentDirection = direction;
 
             //Starts the cascading process
-            m_snakeParts.get(0).setDirection(m_currentDirection);
+            m_snakeParts.get(0).setDirection(direction);
         }
     }
 
@@ -332,6 +342,9 @@ public class Snake {
         //Update snake based on delay value
         if(m_delay > (INIT_MOVEMENT_SPEED - m_difficultyVal)){
             move();
+
+            //Set the direction now that the snake has actually been moved
+            setDirection();
 
             //Cascade new direction (if any)
             //Only required when there is more than one snake part
