@@ -205,6 +205,15 @@ public class PlayState extends State {
         //Initially invisible
         m_notificationAlpha = 0.0f;
 
+        //For button texture overlays
+        int width = (int)(m_backLabel.getWidth() + (m_playAgainLabel.getWidth() / 2));
+        int height = (int)m_backLabel.getHeight();
+
+        m_playAgainTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                BFXSnake.BUTTON_COLOR));
+        m_backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                BFXSnake.BUTTON_COLOR));
+
         if(DEBUG_MODE){
             m_gameOverStage.setDebugAll(true);
             m_scoreStage.setDebugAll(true);
@@ -357,15 +366,6 @@ public class PlayState extends State {
 
         m_gameOver = m_snake.isColliding();
         m_scoreLabel.setText(String.valueOf(m_snake.getScore().getCurrentScore()));
-
-        //For button texture overlays
-        int width = (int)(m_backLabel.getWidth() + (m_playAgainLabel.getWidth() / 2));
-        int height = (int)m_backLabel.getHeight();
-
-        m_playAgainTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                BFXSnake.BUTTON_COLOR));
-        m_backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                BFXSnake.BUTTON_COLOR));
     }
 
     @Override
