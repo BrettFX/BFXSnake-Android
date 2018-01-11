@@ -28,7 +28,7 @@ public class BFXSnake extends ApplicationAdapter {
 	public static final float FONT_SIZE = 5.0f; //1.4f
 	public static final float OPACITY = 0.75f;
 
-	public static SpriteBatch m_batch;
+	private SpriteBatch m_batch;
 	private GameStateManager m_gameStateManager;
 
 	public static final Color BUTTON_COLOR = Color.GRAY;

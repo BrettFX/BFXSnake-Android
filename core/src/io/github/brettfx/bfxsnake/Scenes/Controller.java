@@ -44,7 +44,6 @@ public class Controller {
     private Image m_rightImg;
     private Image m_downImg;
     private Image m_upImg;
-    private Image m_pauseButton;
 
     private Label m_exitLabel;
 
@@ -181,15 +180,15 @@ public class Controller {
         m_touchStage.addActor(exitTable);
 
         //Create the pause button to be the same size of the arrow buttons
-        m_pauseButton = new Image(new Texture(PAUSE_BUTTON));
-        m_pauseButton.setColor(m_pauseButton.getColor().r,
-                m_pauseButton.getColor().g,
-                m_pauseButton.getColor().b,
+        Image pauseButton = new Image(new Texture(PAUSE_BUTTON));
+        pauseButton.setColor(pauseButton.getColor().r,
+                pauseButton.getColor().g,
+                pauseButton.getColor().b,
                 BFXSnake.OPACITY);
 
-        m_pauseButton.setSize(ARROW_WIDTH, ARROW_HEIGHT);
+        pauseButton.setSize(ARROW_WIDTH, ARROW_HEIGHT);
 
-        m_pauseButton.addListener(new InputListener(){
+        pauseButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -208,7 +207,7 @@ public class Controller {
         Table pauseTable = new Table();
         pauseTable.setFillParent(true);
         pauseTable.top().right();
-        pauseTable.add(m_pauseButton).size(m_pauseButton.getWidth(), m_pauseButton.getHeight());
+        pauseTable.add(pauseButton).size(pauseButton.getWidth(), pauseButton.getHeight());
 
         m_touchStage.addActor(pauseTable);
 

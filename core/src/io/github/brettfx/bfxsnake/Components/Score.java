@@ -37,8 +37,6 @@ public class Score{
         scoreFont = new BitmapFont(Gdx.files.internal(BFXSnake.SCORE_FONT));
         scoreFont.setColor(color);
         scoreFont.getData().setScale(FONT_SIZE, FONT_SIZE);
-
-        System.out.println("High Score: " + preferences.getInteger("HighScore", 0));
     }
 
     private void setHighScore(){

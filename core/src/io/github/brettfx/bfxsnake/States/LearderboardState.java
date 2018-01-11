@@ -26,8 +26,6 @@ import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
  */
 public class LearderboardState extends State {
 
-    private GameStateManager m_gsm;
-
     private Label m_resetLabel;
 
     private Label m_backLabel;
@@ -38,7 +36,6 @@ public class LearderboardState extends State {
 
     protected LearderboardState(final GameStateManager gsm) {
         super(gsm);
-        m_gsm = gsm;
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
         m_stage = new Stage(viewport);
@@ -95,7 +92,7 @@ public class LearderboardState extends State {
         m_stage.addActor(titleTable);
 
         Table leaderboardTable = new Table();
-        leaderboardTable.top().padTop(Gdx.graphics.getHeight() / 4);;
+        leaderboardTable.top().padTop(Gdx.graphics.getHeight() / 4);
         leaderboardTable.setFillParent(true);
 
         float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;

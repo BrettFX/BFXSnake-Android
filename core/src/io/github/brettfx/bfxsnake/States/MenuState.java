@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -35,26 +34,19 @@ public class MenuState extends State {
     private Stage m_menuStage;
     private BitmapFont m_menuFont;
     private BitmapFont m_titleFont;
-    private GameStateManager m_gsm;
 
     private Label m_playLabel;
     private Label m_settingsLabel;
     private Label m_highScoreLabel;
     private Label m_difficultyLabel;
 
-    private Score m_menuScore;
-
     public MenuState(GameStateManager gsm) {
         super(gsm);
-
-        m_gsm = gsm;
 
         m_gsm.saveSnakeColor();
         m_gsm.savePickupColor();
         m_gsm.saveControllerState();
         m_gsm.flush();
-
-        m_menuScore = new Score(BFXSnake.SCORE_COLOR);
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
         m_menuStage = new Stage(viewport);
@@ -97,7 +89,7 @@ public class MenuState extends State {
         });
 
         m_highScoreLabel =  new Label("HIGH SCORE: " + String.format(Locale.getDefault(), "%02d",
-                m_menuScore.getHighScore()), menuLabelStyle);
+                Score.getHighScore()), menuLabelStyle);
         m_highScoreLabel.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {

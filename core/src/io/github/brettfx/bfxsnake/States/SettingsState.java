@@ -43,12 +43,8 @@ public class SettingsState extends State{
 
     private BitmapFont m_settingsFont;
 
-    private GameStateManager m_gsm;
-
     protected SettingsState(GameStateManager gsm) {
         super(gsm);
-
-        m_gsm = gsm;
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
         m_settingsStage = new Stage(viewport);

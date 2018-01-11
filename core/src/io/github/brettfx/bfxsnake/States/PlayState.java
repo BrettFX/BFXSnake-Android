@@ -45,8 +45,6 @@ public class PlayState extends State {
     private Stage m_scoreStage;
     private Stage m_notificationStage;
 
-    private GameStateManager m_gsm;
-
     private Label m_playAgainLabel;
     private Label m_backLabel;
 
@@ -60,8 +58,6 @@ public class PlayState extends State {
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
-
-        m_gsm = gsm;
 
         m_gsm.saveDifficulty();
         m_gsm.flush();

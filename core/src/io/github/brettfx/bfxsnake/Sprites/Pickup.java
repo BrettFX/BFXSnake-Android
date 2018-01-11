@@ -1,6 +1,5 @@
 package io.github.brettfx.bfxsnake.Sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 

@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Stack;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
-import io.github.brettfx.bfxsnake.Components.Score;
 
 /**
  * @author Brett Allen
