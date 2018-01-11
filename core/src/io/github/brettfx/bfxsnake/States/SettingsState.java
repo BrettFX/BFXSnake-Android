@@ -43,6 +43,12 @@ public class SettingsState extends State{
 
     private BitmapFont m_settingsFont;
 
+    private Texture m_snakeColorTexture;
+    private Texture m_pickupColorTexture;
+    private Texture m_controllerStateTexture;
+    private Texture m_restoreDefValTexture;
+    private Texture m_backLabelTexture;
+
     protected SettingsState(GameStateManager gsm) {
         super(gsm);
 
@@ -172,6 +178,21 @@ public class SettingsState extends State{
         selectionTable.row().padTop(padding);
 
         m_settingsStage.addActor(selectionTable);
+
+        //For button texture overlays
+        int width = (int)(m_restoreDefaults.getWidth() + (m_backLabel.getWidth() / 2));
+        int height = (int)m_restoreDefaults.getHeight();
+
+        m_snakeColorTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                m_gsm.getSnakeColor()));
+        m_pickupColorTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                m_gsm.getPickupColor()));
+        m_controllerStateTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                BUTTON_COLOR));
+        m_restoreDefValTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                BUTTON_COLOR));
+        m_backLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                BUTTON_COLOR));
     }
 
     @Override
@@ -186,44 +207,17 @@ public class SettingsState extends State{
 
     @Override
     public void render(SpriteBatch sb) {
-        int width = (int)(m_restoreDefaults.getWidth() + (m_backLabel.getWidth() / 2));
-        int height = (int)m_restoreDefaults.getHeight();
         float x = m_restoreDefaults.getX() - (m_backLabel.getWidth() / 4);
 
         sb.begin();
 
-        //Render snake color button
-        Texture snakeColorTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                m_gsm.getSnakeColor()));
-        sb.draw(snakeColorTexture, x, m_snakeColorLabel.getY());
-
-        //Render pickup color button
-        Texture pickupColorTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                m_gsm.getPickupColor()));
-        sb.draw(pickupColorTexture, x, m_pickupColorLabel.getY());
-
-        //Render controller state button
-        Texture controllerStateTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                BUTTON_COLOR));
-        sb.draw(controllerStateTexture, x, m_controllerState.getY());
-
-        //Render restore default values button
-        Texture restoreDefValTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                BUTTON_COLOR));
-        sb.draw(restoreDefValTexture, x, m_restoreDefaults.getY());
-
-        //Render back button
-        Texture backLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                BUTTON_COLOR));
-        sb.draw(backLabelTexture, x, m_backLabel.getY());
+        sb.draw(m_snakeColorTexture, x, m_snakeColorLabel.getY()); //Render snake color button
+        sb.draw(m_pickupColorTexture, x, m_pickupColorLabel.getY()); //Render pickup color button
+        sb.draw(m_controllerStateTexture, x, m_controllerState.getY()); //Render controller state button
+        sb.draw(m_restoreDefValTexture, x, m_restoreDefaults.getY()); //Render restore default values button
+        sb.draw(m_backLabelTexture, x, m_backLabel.getY()); //Render back button
 
         sb.end();
-
-        snakeColorTexture.dispose();
-        pickupColorTexture.dispose();
-        controllerStateTexture.dispose();
-        restoreDefValTexture.dispose();
-        backLabelTexture.dispose();
 
         m_settingsStage.draw();
     }
@@ -232,5 +226,10 @@ public class SettingsState extends State{
     public void dispose() {
         m_settingsFont.dispose();
         m_settingsStage.dispose();
+        m_snakeColorTexture.dispose();
+        m_pickupColorTexture.dispose();
+        m_controllerStateTexture.dispose();
+        m_restoreDefValTexture.dispose();
+        m_backLabelTexture.dispose();
     }
 }

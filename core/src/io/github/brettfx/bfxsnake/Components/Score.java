@@ -22,7 +22,7 @@ public class Score{
     //Store the high score for future use
     private static Preferences preferences = Gdx.app.getPreferences(BFXSnake.PREFS_NAME);
 
-    private static int highScore = preferences.getInteger("HighScore", 0);
+    private static int highScore;
 
     private BitmapFont scoreFont;
 
@@ -44,7 +44,6 @@ public class Score{
             highScore = currentScore;
 
             preferences.putInteger("HighScore", highScore);
-            preferences.flush();
         }
     }
 
@@ -63,7 +62,11 @@ public class Score{
     }
 
     public static int getHighScore(){
-        return highScore;
+        return preferences.getInteger("HighScore", 0);
+    }
+
+    public static void flush(){
+        preferences.flush();
     }
 
     public BitmapFont getScoreFont(){

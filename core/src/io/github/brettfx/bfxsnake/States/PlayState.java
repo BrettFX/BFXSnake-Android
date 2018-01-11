@@ -56,6 +56,9 @@ public class PlayState extends State {
 
     private BitmapFont m_bitmapFont;
 
+    private Texture m_playAgainTexture;
+    private Texture m_backTexture;
+
     public PlayState(GameStateManager gsm) {
         super(gsm);
 
@@ -354,6 +357,15 @@ public class PlayState extends State {
 
         m_gameOver = m_snake.isColliding();
         m_scoreLabel.setText(String.valueOf(m_snake.getScore().getCurrentScore()));
+
+        //For button texture overlays
+        int width = (int)(m_backLabel.getWidth() + (m_playAgainLabel.getWidth() / 2));
+        int height = (int)m_backLabel.getHeight();
+
+        m_playAgainTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                BFXSnake.BUTTON_COLOR));
+        m_backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
+                BFXSnake.BUTTON_COLOR));
     }
 
     @Override
@@ -398,28 +410,19 @@ public class PlayState extends State {
 
         //Determine if game over and show game over if it is game over
         if(m_gameOver){
-            int width = (int)(m_backLabel.getWidth() + (m_playAgainLabel.getWidth() / 2));
-            int height = (int)m_backLabel.getHeight();
             float x = m_backLabel.getX() - (m_playAgainLabel.getWidth() / 4);
 
             sb.begin();
 
             //Render button overlay for play again button
             m_playAgainLabel.setVisible(true);
-            Texture playAgainTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                    BFXSnake.BUTTON_COLOR));
-            sb.draw(playAgainTexture, x, m_playAgainLabel.getY());
+            sb.draw(m_playAgainTexture, x, m_playAgainLabel.getY());
 
             //Render button overlay for back button
             m_backLabel.setVisible(true);
-            Texture backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                    BFXSnake.BUTTON_COLOR));
-            sb.draw(backTexture, x, m_backLabel.getY());
+            sb.draw(m_backTexture, x, m_backLabel.getY());
 
             sb.end();
-
-            playAgainTexture.dispose();
-            backTexture.dispose();
 
             m_gameOverStage.draw();
         }
@@ -433,5 +436,7 @@ public class PlayState extends State {
         m_gameOverStage.dispose();
         m_scoreStage.dispose();
         m_notificationStage.dispose();
+        m_playAgainTexture.dispose();
+        m_backTexture.dispose();
     }
 }

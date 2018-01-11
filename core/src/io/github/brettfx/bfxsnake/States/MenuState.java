@@ -40,6 +40,13 @@ public class MenuState extends State {
     private Label m_highScoreLabel;
     private Label m_difficultyLabel;
 
+    private Texture m_playLabelTexture;
+    private Texture m_settingsTexture;
+    private Texture m_highScoreTexture;
+    private Texture m_difficultyTexture;
+
+    private float m_x;
+
     public MenuState(GameStateManager gsm) {
         super(gsm);
 
@@ -47,6 +54,7 @@ public class MenuState extends State {
         m_gsm.savePickupColor();
         m_gsm.saveControllerState();
         m_gsm.flush();
+        Score.flush();
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
         m_menuStage = new Stage(viewport);
@@ -160,6 +168,17 @@ public class MenuState extends State {
         selectionTable.add(m_difficultyLabel);
 
         m_menuStage.addActor(selectionTable);
+
+        //For the button texture overlays
+        Label temp = new Label("HIGHSCORE: IMPOSSIBLE", new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
+        int width = (int)(temp.getWidth() + (m_playLabel.getWidth() / 2));
+        int height = (int)temp.getHeight();
+        m_x = temp.getX() + (m_playLabel.getWidth() / 8);
+
+        m_playLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
+        m_settingsTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
+        m_highScoreTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
+        m_difficultyTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
     }
 
     @Override
@@ -174,30 +193,14 @@ public class MenuState extends State {
 
     @Override
     public void render(SpriteBatch sb) {
-        int width = (int)(m_difficultyLabel.getWidth() + (m_playLabel.getWidth() / 2));
-        int height = (int)m_difficultyLabel.getHeight();
-        float x = m_difficultyLabel.getX() - (m_playLabel.getWidth() / 4);
-
         sb.begin();
 
-        Texture playLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
-        sb.draw(playLabelTexture, x, m_playLabel.getY());
-
-        Texture settingsTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
-        sb.draw(settingsTexture, x, m_settingsLabel.getY());
-
-        Texture highScoreTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
-        sb.draw(highScoreTexture, x, m_highScoreLabel.getY());
-
-        Texture difficultyTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
-        sb.draw(difficultyTexture, x, m_difficultyLabel.getY());
+        sb.draw(m_playLabelTexture, m_x, m_playLabel.getY());
+        sb.draw(m_settingsTexture, m_x, m_settingsLabel.getY());
+        sb.draw(m_highScoreTexture, m_x, m_highScoreLabel.getY());
+        sb.draw(m_difficultyTexture, m_x, m_difficultyLabel.getY());
 
         sb.end();
-
-        playLabelTexture.dispose();
-        settingsTexture.dispose();
-        highScoreTexture.dispose();
-        difficultyTexture.dispose();
 
         m_menuStage.draw();
     }
@@ -207,5 +210,9 @@ public class MenuState extends State {
         m_menuStage.dispose();
         m_menuFont.dispose();
         m_titleFont.dispose();
+        m_playLabelTexture.dispose();
+        m_settingsTexture.dispose();
+        m_highScoreTexture.dispose();
+        m_difficultyTexture.dispose();
     }
 }

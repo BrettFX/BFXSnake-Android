@@ -34,6 +34,9 @@ public class LearderboardState extends State {
 
     private BitmapFont m_leaderboardFont;
 
+    private Texture m_resetTexture;
+    private Texture m_backTexture;
+
     protected LearderboardState(final GameStateManager gsm) {
         super(gsm);
 
@@ -103,6 +106,13 @@ public class LearderboardState extends State {
         leaderboardTable.add(m_backLabel);
 
         m_stage.addActor(leaderboardTable);
+
+        //For button texture overlays
+        int width = (int)(m_resetLabel.getWidth() + (m_backLabel.getWidth() / 2));
+        int height = (int)m_resetLabel.getHeight();
+
+        m_resetTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, Color.RED));
+        m_backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
     }
 
     @Override
@@ -118,21 +128,13 @@ public class LearderboardState extends State {
     @Override
     public void render(SpriteBatch sb) {
         float x = m_resetLabel.getX() - (m_backLabel.getWidth() / 4);
-        int width = (int)(m_resetLabel.getWidth() + (m_backLabel.getWidth() / 2));
-        int height = (int)m_resetLabel.getHeight();
-
-        Texture resetTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, Color.RED));
-        Texture backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
 
         sb.begin();
 
-        sb.draw(resetTexture, x, m_resetLabel.getY());
-        sb.draw(backTexture, x, m_backLabel.getY());
+        sb.draw(m_resetTexture, x, m_resetLabel.getY());
+        sb.draw(m_backTexture, x, m_backLabel.getY());
 
         sb.end();
-
-        resetTexture.dispose();
-        backTexture.dispose();
 
         m_stage.draw();
     }
@@ -141,5 +143,7 @@ public class LearderboardState extends State {
     public void dispose() {
         m_leaderboardFont.dispose();
         m_stage.dispose();
+        m_resetTexture.dispose();
+        m_backTexture.dispose();
     }
 }
