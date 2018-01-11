@@ -28,6 +28,8 @@ public class Score{
 
     private int currentScore;
 
+    private boolean m_newHighScore;
+
     public Score(Color color){
         currentScore = 0;
 
@@ -37,14 +39,21 @@ public class Score{
         scoreFont = new BitmapFont(Gdx.files.internal(BFXSnake.SCORE_FONT));
         scoreFont.setColor(color);
         scoreFont.getData().setScale(FONT_SIZE, FONT_SIZE);
+
+        m_newHighScore = false;
     }
 
     private void setHighScore(){
         if(currentScore > highScore) {
+            m_newHighScore = true;
             highScore = currentScore;
 
             preferences.putInteger("HighScore", highScore);
         }
+    }
+
+    public boolean isNewHighScore(){
+        return m_newHighScore;
     }
 
     public static void resetHighScore(){

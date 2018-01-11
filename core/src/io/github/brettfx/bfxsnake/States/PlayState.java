@@ -348,13 +348,11 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
 
-        int prevHighscore = Score.getHighScore();
-
         m_snake.update(dt);
 
         //Draw the notification table if required
         //Show new high score notification if the high score has changed and the notification has not be shown yet
-        if(prevHighscore != Score.getHighScore() && !m_highScoreNotified){
+        if(m_snake.getScore().isNewHighScore() && !m_highScoreNotified){
             m_notificationLabel.setText("NEW HIGH SCORE!");
             m_notificationAlpha = 1.0f;
             m_highScoreNotified = true;
