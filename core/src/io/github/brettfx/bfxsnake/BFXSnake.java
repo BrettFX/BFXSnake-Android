@@ -37,7 +37,7 @@ public class BFXSnake extends ApplicationAdapter {
 
 	public static final Color COLORS[] = {
 		Color.GREEN, Color.RED, Color.CHARTREUSE, Color.CORAL, Color.CYAN,
-		Color.FIREBRICK, Color.FOREST, Color.GOLD, Color.GOLDENROD, Color.GRAY,
+		Color.FIREBRICK, Color.FOREST, Color.GOLD, Color.GOLDENROD, Color.DARK_GRAY,
 		Color.BLUE, Color.LIME, Color.MAGENTA, Color.MAROON, Color.NAVY,
 		Color.OLIVE, Color.ORANGE, Color.PINK, Color.PURPLE, Color.BROWN,
 		Color.ROYAL, Color.SALMON, Color.SCARLET, Color.SKY, Color.SLATE,
