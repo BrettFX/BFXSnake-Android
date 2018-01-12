@@ -173,7 +173,7 @@ public class MenuState extends State {
         Label temp = new Label("HIGHSCORE: IMPOSSIBLE", new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
         int width = (int)(temp.getWidth() + (m_playLabel.getWidth() / 2));
         int height = (int)temp.getHeight();
-        m_x = temp.getX() + (m_playLabel.getWidth() / 8);
+        m_x = Gdx.graphics.getWidth() / 6;
 
         m_playLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
         m_settingsTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
