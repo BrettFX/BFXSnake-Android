@@ -181,7 +181,8 @@ public class PlayState extends State {
         scoreTable.top().left();
         scoreTable.setFillParent(true);
 
-        m_scoreLabel = new Label(String.valueOf(m_snake.getScore().getCurrentScore()), font);
+        Label.LabelStyle scoreStyle = new Label.LabelStyle(m_snake.getScore().getScoreFont(), m_snake.getScore().getScoreFont().getColor());
+        m_scoreLabel = new Label(String.valueOf(m_snake.getScore().getCurrentScore()), scoreStyle);
         m_scoreLabel.setColor(m_scoreLabel.getColor().r,
                 m_scoreLabel.getColor().g,
                 m_scoreLabel.getColor().b,

@@ -22,7 +22,7 @@ public class BFXSnake extends ApplicationAdapter {
 
 	public static final int SCALE_FACTOR = 45;
 
-	public static final String SCORE_FONT = "fonts/score.fnt";
+	public static final String SCORE_FONT = "fonts/menu.fnt";
 	public static final String MENU_FONT = "fonts/menu.fnt";
 
 	public static final float FONT_SIZE = 5.0f; //1.4f
