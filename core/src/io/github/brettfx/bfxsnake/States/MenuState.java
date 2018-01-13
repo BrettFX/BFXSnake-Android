@@ -3,8 +3,8 @@ package io.github.brettfx.bfxsnake.States;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -33,7 +33,6 @@ public class MenuState extends State {
 
     private Stage m_menuStage;
     private BitmapFont m_menuFont;
-    private BitmapFont m_titleFont;
 
     private Label m_playLabel;
     private Label m_settingsLabel;
@@ -63,9 +62,6 @@ public class MenuState extends State {
 
         m_menuFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
         m_menuFont.getData().setScale(FONT_SIZE, FONT_SIZE);
-
-        m_titleFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
-        m_titleFont.getData().setScale(FONT_SIZE, FONT_SIZE);
 
         Label.LabelStyle menuLabelStyle = new Label.LabelStyle(m_menuFont, m_menuFont.getColor());
 
@@ -112,7 +108,6 @@ public class MenuState extends State {
         });
 
         m_difficultyLabel =  new Label("DIFFICULTY: " + DIFFICULTIES[m_gsm.getDifficulty()], menuLabelStyle);
-
         m_difficultyLabel.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -130,16 +125,7 @@ public class MenuState extends State {
             }
         });
 
-        Label titleLabel = new Label(BFXSnake.TITLE, new Label.LabelStyle(m_titleFont, m_titleFont.getColor()));
-
-        GlyphLayout glyphLayout = new GlyphLayout();
-        glyphLayout.setText(m_menuFont,
-                titleLabel.getText() + "\n" +
-                        m_playLabel.getText() + "\n" +
-                        m_settingsLabel.getText() + "\n" +
-                        m_highScoreLabel.getText() + "\n" +
-                        m_difficultyLabel.getText());
-
+        Label titleLabel = new Label(BFXSnake.TITLE, new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
         Table titleTable = new Table();
 
         titleTable.top();
@@ -156,16 +142,16 @@ public class MenuState extends State {
 
         float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
 
-        selectionTable.add(m_playLabel);
+        selectionTable.add(m_playLabel).expandX();
         selectionTable.row().padTop(padding);
 
-        selectionTable.add(m_settingsLabel);
+        selectionTable.add(m_settingsLabel).expandX();
         selectionTable.row().padTop(padding);
 
-        selectionTable.add(m_highScoreLabel);
+        selectionTable.add(m_highScoreLabel).expandX();
         selectionTable.row().padTop(padding);
 
-        selectionTable.add(m_difficultyLabel);
+        selectionTable.add(m_difficultyLabel).expandX();
 
         m_menuStage.addActor(selectionTable);
 
@@ -179,11 +165,20 @@ public class MenuState extends State {
         m_settingsTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
         m_highScoreTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
         m_difficultyTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
+
+        if(DEBUG_MODE){
+            m_menuStage.setDebugAll(true);
+        }
     }
 
     @Override
     public void handleInput() {
-
+//        if(Gdx.input.justTouched()){
+//            float touchX = Gdx.input.getX();
+//            float touchY = Gdx.input.getY();
+//
+//            Rectangle touchLocation = new Rectangle()
+//        }
     }
 
     @Override
@@ -193,6 +188,8 @@ public class MenuState extends State {
 
     @Override
     public void render(SpriteBatch sb) {
+        //handleInput();
+
         sb.begin();
 
         sb.draw(m_playLabelTexture, m_x, m_playLabel.getY());
@@ -209,7 +206,6 @@ public class MenuState extends State {
     public void dispose() {
         m_menuStage.dispose();
         m_menuFont.dispose();
-        m_titleFont.dispose();
         m_playLabelTexture.dispose();
         m_settingsTexture.dispose();
         m_highScoreTexture.dispose();
