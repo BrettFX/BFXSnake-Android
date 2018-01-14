@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -29,7 +28,7 @@ public class MenuState extends State {
 
     public static boolean DEBUG_MODE = false;
 
-    public static final String[] DIFFICULTIES = {"EASY", "MEDIUM", "HARD", "PRO", "IMPOSSIBLE"};
+    private static final String[] DIFFICULTIES = {"EASY", "MEDIUM", "HARD", "PRO", "IMPOSSIBLE"};
 
     private Stage m_menuStage;
     private BitmapFont m_menuFont;
@@ -173,12 +172,7 @@ public class MenuState extends State {
 
     @Override
     public void handleInput() {
-//        if(Gdx.input.justTouched()){
-//            float touchX = Gdx.input.getX();
-//            float touchY = Gdx.input.getY();
-//
-//            Rectangle touchLocation = new Rectangle()
-//        }
+
     }
 
     @Override
@@ -188,8 +182,6 @@ public class MenuState extends State {
 
     @Override
     public void render(SpriteBatch sb) {
-        //handleInput();
-
         sb.begin();
 
         sb.draw(m_playLabelTexture, m_x, m_playLabel.getY());
