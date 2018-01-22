@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -26,6 +28,8 @@ import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
  */
 public class MenuState extends State {
 
+    private static final String BUTTON_PACK = "main_button/BFXButtonPack1.pack";
+
     public static boolean DEBUG_MODE = false;
 
     private static final String[] DIFFICULTIES = {"EASY", "MEDIUM", "HARD", "PRO", "IMPOSSIBLE"};
@@ -42,6 +46,9 @@ public class MenuState extends State {
     private Texture m_settingsTexture;
     private Texture m_highScoreTexture;
     private Texture m_difficultyTexture;
+
+    private TextureAtlas m_buttonAtlas;
+    private Skin m_buttonSkin;
 
     private float m_x;
 
@@ -123,6 +130,9 @@ public class MenuState extends State {
                 m_difficultyLabel.setText("DIFFICULTY: " + DIFFICULTIES[m_gsm.getDifficulty()]);
             }
         });
+
+        m_buttonAtlas = new TextureAtlas(Gdx.files.internal(BUTTON_PACK));
+        m_buttonSkin = new Skin(m_buttonAtlas);
 
         Label titleLabel = new Label(BFXSnake.TITLE, new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
         Table titleTable = new Table();
