@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -28,7 +29,9 @@ import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
  */
 public class MenuState extends State {
 
-    private static final String BUTTON_PACK = "main_button/BFXButtonPack1.pack";
+    private final String BUTTON_PACK = "main_button/BFXButtonPack1.pack";
+    private final float BUTTON_PADDING = 20f;
+    private final float BUTTON_WIDTH_SCALE = 1.0625f;
 
     public static boolean DEBUG_MODE = false;
 
@@ -46,6 +49,8 @@ public class MenuState extends State {
     private Texture m_settingsTexture;
     private Texture m_highScoreTexture;
     private Texture m_difficultyTexture;
+
+    private TextButton m_btnPlay;
 
     private TextureAtlas m_buttonAtlas;
     private Skin m_buttonSkin;
@@ -145,13 +150,32 @@ public class MenuState extends State {
         m_menuStage.addActor(titleTable);
 
         Table selectionTable = new Table();
+        selectionTable.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        selectionTable.center();
+
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = m_buttonSkin.getDrawable("button_up");
+        textButtonStyle.down = m_buttonSkin.getDrawable("button_down");
+        textButtonStyle.pressedOffsetX = 1; //Moves text on button
+        textButtonStyle.pressedOffsetY = -1; //Moves text on button
+        textButtonStyle.font = m_menuFont;
+
+        m_btnPlay = new TextButton("PLAY", textButtonStyle);
+        m_btnPlay.pad(BUTTON_PADDING); //Adds padding around text to give feal of authentic button
 
         selectionTable.top().padTop(Gdx.graphics.getHeight() / 4);
         selectionTable.setFillParent(true);
 
         float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
 
-        selectionTable.add(m_playLabel).expandX();
+        //For the button texture overlays
+        Label temp = new Label("HIGHSCORE: IMPOSSIBLE", new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
+        int width = (int)(temp.getWidth() + (m_playLabel.getWidth() / 2));
+        int height = (int)temp.getHeight();
+        m_x = Gdx.graphics.getWidth() / 6;
+
+        //selectionTable.add(m_playLabel).expandX();
+        selectionTable.add(m_btnPlay).width(temp.getWidth() * BUTTON_WIDTH_SCALE);
         selectionTable.row().padTop(padding);
 
         selectionTable.add(m_settingsLabel).expandX();
@@ -163,12 +187,6 @@ public class MenuState extends State {
         selectionTable.add(m_difficultyLabel).expandX();
 
         m_menuStage.addActor(selectionTable);
-
-        //For the button texture overlays
-        Label temp = new Label("HIGHSCORE: IMPOSSIBLE", new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
-        int width = (int)(temp.getWidth() + (m_playLabel.getWidth() / 2));
-        int height = (int)temp.getHeight();
-        m_x = Gdx.graphics.getWidth() / 6;
 
         m_playLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
         m_settingsTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
@@ -194,7 +212,7 @@ public class MenuState extends State {
     public void render(SpriteBatch sb) {
         sb.begin();
 
-        sb.draw(m_playLabelTexture, m_x, m_playLabel.getY());
+        //sb.draw(m_playLabelTexture, m_x, m_playLabel.getY());
         sb.draw(m_settingsTexture, m_x, m_settingsLabel.getY());
         sb.draw(m_highScoreTexture, m_x, m_highScoreLabel.getY());
         sb.draw(m_difficultyTexture, m_x, m_difficultyLabel.getY());
@@ -212,5 +230,7 @@ public class MenuState extends State {
         m_settingsTexture.dispose();
         m_highScoreTexture.dispose();
         m_difficultyTexture.dispose();
+        m_buttonAtlas.dispose();
+        m_buttonSkin.dispose();
     }
 }
