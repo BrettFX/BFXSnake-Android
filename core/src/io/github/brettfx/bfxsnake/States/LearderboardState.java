@@ -2,22 +2,20 @@ package io.github.brettfx.bfxsnake.States;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
 import io.github.brettfx.bfxsnake.Components.Score;
 
-import static io.github.brettfx.bfxsnake.BFXSnake.BUTTON_COLOR;
 import static io.github.brettfx.bfxsnake.BFXSnake.DEF_FONT_SIZE;
 
 /**
@@ -25,17 +23,9 @@ import static io.github.brettfx.bfxsnake.BFXSnake.DEF_FONT_SIZE;
  * @since 1/9/2018
  */
 public class LearderboardState extends State {
-
-    private Label m_resetLabel;
-
-    private Label m_backLabel;
-
     private Stage m_stage;
 
     private BitmapFont m_leaderboardFont;
-
-    private Texture m_resetTexture;
-    private Texture m_backTexture;
 
     protected LearderboardState(final GameStateManager gsm) {
         super(gsm);
@@ -48,10 +38,14 @@ public class LearderboardState extends State {
         m_leaderboardFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
         m_leaderboardFont.getData().setScale(DEF_FONT_SIZE, DEF_FONT_SIZE);
 
+        m_gsm.setTextButtonFont(m_leaderboardFont);
+
         Label.LabelStyle leaderboardLabelStyle = new Label.LabelStyle(m_leaderboardFont, m_leaderboardFont.getColor());
 
-        m_resetLabel = new Label("RESET", leaderboardLabelStyle);
-        m_resetLabel.addListener(new InputListener(){
+        TextButton m_btnReset = new TextButton("RESET", m_gsm.getButtonStyle());
+        m_btnReset.pad(BFXSnake.BUTTON_PADDING);
+        m_btnReset.setColor(Color.RED);
+        m_btnReset.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 return true;
@@ -64,8 +58,9 @@ public class LearderboardState extends State {
             }
         });
 
-        m_backLabel = new Label("CANCEL", leaderboardLabelStyle);
-        m_backLabel.addListener(new InputListener(){
+        TextButton m_btnBack = new TextButton("CANCEL", m_gsm.getButtonStyle());
+        m_btnBack.pad(BFXSnake.BUTTON_PADDING);
+        m_btnBack.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 return true;
@@ -78,12 +73,6 @@ public class LearderboardState extends State {
         });
 
         Label titleLabel = new Label("RESET HIGHSCORE?", leaderboardLabelStyle);
-
-        GlyphLayout glyphLayout = new GlyphLayout();
-        glyphLayout.setText(m_leaderboardFont,
-                titleLabel.getText() + "\n" +
-                        m_resetLabel.getText() + "\n" +
-                        m_backLabel.getText());
 
         Table titleTable = new Table();
 
@@ -100,19 +89,15 @@ public class LearderboardState extends State {
 
         float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
 
-        leaderboardTable.add(m_resetLabel);
+        //For the button widths
+        Label largeLabel = new Label(BFXSnake.LARGE_LABEL_TEXT, new Label.LabelStyle(m_leaderboardFont, m_leaderboardFont.getColor()));
+
+        leaderboardTable.add(m_btnReset).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
         leaderboardTable.row().padTop(padding);
 
-        leaderboardTable.add(m_backLabel);
+        leaderboardTable.add(m_btnBack).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
 
         m_stage.addActor(leaderboardTable);
-
-        //For button texture overlays
-        int width = (int)(m_resetLabel.getWidth() + (m_backLabel.getWidth() / 2));
-        int height = (int)m_resetLabel.getHeight();
-
-        m_resetTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, Color.RED));
-        m_backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
     }
 
     @Override
@@ -127,15 +112,6 @@ public class LearderboardState extends State {
 
     @Override
     public void render(SpriteBatch sb) {
-        float x = m_resetLabel.getX() - (m_backLabel.getWidth() / 4);
-
-        sb.begin();
-
-        sb.draw(m_resetTexture, x, m_resetLabel.getY());
-        sb.draw(m_backTexture, x, m_backLabel.getY());
-
-        sb.end();
-
         m_stage.draw();
     }
 
@@ -143,7 +119,5 @@ public class LearderboardState extends State {
     public void dispose() {
         m_leaderboardFont.dispose();
         m_stage.dispose();
-        m_resetTexture.dispose();
-        m_backTexture.dispose();
     }
 }

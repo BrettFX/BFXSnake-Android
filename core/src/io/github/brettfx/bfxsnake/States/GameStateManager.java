@@ -159,6 +159,7 @@ public class GameStateManager {
         m_states.push(state);
     }
 
+    /*Not used but kept for future reference*/
     public Pixmap getPixmapRoundedRectangle(int width, int height, int radius, Color color) {
 
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
@@ -169,7 +170,6 @@ public class GameStateManager {
 
         // Green rectangle
         pixmap.fillRectangle(radius, 0, pixmap.getWidth() - 2*radius, pixmap.getHeight());
-
 
         // Bottom-left circle
         pixmap.fillCircle(radius, radius, radius);
@@ -182,6 +182,7 @@ public class GameStateManager {
 
         // Top-right circle
         pixmap.fillCircle(pixmap.getWidth()-radius, pixmap.getHeight()-radius, radius);
+
         return pixmap;
     }
 
