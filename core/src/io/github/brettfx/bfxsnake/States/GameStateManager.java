@@ -22,7 +22,7 @@ import static io.github.brettfx.bfxsnake.BFXSnake.DEF_FONT_SIZE;
  */
 
 public class GameStateManager {
-    private final String BUTTON_PACK = "main_button/BFXButtonPack1.pack";
+    private final String BUTTON_PACK = "main_button/glassy-ui.atlas";
 
     //A stack of states for more efficient memory utilization
     private Stack<State> m_states;
@@ -64,8 +64,8 @@ public class GameStateManager {
         menuFont.getData().setScale(DEF_FONT_SIZE, DEF_FONT_SIZE);
 
         m_textButtonStyle = new TextButton.TextButtonStyle();
-        m_textButtonStyle.up = m_buttonSkin.getDrawable("button_up");
-        m_textButtonStyle.down = m_buttonSkin.getDrawable("button_down");
+        m_textButtonStyle.up = m_buttonSkin.getDrawable("button");
+        m_textButtonStyle.down = m_buttonSkin.getDrawable("button-down");
         m_textButtonStyle.pressedOffsetX = 1; //Moves text on button
         m_textButtonStyle.pressedOffsetY = -1; //Moves text on button
     }

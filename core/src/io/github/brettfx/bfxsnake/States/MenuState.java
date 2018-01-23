@@ -57,6 +57,7 @@ public class MenuState extends State {
 
         m_btnPlay = new TextButton("PLAY", m_gsm.getButtonStyle());
         m_btnPlay.pad(BFXSnake.BUTTON_PADDING); //Adds padding around text to give feal of authentic button
+        m_btnPlay.setColor(BFXSnake.BUTTON_COLOR);
         m_btnPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -71,6 +72,7 @@ public class MenuState extends State {
 
         m_btnSettings = new TextButton("SETTINGS", m_gsm.getButtonStyle());
         m_btnSettings.pad(BFXSnake.BUTTON_PADDING);
+        m_btnSettings.setColor(BFXSnake.BUTTON_COLOR);
         m_btnSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -87,6 +89,7 @@ public class MenuState extends State {
         m_btnHighScore = new TextButton("HIGH SCORE: " + String.format(Locale.getDefault(), "%02d",
                 Score.getHighScore()), m_gsm.getButtonStyle());
         m_btnHighScore.pad(BFXSnake.BUTTON_PADDING);
+        m_btnHighScore.setColor(BFXSnake.BUTTON_COLOR);
         m_btnHighScore.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -102,6 +105,7 @@ public class MenuState extends State {
 
         m_btnDifficulty = new TextButton("DIFFICULTY: " + DIFFICULTIES[m_gsm.getDifficulty()], m_gsm.getButtonStyle());
         m_btnDifficulty.pad(BFXSnake.BUTTON_PADDING);
+        m_btnDifficulty.setColor(BFXSnake.BUTTON_COLOR);
         m_btnDifficulty.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){

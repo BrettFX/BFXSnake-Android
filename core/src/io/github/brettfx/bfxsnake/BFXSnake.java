@@ -27,10 +27,12 @@ public class BFXSnake extends ApplicationAdapter {
 
 	public static final int SCALE_FACTOR = 45;
 
+	public static final Color BUTTON_COLOR = Color.GRAY;
 	public static final float BUTTON_PADDING = 20f;
 
-	public static final String SCORE_FONT = "fonts/menu.fnt";
-	public static final String MENU_FONT = "fonts/menu.fnt";
+	public static final String SCORE_FONT = "fonts/font-export.fnt";
+	public static final String MENU_FONT = "fonts/font-export.fnt";
+	public static final String TITLE_FONT = "fonts/font-title-export.fnt";
 
 	public static final float DEF_FONT_SIZE = 5.0f; //1.4f
 	public static final float SETTINGS_FONT_SIZE = 3.5f; //2.5f

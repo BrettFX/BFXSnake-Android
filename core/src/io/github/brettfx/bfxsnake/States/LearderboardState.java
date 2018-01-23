@@ -60,6 +60,7 @@ public class LearderboardState extends State {
 
         TextButton m_btnBack = new TextButton("CANCEL", m_gsm.getButtonStyle());
         m_btnBack.pad(BFXSnake.BUTTON_PADDING);
+        m_btnBack.setColor(BFXSnake.BUTTON_COLOR);
         m_btnBack.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){

@@ -58,6 +58,7 @@ public class SettingsState extends State{
 
         m_btnSnakeColor = new TextButton("SNAKE COLOR", m_gsm.getButtonStyle());
         m_btnSnakeColor.pad(BFXSnake.BUTTON_PADDING);
+        m_btnSnakeColor.setColor(BFXSnake.BUTTON_COLOR);
         m_btnSnakeColor.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -72,6 +73,7 @@ public class SettingsState extends State{
 
         m_btnPickupColor = new TextButton("PICKUP COLOR", m_gsm.getButtonStyle());
         m_btnPickupColor.pad(BFXSnake.BUTTON_PADDING);
+        m_btnPickupColor.setColor(BFXSnake.BUTTON_COLOR);
         m_btnPickupColor.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -86,6 +88,7 @@ public class SettingsState extends State{
 
         m_btnControllerState = new TextButton("CONTROLLER: " + m_gsm.getControllerState(), m_gsm.getButtonStyle());
         m_btnControllerState.pad(BFXSnake.BUTTON_PADDING);
+        m_btnControllerState.setColor(BFXSnake.BUTTON_COLOR);
         m_btnControllerState.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -100,6 +103,7 @@ public class SettingsState extends State{
 
         m_btnBack = new TextButton("BACK", m_gsm.getButtonStyle());
         m_btnBack.pad(BFXSnake.BUTTON_PADDING);
+        m_btnBack.setColor(BFXSnake.BUTTON_COLOR);
         m_btnBack.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -114,6 +118,7 @@ public class SettingsState extends State{
 
         m_btnRestoreDefVals = new TextButton("RESTORE DEFAULTS", m_gsm.getButtonStyle());
         m_btnRestoreDefVals.pad(BFXSnake.BUTTON_PADDING);
+        m_btnRestoreDefVals.setColor(BFXSnake.BUTTON_COLOR);
         m_btnRestoreDefVals.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){

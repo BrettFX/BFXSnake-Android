@@ -118,6 +118,8 @@ public class PlayState extends State {
         //Create a play again button
         m_btnPlayAgain = new TextButton("PLAY AGAIN", m_gsm.getButtonStyle());
         m_btnPlayAgain.pad(BFXSnake.BUTTON_PADDING);
+        m_btnPlayAgain.setColor(BFXSnake.BUTTON_COLOR);
+        m_btnPlayAgain.setVisible(false);
         m_btnPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -133,6 +135,7 @@ public class PlayState extends State {
 
         m_btnBack = new TextButton("BACK TO MENU", m_gsm.getButtonStyle());
         m_btnBack.pad(BFXSnake.BUTTON_PADDING);
+        m_btnBack.setColor(BFXSnake.BUTTON_COLOR);
         m_btnBack.setVisible(false);
         m_btnBack.addListener(new InputListener(){
             @Override
