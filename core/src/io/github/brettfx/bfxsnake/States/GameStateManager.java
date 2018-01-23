@@ -14,7 +14,7 @@ import java.util.Stack;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
 
-import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
+import static io.github.brettfx.bfxsnake.BFXSnake.DEF_FONT_SIZE;
 
 /**
  * @author Brett Allen
@@ -61,14 +61,17 @@ public class GameStateManager {
         m_buttonSkin = new Skin(m_buttonAtlas);
 
         BitmapFont menuFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
-        menuFont.getData().setScale(FONT_SIZE, FONT_SIZE);
+        menuFont.getData().setScale(DEF_FONT_SIZE, DEF_FONT_SIZE);
 
         m_textButtonStyle = new TextButton.TextButtonStyle();
         m_textButtonStyle.up = m_buttonSkin.getDrawable("button_up");
         m_textButtonStyle.down = m_buttonSkin.getDrawable("button_down");
         m_textButtonStyle.pressedOffsetX = 1; //Moves text on button
         m_textButtonStyle.pressedOffsetY = -1; //Moves text on button
-        m_textButtonStyle.font = menuFont;
+    }
+
+    public void setTextButtonFont(BitmapFont bitmapFont){
+        m_textButtonStyle.font = bitmapFont;
     }
 
     public TextButton.TextButtonStyle getButtonStyle(){

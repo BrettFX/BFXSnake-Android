@@ -20,12 +20,19 @@ public class BFXSnake extends ApplicationAdapter {
 	public static final String PREFS_NAME = "BFXSnake_Preferences";
 	public static final String TITLE = "BFX SNAKE";
 
+	public static final String LARGE_LABEL_TEXT = "HIGHSCORE: IMPOSSIBLE";
+
+	public static final float DEF_BUTTON_WIDTH_SCALE = 1.0625f;
+
 	public static final int SCALE_FACTOR = 45;
+
+	public static final float BUTTON_PADDING = 20f;
 
 	public static final String SCORE_FONT = "fonts/menu.fnt";
 	public static final String MENU_FONT = "fonts/menu.fnt";
 
-	public static final float FONT_SIZE = 5.0f; //1.4f
+	public static final float DEF_FONT_SIZE = 5.0f; //1.4f
+	public static final float SETTINGS_FONT_SIZE = 3.5f; //2.5f
 	public static final float OPACITY = 0.75f;
 
 	private SpriteBatch m_batch;

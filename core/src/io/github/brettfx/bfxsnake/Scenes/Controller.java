@@ -150,7 +150,7 @@ public class Controller {
         });
 
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
-        bitmapFont.getData().setScale(BFXSnake.FONT_SIZE, BFXSnake.FONT_SIZE);
+        bitmapFont.getData().setScale(BFXSnake.DEF_FONT_SIZE, BFXSnake.DEF_FONT_SIZE);
 
         //Setting up the font of the text to be displayed on the gameover screen
         Label.LabelStyle exitLabelStyle = new Label.LabelStyle(bitmapFont, Color.RED);

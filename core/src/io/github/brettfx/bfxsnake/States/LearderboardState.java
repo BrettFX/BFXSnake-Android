@@ -18,7 +18,7 @@ import io.github.brettfx.bfxsnake.BFXSnake;
 import io.github.brettfx.bfxsnake.Components.Score;
 
 import static io.github.brettfx.bfxsnake.BFXSnake.BUTTON_COLOR;
-import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
+import static io.github.brettfx.bfxsnake.BFXSnake.DEF_FONT_SIZE;
 
 /**
  * @author brett
@@ -46,7 +46,7 @@ public class LearderboardState extends State {
         Gdx.input.setInputProcessor(m_stage);
 
         m_leaderboardFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
-        m_leaderboardFont.getData().setScale(FONT_SIZE, FONT_SIZE);
+        m_leaderboardFont.getData().setScale(DEF_FONT_SIZE, DEF_FONT_SIZE);
 
         Label.LabelStyle leaderboardLabelStyle = new Label.LabelStyle(m_leaderboardFont, m_leaderboardFont.getColor());
 

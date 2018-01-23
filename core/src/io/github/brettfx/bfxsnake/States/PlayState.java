@@ -113,7 +113,7 @@ public class PlayState extends State {
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         m_bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
-        m_bitmapFont.getData().setScale(BFXSnake.FONT_SIZE, BFXSnake.FONT_SIZE);
+        m_bitmapFont.getData().setScale(BFXSnake.DEF_FONT_SIZE, BFXSnake.DEF_FONT_SIZE);
 
         //Setting up the font of the text to be displayed on the gameover screen
         Label.LabelStyle font = new Label.LabelStyle(m_bitmapFont, m_bitmapFont.getColor());

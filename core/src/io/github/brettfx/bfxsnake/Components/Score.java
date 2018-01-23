@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
 
-import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
+import static io.github.brettfx.bfxsnake.BFXSnake.DEF_FONT_SIZE;
 
 /**
  * Created by Brett on 5/31/2016.
@@ -38,7 +38,7 @@ public class Score{
 
         scoreFont = new BitmapFont(Gdx.files.internal(BFXSnake.SCORE_FONT));
         scoreFont.setColor(color);
-        scoreFont.getData().setScale(FONT_SIZE, FONT_SIZE);
+        scoreFont.getData().setScale(DEF_FONT_SIZE, DEF_FONT_SIZE);
 
         m_newHighScore = false;
     }
