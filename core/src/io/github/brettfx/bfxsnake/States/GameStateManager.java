@@ -4,11 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import java.util.Stack;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
+
+import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
 
 /**
  * @author Brett Allen
@@ -16,6 +22,7 @@ import io.github.brettfx.bfxsnake.BFXSnake;
  */
 
 public class GameStateManager {
+    private final String BUTTON_PACK = "main_button/BFXButtonPack1.pack";
 
     //A stack of states for more efficient memory utilization
     private Stack<State> m_states;
@@ -32,6 +39,11 @@ public class GameStateManager {
 
     private boolean controllerOn;
 
+    private TextureAtlas m_buttonAtlas;
+    private Skin m_buttonSkin;
+
+    private TextButton.TextButtonStyle m_textButtonStyle;
+
     public GameStateManager(){
         m_states = new Stack<State>();
 
@@ -44,6 +56,23 @@ public class GameStateManager {
         m_pickupColor = new Color(BFXSnake.COLORS[m_pickupColorIndex]);
 
         controllerOn = m_preferences.getBoolean("ControllerState", true);
+
+        m_buttonAtlas = new TextureAtlas(Gdx.files.internal(BUTTON_PACK));
+        m_buttonSkin = new Skin(m_buttonAtlas);
+
+        BitmapFont menuFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
+        menuFont.getData().setScale(FONT_SIZE, FONT_SIZE);
+
+        m_textButtonStyle = new TextButton.TextButtonStyle();
+        m_textButtonStyle.up = m_buttonSkin.getDrawable("button_up");
+        m_textButtonStyle.down = m_buttonSkin.getDrawable("button_down");
+        m_textButtonStyle.pressedOffsetX = 1; //Moves text on button
+        m_textButtonStyle.pressedOffsetY = -1; //Moves text on button
+        m_textButtonStyle.font = menuFont;
+    }
+
+    public TextButton.TextButtonStyle getButtonStyle(){
+        return m_textButtonStyle;
     }
 
     public void setDifficulty(int difficulty){
@@ -165,5 +194,8 @@ public class GameStateManager {
         for(State state : m_states){
             state.dispose();
         }
+
+        m_buttonAtlas.dispose();
+        m_buttonSkin.dispose();
     }
 }

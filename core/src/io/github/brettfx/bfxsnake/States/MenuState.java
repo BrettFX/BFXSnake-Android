@@ -28,8 +28,6 @@ import static io.github.brettfx.bfxsnake.BFXSnake.FONT_SIZE;
  * @since 12/24/2017
  */
 public class MenuState extends State {
-
-    private final String BUTTON_PACK = "main_button/BFXButtonPack1.pack";
     private final float BUTTON_PADDING = 20f;
     private final float BUTTON_WIDTH_SCALE = 1.0625f;
 
@@ -40,22 +38,11 @@ public class MenuState extends State {
     private Stage m_menuStage;
     private BitmapFont m_menuFont;
 
-    private Label m_playLabel;
     private Label m_settingsLabel;
     private Label m_highScoreLabel;
     private Label m_difficultyLabel;
 
-    private Texture m_playLabelTexture;
-    private Texture m_settingsTexture;
-    private Texture m_highScoreTexture;
-    private Texture m_difficultyTexture;
-
     private TextButton m_btnPlay;
-
-    private TextureAtlas m_buttonAtlas;
-    private Skin m_buttonSkin;
-
-    private float m_x;
 
     public MenuState(GameStateManager gsm) {
         super(gsm);
@@ -76,8 +63,9 @@ public class MenuState extends State {
 
         Label.LabelStyle menuLabelStyle = new Label.LabelStyle(m_menuFont, m_menuFont.getColor());
 
-        m_playLabel =  new Label("PLAY", menuLabelStyle);
-        m_playLabel.addListener(new InputListener(){
+        m_btnPlay = new TextButton("PLAY", m_gsm.getButtonStyle());
+        m_btnPlay.pad(BUTTON_PADDING); //Adds padding around text to give feal of authentic button
+        m_btnPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 return true;
@@ -136,9 +124,6 @@ public class MenuState extends State {
             }
         });
 
-        m_buttonAtlas = new TextureAtlas(Gdx.files.internal(BUTTON_PACK));
-        m_buttonSkin = new Skin(m_buttonAtlas);
-
         Label titleLabel = new Label(BFXSnake.TITLE, new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
         Table titleTable = new Table();
 
@@ -153,29 +138,16 @@ public class MenuState extends State {
         selectionTable.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         selectionTable.center();
 
-        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.up = m_buttonSkin.getDrawable("button_up");
-        textButtonStyle.down = m_buttonSkin.getDrawable("button_down");
-        textButtonStyle.pressedOffsetX = 1; //Moves text on button
-        textButtonStyle.pressedOffsetY = -1; //Moves text on button
-        textButtonStyle.font = m_menuFont;
-
-        m_btnPlay = new TextButton("PLAY", textButtonStyle);
-        m_btnPlay.pad(BUTTON_PADDING); //Adds padding around text to give feal of authentic button
-
         selectionTable.top().padTop(Gdx.graphics.getHeight() / 4);
         selectionTable.setFillParent(true);
 
         float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
 
-        //For the button texture overlays
-        Label temp = new Label("HIGHSCORE: IMPOSSIBLE", new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
-        int width = (int)(temp.getWidth() + (m_playLabel.getWidth() / 2));
-        int height = (int)temp.getHeight();
-        m_x = Gdx.graphics.getWidth() / 6;
+        //For the button widths
+        Label largeLabel = new Label("HIGHSCORE: IMPOSSIBLE", new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
 
         //selectionTable.add(m_playLabel).expandX();
-        selectionTable.add(m_btnPlay).width(temp.getWidth() * BUTTON_WIDTH_SCALE);
+        selectionTable.add(m_btnPlay).width(largeLabel.getWidth() * BUTTON_WIDTH_SCALE);
         selectionTable.row().padTop(padding);
 
         selectionTable.add(m_settingsLabel).expandX();
@@ -187,11 +159,6 @@ public class MenuState extends State {
         selectionTable.add(m_difficultyLabel).expandX();
 
         m_menuStage.addActor(selectionTable);
-
-        m_playLabelTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
-        m_settingsTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
-        m_highScoreTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
-        m_difficultyTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2, BUTTON_COLOR));
 
         if(DEBUG_MODE){
             m_menuStage.setDebugAll(true);
@@ -210,15 +177,6 @@ public class MenuState extends State {
 
     @Override
     public void render(SpriteBatch sb) {
-        sb.begin();
-
-        //sb.draw(m_playLabelTexture, m_x, m_playLabel.getY());
-        sb.draw(m_settingsTexture, m_x, m_settingsLabel.getY());
-        sb.draw(m_highScoreTexture, m_x, m_highScoreLabel.getY());
-        sb.draw(m_difficultyTexture, m_x, m_difficultyLabel.getY());
-
-        sb.end();
-
         m_menuStage.draw();
     }
 
@@ -226,11 +184,5 @@ public class MenuState extends State {
     public void dispose() {
         m_menuStage.dispose();
         m_menuFont.dispose();
-        m_playLabelTexture.dispose();
-        m_settingsTexture.dispose();
-        m_highScoreTexture.dispose();
-        m_difficultyTexture.dispose();
-        m_buttonAtlas.dispose();
-        m_buttonSkin.dispose();
     }
 }
