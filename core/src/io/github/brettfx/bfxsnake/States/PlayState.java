@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -31,6 +32,7 @@ import static io.github.brettfx.bfxsnake.BFXSnake.OPACITY;
  */
 public class PlayState extends State {
 
+    //The closer to zero the slower the animation speed
     private static final float NOTIFICATION_FADE_SPEED = 0.01f;
     public static boolean DEBUG_MODE = false;
 
@@ -44,9 +46,6 @@ public class PlayState extends State {
     private Stage m_scoreStage;
     private Stage m_notificationStage;
 
-    private Label m_playAgainLabel;
-    private Label m_backLabel;
-
     private Label m_scoreLabel;
     private boolean m_highScoreNotified;
 
@@ -55,8 +54,8 @@ public class PlayState extends State {
 
     private BitmapFont m_bitmapFont;
 
-    private Texture m_playAgainTexture;
-    private Texture m_backTexture;
+    private TextButton m_btnPlayAgain;
+    private TextButton m_btnBack;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -115,24 +114,12 @@ public class PlayState extends State {
         m_bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
         m_bitmapFont.getData().setScale(BFXSnake.DEF_FONT_SIZE, BFXSnake.DEF_FONT_SIZE);
 
-        //Setting up the font of the text to be displayed on the gameover screen
-        Label.LabelStyle font = new Label.LabelStyle(m_bitmapFont, m_bitmapFont.getColor());
+        m_gsm.setTextButtonFont(m_bitmapFont);
 
-        Table gameOverTable = new Table();
-
-        gameOverTable.top().padTop(Gdx.graphics.getHeight() / 4);
-
-        //Table will take up entire stage
-        gameOverTable.setFillParent(true);
-
-        //Create game over label
-        Label gameOverLabel = new Label("GAME OVER", font);
-        gameOverTable.add(gameOverLabel).expandX();
-
-        //Create a play again label
-        m_playAgainLabel = new Label("PLAY AGAIN", font);
-        m_playAgainLabel.setVisible(false);
-        m_playAgainLabel.addListener(new InputListener(){
+        //Create a play again button
+        m_btnPlayAgain = new TextButton("PLAY AGAIN", m_gsm.getButtonStyle());
+        m_btnPlayAgain.pad(BFXSnake.BUTTON_PADDING);
+        m_btnPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 //Need to return true in order for touchUp event to fire
@@ -145,14 +132,10 @@ public class PlayState extends State {
             }
         });
 
-        gameOverTable.row();
-
-        //Add a bit of padding to top of play again label
-        gameOverTable.add(m_playAgainLabel).expandX().padTop(Gdx.graphics.getHeight() / 8);
-
-        m_backLabel = new Label("BACK TO MENU", font);
-        m_backLabel.setVisible(false);
-        m_backLabel.addListener(new InputListener(){
+        m_btnBack = new TextButton("BACK TO MENU", m_gsm.getButtonStyle());
+        m_btnBack.pad(BFXSnake.BUTTON_PADDING);
+        m_btnBack.setVisible(false);
+        m_btnBack.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 //Need to return true in order for touchUp event to fire
@@ -165,12 +148,32 @@ public class PlayState extends State {
             }
         });
 
-        gameOverTable.row();
+        //Setting up the font of the text to be displayed on the gameover screen
+        Label.LabelStyle fontStyle = new Label.LabelStyle(m_bitmapFont, m_bitmapFont.getColor());
 
-        //Add padding that is equivalent to the height of the head of the snake
-        gameOverTable.add(m_backLabel).expandX().padTop(m_snake.getSnake().get(0).getHeight());
+        Table gameOverTable = new Table();
+        gameOverTable.center();
+        gameOverTable.top().padTop(Gdx.graphics.getHeight() / 6);
+
+        //Table will take up entire stage
+        gameOverTable.setFillParent(true);
+
+        //Create game over label
+        Label gameOverLabel = new Label("GAME OVER", fontStyle);
+        gameOverTable.add(gameOverLabel).expandX();
 
         m_gameOverStage.addActor(gameOverTable);
+
+        float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
+
+        //For the button widths
+        Label smallLabel = new Label(BFXSnake.SMALL_LABEL_TEXT, new Label.LabelStyle(m_bitmapFont, m_bitmapFont.getColor()));
+
+        gameOverTable.row().padTop(Gdx.graphics.getHeight() / 6);
+        gameOverTable.add(m_btnPlayAgain).width(smallLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
+        gameOverTable.row().padTop(padding);
+
+        gameOverTable.add(m_btnBack).width(smallLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
 
         m_gameOver = false;
 
@@ -195,7 +198,7 @@ public class PlayState extends State {
         notificationTable.center();
         notificationTable.setFillParent(true);
 
-        m_notificationLabel = new Label("", font);
+        m_notificationLabel = new Label("", fontStyle);
         m_notificationLabel.setColor(NOTIFICATION_COLOR);
 
         notificationTable.add(m_notificationLabel);
@@ -204,15 +207,6 @@ public class PlayState extends State {
 
         //Initially invisible
         m_notificationAlpha = 0.0f;
-
-        //For button texture overlays
-        int width = (int)(m_backLabel.getWidth() + (m_playAgainLabel.getWidth() / 2));
-        int height = (int)m_backLabel.getHeight();
-
-        m_playAgainTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                BFXSnake.BUTTON_COLOR));
-        m_backTexture = new Texture(m_gsm.getPixmapRoundedRectangle(width, height, height / 2,
-                BFXSnake.BUTTON_COLOR));
 
         if(DEBUG_MODE){
             m_gameOverStage.setDebugAll(true);
@@ -408,19 +402,12 @@ public class PlayState extends State {
 
         //Determine if game over and show game over if it is game over
         if(m_gameOver){
-            float x = m_backLabel.getX() - (m_playAgainLabel.getWidth() / 4);
-
-            sb.begin();
 
             //Render button overlay for play again button
-            m_playAgainLabel.setVisible(true);
-            sb.draw(m_playAgainTexture, x, m_playAgainLabel.getY());
+            m_btnPlayAgain.setVisible(true);
 
             //Render button overlay for back button
-            m_backLabel.setVisible(true);
-            sb.draw(m_backTexture, x, m_backLabel.getY());
-
-            sb.end();
+            m_btnBack.setVisible(true);
 
             m_gameOverStage.draw();
         }
@@ -434,7 +421,5 @@ public class PlayState extends State {
         m_gameOverStage.dispose();
         m_scoreStage.dispose();
         m_notificationStage.dispose();
-        m_playAgainTexture.dispose();
-        m_backTexture.dispose();
     }
 }

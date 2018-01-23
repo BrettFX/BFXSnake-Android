@@ -21,6 +21,7 @@ public class BFXSnake extends ApplicationAdapter {
 	public static final String TITLE = "BFX SNAKE";
 
 	public static final String LARGE_LABEL_TEXT = "HIGHSCORE: IMPOSSIBLE";
+	public static final String SMALL_LABEL_TEXT = "BACK TO MENU";
 
 	public static final float DEF_BUTTON_WIDTH_SCALE = 1.0625f;
 

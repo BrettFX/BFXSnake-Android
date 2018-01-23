@@ -130,7 +130,6 @@ public class MenuState extends State {
         m_menuStage.addActor(titleTable);
 
         Table selectionTable = new Table();
-        //selectionTable.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         selectionTable.center();
 
         selectionTable.top().padTop(Gdx.graphics.getHeight() / 6);
@@ -141,7 +140,6 @@ public class MenuState extends State {
         //For the button widths
         Label largeLabel = new Label(BFXSnake.LARGE_LABEL_TEXT, new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
 
-        //selectionTable.add(m_playLabel).expandX();
         selectionTable.add(m_btnPlay).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
         selectionTable.row().padTop(padding);
 
