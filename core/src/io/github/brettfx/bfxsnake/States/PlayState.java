@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
+import io.github.brettfx.bfxsnake.Components.Score;
 import io.github.brettfx.bfxsnake.Scenes.Controller;
 import io.github.brettfx.bfxsnake.Sprites.Pickup;
 import io.github.brettfx.bfxsnake.Sprites.Snake;
@@ -134,6 +135,7 @@ public class PlayState extends State {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                Score.flush(); //Flush the score to write a new high score (if there is one)
                 m_gsm.set(new PlayState(m_gsm));
             }
         });
