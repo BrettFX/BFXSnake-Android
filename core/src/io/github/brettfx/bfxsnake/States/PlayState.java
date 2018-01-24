@@ -44,6 +44,7 @@ public class PlayState extends State {
     private Stage m_gameOverStage;
     private Stage m_scoreStage;
     private Stage m_notificationStage;
+    private Stage m_pauseStage;
 
     private Label m_scoreLabel;
     private boolean m_highScoreNotified;
@@ -55,6 +56,8 @@ public class PlayState extends State {
 
     private TextButton m_btnPlayAgain;
     private TextButton m_btnBack;
+    private TextButton m_btnResume;
+    private TextButton m_btnExit;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -102,11 +105,13 @@ public class PlayState extends State {
         m_gameOverStage = new Stage(viewport);
         m_scoreStage = new Stage(viewport);
         m_notificationStage = new Stage(viewport);
+        m_pauseStage = new Stage(viewport);
 
         //Need to create an input multiplexer to prevent from overwriting other input processors
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(m_gameOverStage);
         inputMultiplexer.addProcessor(m_controller.getStage());
+        inputMultiplexer.addProcessor(m_pauseStage);
 
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -150,6 +155,43 @@ public class PlayState extends State {
             }
         });
 
+        m_btnExit = new TextButton("EXIT", m_gsm.getButtonStyle());
+        m_btnExit.pad(BFXSnake.BUTTON_PADDING);
+        m_btnExit.setColor(BFXSnake.BUTTON_COLOR);
+        m_btnExit.getLabel().setColor(Color.RED);
+        m_btnExit.setVisible(false);
+        m_btnExit.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                //Need to return true in order for touchUp event to fire
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.set(new MenuState(m_gsm));
+            }
+        });
+
+        m_btnResume = new TextButton("RESUME", m_gsm.getButtonStyle());
+        m_btnResume.pad(BFXSnake.BUTTON_PADDING);
+        m_btnResume.setColor(BFXSnake.BUTTON_COLOR);
+        m_btnResume.setVisible(false);
+        m_btnResume.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                //Need to return true in order for touchUp event to fire
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_snake.resume();
+                m_btnExit.setVisible(false);
+                m_btnResume.setVisible(false);
+            }
+        });
+
         //Setting up the font of the text to be displayed on the gameover screen
         Label.LabelStyle fontStyle = new Label.LabelStyle(m_bitmapFont, m_bitmapFont.getColor());
 
@@ -180,6 +222,17 @@ public class PlayState extends State {
         m_gameOver = false;
 
         m_highScoreNotified = false;
+
+        //Create a table for the exit button
+        Table pauseTable = new Table();
+        pauseTable.setFillParent(true);
+        pauseTable.center();
+
+        pauseTable.add(m_btnResume).width(smallLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
+        pauseTable.row().padTop(padding);
+        pauseTable.add(m_btnExit).width(smallLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
+
+        m_pauseStage.addActor(pauseTable);
 
         Table scoreTable = new Table();
         scoreTable.top().left();
@@ -252,7 +305,8 @@ public class PlayState extends State {
                     
                 }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
                     m_snake.pause();
-                    m_controller.setExitVisibility(true);
+                    m_btnResume.setVisible(true);
+                    m_btnExit.setVisible(true);
                 }
             }else{ //Handle case when controller is disabled
                 if(Gdx.input.justTouched()){
@@ -262,7 +316,8 @@ public class PlayState extends State {
 
                     if(m_controller.isPausedPressed()){
                         m_snake.pause();
-                        m_controller.setExitVisibility(true);
+                        m_btnResume.setVisible(true);
+                        m_btnExit.setVisible(true);
                         return;
                     }
 
@@ -319,7 +374,8 @@ public class PlayState extends State {
                     m_snake.setDirection(Snake.Directions.RIGHT);
                 }else if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
                     m_snake.pause();
-                    m_controller.setExitVisibility(true);
+                    m_btnResume.setVisible(true);
+                    m_btnExit.setVisible(true);
                 }
             }
 
@@ -334,9 +390,8 @@ public class PlayState extends State {
 
         }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
             m_snake.resume();
-            m_controller.setExitVisibility(false);
-        }else if(m_controller.isExitPressed() && Gdx.input.justTouched()){
-            m_gsm.set(new MenuState(m_gsm));
+            m_btnResume.setVisible(false);
+            m_btnExit.setVisible(false);
         }
     }
 
@@ -402,6 +457,8 @@ public class PlayState extends State {
         //Draw the notification stage (may be invisible)
         m_notificationStage.draw();
 
+        m_pauseStage.draw();
+
         //Determine if game over and show game over if it is game over
         if(m_gameOver){
 
@@ -423,5 +480,6 @@ public class PlayState extends State {
         m_gameOverStage.dispose();
         m_scoreStage.dispose();
         m_notificationStage.dispose();
+        m_pauseStage.dispose();
     }
 }

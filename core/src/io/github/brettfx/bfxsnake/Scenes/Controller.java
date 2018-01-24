@@ -1,7 +1,6 @@
 package io.github.brettfx.bfxsnake.Scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,9 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -53,24 +50,17 @@ public class Controller {
             m_downPressed,
             m_leftPressed,
             m_rightPressed,
-            m_pausedPressed,
-            m_exitPressed;
-
-    private TextButton m_btnExit;
-
-    private GameStateManager m_gsm;
+            m_pausedPressed;
 
     private  BitmapFont m_bitmapFont;
 
     public Controller(GameStateManager gsm){
-        m_gsm = gsm;
-
         OrthographicCamera cam = new OrthographicCamera();
         m_viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cam);
 
         m_touchStage = new Stage(m_viewport);
 
-        m_usingController = m_gsm.isControllerOn();
+        m_usingController = gsm.isControllerOn();
 
         //Create up_arrow image
         m_upImg = new Image(new Texture(UP));
@@ -158,39 +148,7 @@ public class Controller {
         m_bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
         m_bitmapFont.getData().setScale(BFXSnake.DEF_FONT_SIZE, BFXSnake.DEF_FONT_SIZE);
 
-        m_gsm.setTextButtonFont(m_bitmapFont);
-
-        //Setting up the font of the text to be displayed on the gameover screen
-        Label.LabelStyle exitLabelStyle = new Label.LabelStyle(m_bitmapFont, Color.RED);
-
-        m_btnExit = new TextButton("EXIT", m_gsm.getButtonStyle());
-        m_btnExit.pad(BFXSnake.BUTTON_PADDING);
-        m_btnExit.setColor(BFXSnake.BUTTON_COLOR);
-        m_btnExit.getLabel().setColor(Color.RED);
-        m_btnExit.setVisible(false);
-        m_btnExit.addListener(new InputListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                return (m_exitPressed = true);
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-                m_exitPressed = false;
-            }
-        });
-
-        //Create a table for the exit button
-        Table exitTable = new Table();
-        exitTable.setFillParent(true);
-        exitTable.center();
-
-        //For the button widths
-        Label smallLabel = new Label(BFXSnake.SMALL_LABEL_TEXT, new Label.LabelStyle(m_bitmapFont, m_bitmapFont.getColor()));
-
-        exitTable.add(m_btnExit).width(smallLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
-
-        m_touchStage.addActor(exitTable);
+        gsm.setTextButtonFont(m_bitmapFont);
 
         //Create the pause button to be the same size of the arrow buttons
         Image pauseButton1 = new Image(new Texture(PAUSE_BUTTON));
@@ -200,6 +158,19 @@ public class Controller {
                 BFXSnake.OPACITY);
 
         pauseButton1.setSize(ARROW_WIDTH, ARROW_HEIGHT);
+        InputListener pauseListener = new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                //Need to return true in order for touchUp event to fire
+                return (m_pausedPressed = true);
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                m_pausedPressed = false;
+            }
+        };
+
         pauseButton1.addListener(pauseListener);
 
         Image pauseButton2 = new Image(new Texture(PAUSE_BUTTON));
@@ -258,19 +229,6 @@ public class Controller {
         }
     }
 
-    private InputListener  pauseListener = new InputListener(){
-        @Override
-        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-            //Need to return true in order for touchUp event to fire
-            return (m_pausedPressed = true);
-        }
-
-        @Override
-        public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-            m_pausedPressed = false;
-        }
-    };
-
     public Stage getStage(){
         return m_touchStage;
     }
@@ -305,14 +263,6 @@ public class Controller {
 
     public boolean isPausedPressed(){
         return m_pausedPressed;
-    }
-
-    public boolean isExitPressed(){
-        return m_exitPressed;
-    }
-
-    public void setExitVisibility(boolean b){
-        m_btnExit.setVisible(b);
     }
 
     public void resize(int width, int height){
