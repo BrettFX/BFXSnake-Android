@@ -30,10 +30,8 @@ public class MenuState extends State {
 
     private Stage m_menuStage;
     private BitmapFont m_menuFont;
+    private BitmapFont m_titleFont;
 
-    private TextButton m_btnPlay;
-    private TextButton m_btnSettings;
-    private TextButton m_btnHighScore;
     private TextButton m_btnDifficulty;
 
     public MenuState(GameStateManager gsm) {
@@ -55,10 +53,10 @@ public class MenuState extends State {
 
         m_gsm.setTextButtonFont(m_menuFont);
 
-        m_btnPlay = new TextButton("PLAY", m_gsm.getButtonStyle());
-        m_btnPlay.pad(BFXSnake.BUTTON_PADDING); //Adds padding around text to give feal of authentic button
-        m_btnPlay.setColor(BFXSnake.BUTTON_COLOR);
-        m_btnPlay.addListener(new InputListener(){
+        TextButton btnPlay = new TextButton("PLAY", m_gsm.getButtonStyle());
+        btnPlay.pad(BFXSnake.BUTTON_PADDING); //Adds padding around text to give feal of authentic button
+        btnPlay.setColor(BFXSnake.BUTTON_COLOR);
+        btnPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 return true;
@@ -70,10 +68,10 @@ public class MenuState extends State {
             }
         });
 
-        m_btnSettings = new TextButton("SETTINGS", m_gsm.getButtonStyle());
-        m_btnSettings.pad(BFXSnake.BUTTON_PADDING);
-        m_btnSettings.setColor(BFXSnake.BUTTON_COLOR);
-        m_btnSettings.addListener(new InputListener(){
+        TextButton btnSettings = new TextButton("SETTINGS", m_gsm.getButtonStyle());
+        btnSettings.pad(BFXSnake.BUTTON_PADDING);
+        btnSettings.setColor(BFXSnake.BUTTON_COLOR);
+        btnSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 return true;
@@ -86,11 +84,11 @@ public class MenuState extends State {
             }
         });
 
-        m_btnHighScore = new TextButton("HIGH SCORE: " + String.format(Locale.getDefault(), "%02d",
+        TextButton btnHighScore = new TextButton("HIGH SCORE: " + String.format(Locale.getDefault(), "%02d",
                 Score.getHighScore()), m_gsm.getButtonStyle());
-        m_btnHighScore.pad(BFXSnake.BUTTON_PADDING);
-        m_btnHighScore.setColor(BFXSnake.BUTTON_COLOR);
-        m_btnHighScore.addListener(new InputListener(){
+        btnHighScore.pad(BFXSnake.BUTTON_PADDING);
+        btnHighScore.setColor(BFXSnake.BUTTON_COLOR);
+        btnHighScore.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -123,7 +121,10 @@ public class MenuState extends State {
             }
         });
 
-        Label titleLabel = new Label(BFXSnake.TITLE, new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
+        m_titleFont = new BitmapFont(Gdx.files.internal(BFXSnake.TITLE_FONT));
+        m_titleFont.getData().setScale(BFXSnake.DEF_FONT_SIZE, BFXSnake.DEF_FONT_SIZE);
+
+        Label titleLabel = new Label(BFXSnake.TITLE, new Label.LabelStyle(m_titleFont, m_titleFont.getColor()));
         Table titleTable = new Table();
 
         titleTable.top();
@@ -136,7 +137,7 @@ public class MenuState extends State {
         Table selectionTable = new Table();
         selectionTable.center();
 
-        selectionTable.top().padTop(Gdx.graphics.getHeight() / 6);
+        selectionTable.top().padTop(Gdx.graphics.getHeight() / 4);
         selectionTable.setFillParent(true);
 
         float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
@@ -144,13 +145,13 @@ public class MenuState extends State {
         //For the button widths
         Label largeLabel = new Label(BFXSnake.LARGE_LABEL_TEXT, new Label.LabelStyle(m_menuFont, m_menuFont.getColor()));
 
-        selectionTable.add(m_btnPlay).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
+        selectionTable.add(btnPlay).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
         selectionTable.row().padTop(padding);
 
-        selectionTable.add(m_btnSettings).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
+        selectionTable.add(btnSettings).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
         selectionTable.row().padTop(padding);
 
-        selectionTable.add(m_btnHighScore).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
+        selectionTable.add(btnHighScore).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
         selectionTable.row().padTop(padding);
 
         selectionTable.add(m_btnDifficulty).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
@@ -181,5 +182,6 @@ public class MenuState extends State {
     public void dispose() {
         m_menuStage.dispose();
         m_menuFont.dispose();
+        m_titleFont.dispose();
     }
 }

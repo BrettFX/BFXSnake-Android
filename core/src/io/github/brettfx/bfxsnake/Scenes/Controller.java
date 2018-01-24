@@ -11,10 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
+import io.github.brettfx.bfxsnake.States.GameStateManager;
 import io.github.brettfx.bfxsnake.States.PlayState;
 
 /**
@@ -45,8 +47,6 @@ public class Controller {
     private Image m_downImg;
     private Image m_upImg;
 
-    private Label m_exitLabel;
-
     private boolean m_usingController;
 
     private boolean m_upPressed,
@@ -56,15 +56,21 @@ public class Controller {
             m_pausedPressed,
             m_exitPressed;
 
-    public Controller(boolean usingController){
+    private TextButton m_btnExit;
+
+    private GameStateManager m_gsm;
+
+    private  BitmapFont m_bitmapFont;
+
+    public Controller(GameStateManager gsm){
+        m_gsm = gsm;
+
         OrthographicCamera cam = new OrthographicCamera();
         m_viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cam);
 
         m_touchStage = new Stage(m_viewport);
 
-        //Gdx.input.setInputProcessor(m_touchStage);
-
-        m_usingController = usingController;
+        m_usingController = m_gsm.isControllerOn();
 
         //Create up_arrow image
         m_upImg = new Image(new Texture(UP));
@@ -149,14 +155,20 @@ public class Controller {
             }
         });
 
-        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
-        bitmapFont.getData().setScale(BFXSnake.DEF_FONT_SIZE, BFXSnake.DEF_FONT_SIZE);
+        m_bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
+        m_bitmapFont.getData().setScale(BFXSnake.DEF_FONT_SIZE, BFXSnake.DEF_FONT_SIZE);
+
+        m_gsm.setTextButtonFont(m_bitmapFont);
 
         //Setting up the font of the text to be displayed on the gameover screen
-        Label.LabelStyle exitLabelStyle = new Label.LabelStyle(bitmapFont, Color.RED);
+        Label.LabelStyle exitLabelStyle = new Label.LabelStyle(m_bitmapFont, Color.RED);
 
-        m_exitLabel = new Label("EXIT", exitLabelStyle);
-        m_exitLabel.addListener(new InputListener(){
+        m_btnExit = new TextButton("EXIT", m_gsm.getButtonStyle());
+        m_btnExit.pad(BFXSnake.BUTTON_PADDING);
+        m_btnExit.setColor(BFXSnake.BUTTON_COLOR);
+        m_btnExit.getLabel().setColor(Color.RED);
+        m_btnExit.setVisible(false);
+        m_btnExit.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
                 return (m_exitPressed = true);
@@ -168,14 +180,15 @@ public class Controller {
             }
         });
 
-        //Initially the exit label should not be visible
-        m_exitLabel.setVisible(false);
-
         //Create a table for the exit button
         Table exitTable = new Table();
         exitTable.setFillParent(true);
-        exitTable.top();
-        exitTable.add(m_exitLabel).size(m_exitLabel.getWidth(), m_exitLabel.getHeight());
+        exitTable.center();
+
+        //For the button widths
+        Label smallLabel = new Label(BFXSnake.SMALL_LABEL_TEXT, new Label.LabelStyle(m_bitmapFont, m_bitmapFont.getColor()));
+
+        exitTable.add(m_btnExit).width(smallLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
 
         m_touchStage.addActor(exitTable);
 
@@ -299,7 +312,7 @@ public class Controller {
     }
 
     public void setExitVisibility(boolean b){
-        m_exitLabel.setVisible(b);
+        m_btnExit.setVisible(b);
     }
 
     public void resize(int width, int height){
@@ -313,5 +326,6 @@ public class Controller {
 
     public void dispose(){
         m_touchStage.dispose();
+        m_bitmapFont.dispose();
     }
 }

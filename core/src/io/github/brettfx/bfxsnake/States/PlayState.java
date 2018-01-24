@@ -62,7 +62,7 @@ public class PlayState extends State {
         m_gsm.saveDifficulty();
         m_gsm.flush();
 
-        m_controller = new Controller(m_gsm.isControllerOn());
+        m_controller = new Controller(m_gsm);
 
         m_snake = new Snake(m_controller);
 
