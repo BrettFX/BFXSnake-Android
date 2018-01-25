@@ -3,6 +3,7 @@ package io.github.brettfx.bfxsnake.States;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -44,8 +45,6 @@ public class GameStateManager {
 
     private TextButton.TextButtonStyle m_textButtonStyle;
 
-    private AssetManager m_assetManager;
-
     public GameStateManager(){
         m_states = new Stack<State>();
 
@@ -70,16 +69,6 @@ public class GameStateManager {
         m_textButtonStyle.down = m_buttonSkin.getDrawable("button-down");
         m_textButtonStyle.pressedOffsetX = 1; //Moves text on button
         m_textButtonStyle.pressedOffsetY = -1; //Moves text on button
-
-        //Instantiate asset manager to load in sounds and music
-        m_assetManager = new AssetManager();
-        m_assetManager.load(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class);
-        m_assetManager.load(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class);
-        m_assetManager.finishLoading();
-    }
-
-    public AssetManager getAssets(){
-        return m_assetManager;
     }
 
     public void setTextButtonFont(BitmapFont bitmapFont){
@@ -215,6 +204,5 @@ public class GameStateManager {
 
         m_buttonAtlas.dispose();
         m_buttonSkin.dispose();
-        m_assetManager.dispose();
     }
 }
