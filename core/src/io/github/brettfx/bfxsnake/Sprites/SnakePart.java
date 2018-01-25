@@ -78,6 +78,7 @@ public class SnakePart {
         return m_direction;
     }
 
+    @SuppressWarnings("unused")
     public Rectangle getPart(){
         return m_part;
     }

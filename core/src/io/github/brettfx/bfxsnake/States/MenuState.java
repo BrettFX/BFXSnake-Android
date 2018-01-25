@@ -37,9 +37,9 @@ public class MenuState extends State {
     public MenuState(GameStateManager gsm) {
         super(gsm);
 
-        m_gsm.saveSnakeColor();
-        m_gsm.savePickupColor();
-        m_gsm.saveControllerState();
+        m_gsm.setSnakeColor();
+        m_gsm.setPickupColor();
+        m_gsm.setControllerState();
         m_gsm.flush();
         Score.flush();
 

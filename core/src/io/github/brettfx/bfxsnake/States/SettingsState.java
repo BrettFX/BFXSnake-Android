@@ -32,12 +32,6 @@ public class SettingsState extends State{
     //Toggle the controller as enabled or disabled
     private TextButton m_btnControllerState;
 
-    //To restore everything back to default
-    private TextButton m_btnRestoreDefVals;
-
-    //To go back to the previous state (menu)
-    private TextButton m_btnBack;
-
     private Stage m_settingsStage;
 
     private BitmapFont m_settingsFont;
@@ -101,7 +95,7 @@ public class SettingsState extends State{
             }
         });
 
-        m_btnBack = new TextButton("BACK", m_gsm.getButtonStyle());
+        TextButton m_btnBack = new TextButton("BACK", m_gsm.getButtonStyle());
         m_btnBack.pad(BFXSnake.BUTTON_PADDING);
         m_btnBack.setColor(BFXSnake.BUTTON_COLOR);
         m_btnBack.addListener(new InputListener(){
@@ -116,7 +110,7 @@ public class SettingsState extends State{
             }
         });
 
-        m_btnRestoreDefVals = new TextButton("RESTORE DEFAULTS", m_gsm.getButtonStyle());
+        TextButton m_btnRestoreDefVals = new TextButton("RESTORE DEFAULTS", m_gsm.getButtonStyle());
         m_btnRestoreDefVals.pad(BFXSnake.BUTTON_PADDING);
         m_btnRestoreDefVals.setColor(BFXSnake.BUTTON_COLOR);
         m_btnRestoreDefVals.addListener(new InputListener(){
@@ -147,7 +141,7 @@ public class SettingsState extends State{
 
         Table titleTable = new Table();
 
-        titleTable.top();
+        titleTable.top().padTop(titleLabel.getHeight());
         titleTable.setFillParent(true);
 
         titleTable.add(titleLabel);
@@ -156,7 +150,7 @@ public class SettingsState extends State{
 
         Table selectionTable = new Table();
 
-        selectionTable.top().padTop(Gdx.graphics.getHeight() / 6);
+        selectionTable.top().padTop(Gdx.graphics.getHeight() / 6 + titleLabel.getHeight());
         selectionTable.setFillParent(true);
 
         float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;

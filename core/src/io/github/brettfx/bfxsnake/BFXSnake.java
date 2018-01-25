@@ -21,7 +21,7 @@ public class BFXSnake extends ApplicationAdapter {
 	public static final String TITLE = "BFX SNAKE";
 
 	public static final String LARGE_LABEL_TEXT = "HIGHSCORE: IMPOSSIBLE";
-	public static final String SMALL_LABEL_TEXT = "BACK TO MENU";
+	public static final String SMALL_LABEL_TEXT = "    BACK TO MENU    ";
 
 	public static final float DEF_BUTTON_WIDTH_SCALE = 1.0625f;
 
@@ -33,6 +33,8 @@ public class BFXSnake extends ApplicationAdapter {
 	public static final String SCORE_FONT = "fonts/font-export.fnt";
 	public static final String MENU_FONT = "fonts/font-export.fnt";
 	public static final String TITLE_FONT = "fonts/font-title-export.fnt";
+
+	public static final String BUTTON_PACK = "main_button/glassy-ui.atlas";
 
 	public static final float DEF_FONT_SIZE = 5.0f; //1.4f
 	public static final float SETTINGS_FONT_SIZE = 5.0f; //2.5f

@@ -44,7 +44,8 @@ public class LearderboardState extends State {
 
         TextButton m_btnReset = new TextButton("RESET", m_gsm.getButtonStyle());
         m_btnReset.pad(BFXSnake.BUTTON_PADDING);
-        m_btnReset.setColor(Color.RED);
+        m_btnReset.setColor(BFXSnake.BUTTON_COLOR);
+        m_btnReset.getLabel().setColor(Color.RED);
         m_btnReset.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
@@ -77,7 +78,7 @@ public class LearderboardState extends State {
 
         Table titleTable = new Table();
 
-        titleTable.top();
+        titleTable.top().padTop(titleLabel.getHeight());
         titleTable.setFillParent(true);
 
         titleTable.add(titleLabel);
@@ -85,7 +86,7 @@ public class LearderboardState extends State {
         m_stage.addActor(titleTable);
 
         Table leaderboardTable = new Table();
-        leaderboardTable.top().padTop(Gdx.graphics.getHeight() / 4);
+        leaderboardTable.top().padTop(Gdx.graphics.getHeight() / 4 + titleLabel.getHeight());
         leaderboardTable.setFillParent(true);
 
         float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;

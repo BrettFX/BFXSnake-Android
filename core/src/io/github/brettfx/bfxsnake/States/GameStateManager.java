@@ -22,8 +22,6 @@ import static io.github.brettfx.bfxsnake.BFXSnake.DEF_FONT_SIZE;
  */
 
 public class GameStateManager {
-    private final String BUTTON_PACK = "main_button/glassy-ui.atlas";
-
     //A stack of states for more efficient memory utilization
     private Stack<State> m_states;
 
@@ -57,7 +55,7 @@ public class GameStateManager {
 
         controllerOn = m_preferences.getBoolean("ControllerState", true);
 
-        m_buttonAtlas = new TextureAtlas(Gdx.files.internal(BUTTON_PACK));
+        m_buttonAtlas = new TextureAtlas(Gdx.files.internal(BFXSnake.BUTTON_PACK));
         m_buttonSkin = new Skin(m_buttonAtlas);
 
         BitmapFont menuFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
@@ -82,7 +80,7 @@ public class GameStateManager {
         m_difficulty = difficulty;
     }
 
-    public void saveDifficulty(){
+    public void setDifficulty(){
         m_preferences.putInteger("Difficulty", m_difficulty);
     }
 
@@ -95,7 +93,7 @@ public class GameStateManager {
         m_snakeColor.set(BFXSnake.COLORS[m_snakeColorIndex]);
     }
 
-    public void saveSnakeColor(){
+    public void setSnakeColor(){
         m_preferences.putInteger("SnakeColor", m_snakeColorIndex);
     }
 
@@ -112,7 +110,7 @@ public class GameStateManager {
         m_pickupColor.set(BFXSnake.COLORS[m_pickupColorIndex]);
     }
 
-    public void savePickupColor(){
+    public void setPickupColor(){
         m_preferences.putInteger("PickupColor", m_pickupColorIndex);
     }
 
@@ -128,7 +126,7 @@ public class GameStateManager {
         controllerOn = !controllerOn;
     }
 
-    public void saveControllerState(){
+    public void setControllerState(){
         m_preferences.putBoolean("ControllerState", controllerOn);
     }
 
@@ -148,6 +146,7 @@ public class GameStateManager {
         m_states.push(state);
     }
 
+    @SuppressWarnings("unused")
     public void pop(){
         State removedState = m_states.pop();
         removedState.dispose();
@@ -160,6 +159,7 @@ public class GameStateManager {
     }
 
     /*Not used but kept for future reference*/
+    @SuppressWarnings("unused")
     public Pixmap getPixmapRoundedRectangle(int width, int height, int radius, Color color) {
 
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);

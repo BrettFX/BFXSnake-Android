@@ -63,7 +63,7 @@ public class PlayState extends State {
     public PlayState(GameStateManager gsm) {
         super(gsm);
 
-        m_gsm.saveDifficulty();
+        m_gsm.setDifficulty();
         m_gsm.flush();
 
         m_controller = new Controller(m_gsm);
@@ -247,7 +247,7 @@ public class PlayState extends State {
                 m_scoreLabel.getColor().b,
                 OPACITY);
 
-        scoreTable.add(m_scoreLabel);
+        scoreTable.add(m_scoreLabel).pad(10f);
 
         m_scoreStage.addActor(scoreTable);
 

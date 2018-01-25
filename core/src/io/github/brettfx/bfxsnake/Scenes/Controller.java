@@ -150,15 +150,14 @@ public class Controller {
 
         gsm.setTextButtonFont(m_bitmapFont);
 
-        //Create the pause button to be the same size of the arrow buttons
-        Image pauseButton1 = new Image(new Texture(PAUSE_BUTTON));
-        pauseButton1.setColor(pauseButton1.getColor().r,
-                pauseButton1.getColor().g,
-                pauseButton1.getColor().b,
+        Image pauseButton = new Image(new Texture(PAUSE_BUTTON));
+        pauseButton.setColor(pauseButton.getColor().r,
+                pauseButton.getColor().g,
+                pauseButton.getColor().b,
                 BFXSnake.OPACITY);
 
-        pauseButton1.setSize(ARROW_WIDTH, ARROW_HEIGHT);
-        InputListener pauseListener = new InputListener() {
+        pauseButton.setSize(ARROW_WIDTH, ARROW_HEIGHT);
+        pauseButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 //Need to return true in order for touchUp event to fire
@@ -169,32 +168,14 @@ public class Controller {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 m_pausedPressed = false;
             }
-        };
+        });
 
-        pauseButton1.addListener(pauseListener);
+        Table pauseTable = new Table();
+        pauseTable.setFillParent(true);
+        pauseTable.bottom().right();
+        pauseTable.add(pauseButton).size(pauseButton.getWidth(), pauseButton.getHeight());
 
-        Image pauseButton2 = new Image(new Texture(PAUSE_BUTTON));
-        pauseButton2.setColor(pauseButton2.getColor().r,
-                pauseButton2.getColor().g,
-                pauseButton2.getColor().b,
-                BFXSnake.OPACITY);
-
-        pauseButton2.setSize(ARROW_WIDTH, ARROW_HEIGHT);
-        pauseButton2.addListener(pauseListener);
-
-        //Create a table for the pause button
-        Table pauseTable1 = new Table();
-        pauseTable1.setFillParent(true);
-        pauseTable1.top().right();
-        pauseTable1.add(pauseButton1).size(pauseButton1.getWidth(), pauseButton1.getHeight());
-
-        Table pauseTable2 = new Table();
-        pauseTable2.setFillParent(true);
-        pauseTable2.bottom().right();
-        pauseTable2.add(pauseButton2).size(pauseButton2.getWidth(), pauseButton2.getHeight());
-
-        m_touchStage.addActor(pauseTable1);
-        m_touchStage.addActor(pauseTable2);
+        m_touchStage.addActor(pauseTable);
 
         //Create a table that will hold the controller arrows (3x3 matrix) if the controller is enabled
         if(m_usingController){
@@ -265,6 +246,7 @@ public class Controller {
         return m_pausedPressed;
     }
 
+    @SuppressWarnings("unused")
     public void resize(int width, int height){
         m_viewport.update(width, height);
     }

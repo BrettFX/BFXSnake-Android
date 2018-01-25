@@ -3,7 +3,6 @@ package io.github.brettfx.bfxsnake.States;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 
 /**
  * @author brett
@@ -13,7 +12,6 @@ import com.badlogic.gdx.math.Vector3;
 public abstract class State {
     protected GameStateManager m_gsm;
     protected OrthographicCamera m_cam;
-    protected Vector3 m_mouse;
 
     protected State(GameStateManager gsm){
         m_gsm = gsm;
