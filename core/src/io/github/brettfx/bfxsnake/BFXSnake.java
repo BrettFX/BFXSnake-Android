@@ -6,9 +6,6 @@ package io.github.brettfx.bfxsnake;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -47,14 +44,13 @@ public class BFXSnake extends ApplicationAdapter {
 	public static final float DEF_FONT_SIZE = 5.0f; //1.4f
 	public static final float SETTINGS_FONT_SIZE = 5.0f; //2.5f
 	public static final float OPACITY = 0.75f;
+	public static final float DEF_MUSIC_VOL = 1.0f;
 
 	private SpriteBatch m_batch;
 	private GameStateManager m_gameStateManager;
 
 	public static final Color SCORE_COLOR = Color.WHITE;
 	public static final Color NOTIFICATION_COLOR = Color.GREEN;
-
-	public static AssetManager m_assetManager;
 
 	public static final Color COLORS[] = {
 		Color.GREEN, Color.RED, Color.ROYAL, Color.CORAL, Color.CYAN,
@@ -75,17 +71,6 @@ public class BFXSnake extends ApplicationAdapter {
 		m_batch = new SpriteBatch();
 		m_gameStateManager = new GameStateManager();
 		m_gameStateManager.push(new MenuState(m_gameStateManager));
-
-		//Instantiate asset manager to load in sounds and music
-		m_assetManager = new AssetManager();
-		m_assetManager.load(BFXSnake.BFXSNAKE_THEME_MUSIC, Music.class);
-		m_assetManager.load(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class);
-		m_assetManager.load(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class);
-		m_assetManager.finishLoading();
-
-		Music themeMusic = BFXSnake.m_assetManager.get(BFXSnake.BFXSNAKE_THEME_MUSIC, Music.class);
-		themeMusic.setLooping(true);
-		themeMusic.play();
 	}
 
 	@Override
@@ -101,6 +86,5 @@ public class BFXSnake extends ApplicationAdapter {
 	public void dispose () {
 		m_batch.dispose();
 		m_gameStateManager.dispose();
-		m_assetManager.dispose();
 	}
 }

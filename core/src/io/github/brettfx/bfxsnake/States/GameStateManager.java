@@ -45,6 +45,10 @@ public class GameStateManager {
 
     private TextButton.TextButtonStyle m_textButtonStyle;
 
+    private AssetManager m_assetManager;
+
+    private Music m_themeMusic;
+
     public GameStateManager(){
         m_states = new Stack<State>();
 
@@ -69,6 +73,25 @@ public class GameStateManager {
         m_textButtonStyle.down = m_buttonSkin.getDrawable("button-down");
         m_textButtonStyle.pressedOffsetX = 1; //Moves text on button
         m_textButtonStyle.pressedOffsetY = -1; //Moves text on button
+
+        //Instantiate asset manager to load in sounds and music
+        m_assetManager = new AssetManager();
+        m_assetManager.load(BFXSnake.BFXSNAKE_THEME_MUSIC, Music.class);
+        m_assetManager.load(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class);
+        m_assetManager.load(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class);
+        m_assetManager.finishLoading();
+
+        m_themeMusic = m_assetManager.get(BFXSnake.BFXSNAKE_THEME_MUSIC, Music.class);
+        m_themeMusic.setLooping(true);
+        m_themeMusic.setVolume(BFXSnake.DEF_MUSIC_VOL);
+    }
+
+    public AssetManager getAssets(){
+        return m_assetManager;
+    }
+
+    public Music getThemeMusic(){
+        return m_themeMusic;
     }
 
     public void setTextButtonFont(BitmapFont bitmapFont){
@@ -204,5 +227,6 @@ public class GameStateManager {
 
         m_buttonAtlas.dispose();
         m_buttonSkin.dispose();
+        m_assetManager.dispose();
     }
 }

@@ -57,13 +57,13 @@ public class SettingsState extends State{
         m_btnSnakeColor.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                BFXSnake.m_assetManager.get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-                BFXSnake.m_assetManager.get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
                 m_gsm.setSnakeColor((m_gsm.getSnakeColorIndex() + 1) % BFXSnake.COLORS.length);
             }
         });
@@ -74,13 +74,13 @@ public class SettingsState extends State{
         m_btnPickupColor.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                BFXSnake.m_assetManager.get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-                BFXSnake.m_assetManager.get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
                 m_gsm.setPickupColor((m_gsm.getPickupColorIndex() + 1) % BFXSnake.COLORS.length);
             }
         });
@@ -91,13 +91,13 @@ public class SettingsState extends State{
         m_btnControllerState.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                BFXSnake.m_assetManager.get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-                BFXSnake.m_assetManager.get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
                 m_gsm.toggleControllerState();
             }
         });
@@ -108,13 +108,13 @@ public class SettingsState extends State{
         m_btnBack.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                BFXSnake.m_assetManager.get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-                BFXSnake.m_assetManager.get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
                 m_gsm.set(new MenuState(m_gsm));
             }
         });
@@ -125,13 +125,13 @@ public class SettingsState extends State{
         m_btnRestoreDefVals.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
-                BFXSnake.m_assetManager.get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
-                BFXSnake.m_assetManager.get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
 
                 m_gsm.setSnakeColor(0);
                 m_gsm.setSnakeColor(m_gsm.getSnakeColorIndex());
