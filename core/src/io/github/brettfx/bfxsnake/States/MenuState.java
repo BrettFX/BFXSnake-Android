@@ -1,6 +1,7 @@
 package io.github.brettfx.bfxsnake.States;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -59,11 +60,13 @@ public class MenuState extends State {
         btnPlay.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
                 m_gsm.set(new PlayState(m_gsm));
             }
         });
@@ -74,12 +77,14 @@ public class MenuState extends State {
         btnSettings.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
                 //Go to settings state
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
                 m_gsm.set(new SettingsState(m_gsm));
             }
         });
@@ -91,11 +96,14 @@ public class MenuState extends State {
         btnHighScore.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
+
                 //Go to leaderboard state
                 m_gsm.set(new LearderboardState(m_gsm));
             }
@@ -107,11 +115,14 @@ public class MenuState extends State {
         m_btnDifficulty.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
+
                 m_gsm.setDifficulty((m_gsm.getDifficulty() + 1) % DIFFICULTIES.length);
 
                 System.out.println("Current difficulties: " + DIFFICULTIES[m_gsm.getDifficulty()] +

@@ -3,6 +3,7 @@ package io.github.brettfx.bfxsnake.States;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -129,12 +130,14 @@ public class PlayState extends State {
         m_btnPlayAgain.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 //Need to return true in order for touchUp event to fire
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
                 Score.flush(); //Flush the score to write a new high score (if there is one)
                 m_gsm.set(new PlayState(m_gsm));
             }
@@ -147,12 +150,14 @@ public class PlayState extends State {
         m_btnBack.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 //Need to return true in order for touchUp event to fire
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
                 m_gsm.set(new MenuState(m_gsm));
             }
         });
@@ -165,12 +170,14 @@ public class PlayState extends State {
         m_btnExit.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 //Need to return true in order for touchUp event to fire
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
                 m_gsm.set(new MenuState(m_gsm));
             }
         });
@@ -182,12 +189,14 @@ public class PlayState extends State {
         m_btnResume.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
                 //Need to return true in order for touchUp event to fire
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
                 m_snake.resume();
                 m_btnExit.setVisible(false);
                 m_btnResume.setVisible(false);
