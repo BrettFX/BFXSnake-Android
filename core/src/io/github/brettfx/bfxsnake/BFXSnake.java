@@ -36,7 +36,8 @@ public class BFXSnake extends ApplicationAdapter {
 
 	public static final String BUTTON_PACK = "main_button/glassy-ui.atlas";
 
-	public static final String BFXSNAKE_THEME_MUSIC = "audio/music/BFXSnake.mp3";
+	public static final String THEME_MUSIC = "audio/music/BFXSnake.mp3";
+	public static final String MENU_MUSIC = "audio/music/BFXSnake_Menu.mp3";
 
 	public static final String BUTTON_CLICK_DOWN_SOUND = "audio/sounds/ButtonPressDown.wav";
 	public static final String BUTTON_CLICK_UP_SOUND = "audio/sounds/ButtonPressUp.wav";

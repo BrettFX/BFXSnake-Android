@@ -38,13 +38,18 @@ public class MenuState extends State {
     public MenuState(GameStateManager gsm) {
         super(gsm);
 
-        m_gsm.getThemeMusic().stop();
-
         m_gsm.setSnakeColor();
         m_gsm.setPickupColor();
         m_gsm.setControllerState();
+        m_gsm.setMusicState();
         m_gsm.flush();
         Score.flush();
+
+        //Only manipulate music if the music is on
+        if(m_gsm.isMusicOn()){
+            m_gsm.getThemeMusic().stop();
+            m_gsm.getMenuMusic().play();
+        }
 
         Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), m_cam);
         m_menuStage = new Stage(viewport);

@@ -38,7 +38,8 @@ public class GameStateManager {
     private int m_pickupColorIndex;
     private Color m_pickupColor;
 
-    private boolean controllerOn;
+    private boolean m_controllerOn;
+    private boolean m_musicOn;
 
     private TextureAtlas m_buttonAtlas;
     private Skin m_buttonSkin;
@@ -48,6 +49,7 @@ public class GameStateManager {
     private AssetManager m_assetManager;
 
     private Music m_themeMusic;
+    private Music m_menuMusic;
 
     public GameStateManager(){
         m_states = new Stack<State>();
@@ -60,7 +62,8 @@ public class GameStateManager {
         m_pickupColorIndex = m_preferences.getInteger("PickupColor", 1);
         m_pickupColor = new Color(BFXSnake.COLORS[m_pickupColorIndex]);
 
-        controllerOn = m_preferences.getBoolean("ControllerState", true);
+        m_controllerOn = m_preferences.getBoolean("ControllerState", true);
+        m_musicOn = m_preferences.getBoolean("MusicState", true);
 
         m_buttonAtlas = new TextureAtlas(Gdx.files.internal(BFXSnake.BUTTON_PACK));
         m_buttonSkin = new Skin(m_buttonAtlas);
@@ -76,14 +79,19 @@ public class GameStateManager {
 
         //Instantiate asset manager to load in sounds and music
         m_assetManager = new AssetManager();
-        m_assetManager.load(BFXSnake.BFXSNAKE_THEME_MUSIC, Music.class);
+        m_assetManager.load(BFXSnake.THEME_MUSIC, Music.class);
+        m_assetManager.load(BFXSnake.MENU_MUSIC, Music.class);
         m_assetManager.load(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class);
         m_assetManager.load(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class);
         m_assetManager.finishLoading();
 
-        m_themeMusic = m_assetManager.get(BFXSnake.BFXSNAKE_THEME_MUSIC, Music.class);
+        m_themeMusic = m_assetManager.get(BFXSnake.THEME_MUSIC, Music.class);
         m_themeMusic.setLooping(true);
         m_themeMusic.setVolume(BFXSnake.DEF_MUSIC_VOL);
+
+        m_menuMusic = m_assetManager.get(BFXSnake.MENU_MUSIC, Music.class);
+        m_menuMusic.setLooping(true);
+        m_menuMusic.setVolume(BFXSnake.DEF_MUSIC_VOL);
     }
 
     public AssetManager getAssets(){
@@ -92,6 +100,10 @@ public class GameStateManager {
 
     public Music getThemeMusic(){
         return m_themeMusic;
+    }
+
+    public Music getMenuMusic(){
+        return m_menuMusic;
     }
 
     public void setTextButtonFont(BitmapFont bitmapFont){
@@ -149,19 +161,35 @@ public class GameStateManager {
     }
 
     public void toggleControllerState(){
-        controllerOn = !controllerOn;
+        m_controllerOn = !m_controllerOn;
     }
 
     public void setControllerState(){
-        m_preferences.putBoolean("ControllerState", controllerOn);
+        m_preferences.putBoolean("ControllerState", m_controllerOn);
     }
 
     public boolean isControllerOn(){
-        return controllerOn;
+        return m_controllerOn;
     }
 
     public String getControllerState(){
-        return controllerOn ? "ON" : "OFF";
+        return m_controllerOn ? "ON" : "OFF";
+    }
+
+    public void toggleMusicState(){
+        m_musicOn = !m_musicOn;
+    }
+
+    public void setMusicState(){
+        m_preferences.putBoolean("MusicState", m_musicOn);
+    }
+
+    public boolean isMusicOn(){
+        return m_musicOn;
+    }
+
+    public String getMusicState(){
+        return m_musicOn ? "ON" : "OFF";
     }
 
     public void flush(){

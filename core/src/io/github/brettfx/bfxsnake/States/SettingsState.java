@@ -33,6 +33,9 @@ public class SettingsState extends State{
     //Toggle the controller as enabled or disabled
     private TextButton m_btnControllerState;
 
+    //Toggle the music
+    private TextButton m_btnMusicState;
+
     private Stage m_settingsStage;
 
     private BitmapFont m_settingsFont;
@@ -102,6 +105,30 @@ public class SettingsState extends State{
             }
         });
 
+        m_btnMusicState = new TextButton("MUSIC: " + m_gsm.getMusicState(), m_gsm.getButtonStyle());
+        m_btnMusicState.pad(BFXSnake.BUTTON_PADDING);
+        m_btnMusicState.setColor(BFXSnake.BUTTON_COLOR);
+        m_btnMusicState.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_DOWN_SOUND, Sound.class).play();
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button){
+                m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
+                m_gsm.toggleMusicState();
+
+                //Stop the menu music when the music is turned off
+                if(!m_gsm.isMusicOn()){
+                    m_gsm.getMenuMusic().stop();
+                }else{
+                    m_gsm.getMenuMusic().play();
+                }
+            }
+        });
+
         TextButton m_btnBack = new TextButton("BACK", m_gsm.getButtonStyle());
         m_btnBack.pad(BFXSnake.BUTTON_PADDING);
         m_btnBack.setColor(BFXSnake.BUTTON_COLOR);
@@ -142,6 +169,10 @@ public class SettingsState extends State{
                 if(!m_gsm.isControllerOn()){
                     m_gsm.toggleControllerState();
                 }
+
+                if(!m_gsm.isMusicOn()){
+                    m_gsm.toggleMusicState();
+                }
             }
         });
 
@@ -179,6 +210,9 @@ public class SettingsState extends State{
         selectionTable.add(m_btnControllerState).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
         selectionTable.row().padTop(padding);
 
+        selectionTable.add(m_btnMusicState).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);;
+        selectionTable.row().padTop(padding);
+
         selectionTable.add(m_btnRestoreDefVals).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
         selectionTable.row().padTop(padding);
 
@@ -196,6 +230,7 @@ public class SettingsState extends State{
     @Override
     public void update(float dt) {
         m_btnControllerState.setText("CONTROLLER: " + m_gsm.getControllerState());
+        m_btnMusicState.setText("MUSIC: " + m_gsm.getMusicState());
         m_btnSnakeColor.getLabel().setColor(m_gsm.getSnakeColor());
         m_btnPickupColor.getLabel().setColor(m_gsm.getPickupColor());
     }

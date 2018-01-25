@@ -64,11 +64,15 @@ public class PlayState extends State {
     public PlayState(GameStateManager gsm) {
         super(gsm);
 
-        m_gsm.getThemeMusic().stop();
-        m_gsm.getThemeMusic().play();
-
         m_gsm.setDifficulty();
         m_gsm.flush();
+
+        //Only manipulate music if the music is on
+        if(m_gsm.isMusicOn()){
+            m_gsm.getMenuMusic().stop();
+            m_gsm.getThemeMusic().stop();
+            m_gsm.getThemeMusic().play();
+        }
 
         m_controller = new Controller(m_gsm);
 
