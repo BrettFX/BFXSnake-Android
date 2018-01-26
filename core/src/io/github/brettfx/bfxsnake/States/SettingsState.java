@@ -172,6 +172,7 @@ public class SettingsState extends State{
 
                 if(!m_gsm.isMusicOn()){
                     m_gsm.toggleMusicState();
+                    m_gsm.getThemeMusic().play();
                 }
             }
         });

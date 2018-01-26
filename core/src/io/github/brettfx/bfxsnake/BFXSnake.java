@@ -25,6 +25,7 @@ public class BFXSnake extends ApplicationAdapter {
 
 	public static final float DEF_BUTTON_WIDTH_SCALE = 1.0625f;
 
+	//Increasing this will make the snake smaller and decrease padding between buttons
 	public static final int SCALE_FACTOR = 45;
 
 	public static final Color BUTTON_COLOR = Color.GRAY;
