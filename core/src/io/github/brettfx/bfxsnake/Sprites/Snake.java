@@ -1,12 +1,14 @@
 package io.github.brettfx.bfxsnake.Sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 
 import io.github.brettfx.bfxsnake.BFXSnake;
 import io.github.brettfx.bfxsnake.Components.Score;
 import io.github.brettfx.bfxsnake.Scenes.Controller;
+import io.github.brettfx.bfxsnake.States.GameStateManager;
 
 /**
  * @author brett
@@ -48,10 +50,14 @@ public class Snake {
 
     private Score m_score;
 
+    private GameStateManager m_gsm;
+
     /**
      * Constructor
      * */
     public Snake(Controller controller){
+        m_gsm = controller.getGSM();
+
         //Create the initial snake
         m_snakeParts = new Array<SnakePart>();
         m_snakeParts.add(new SnakePart());
@@ -209,6 +215,7 @@ public class Snake {
             //Collect the pickup if the snake's head has collided with it
             if(m_pickup.shouldCollect(head)){
                 m_pickup.collect(head);
+                m_gsm.getAssets().get(BFXSnake.PICKUP_SOUND, Sound.class).play();
                 m_pickup.validateSpawn(m_snakeParts);
                 grow();
             }

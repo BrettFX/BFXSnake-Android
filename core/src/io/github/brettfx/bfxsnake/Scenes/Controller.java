@@ -54,13 +54,17 @@ public class Controller {
 
     private  BitmapFont m_bitmapFont;
 
+    private GameStateManager m_gsm;
+
     public Controller(GameStateManager gsm){
+        m_gsm = gsm;
+
         OrthographicCamera cam = new OrthographicCamera();
         m_viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), cam);
 
         m_touchStage = new Stage(m_viewport);
 
-        m_usingController = gsm.isControllerOn();
+        m_usingController = m_gsm.isControllerOn();
 
         //Create up_arrow image
         m_upImg = new Image(new Texture(UP));
@@ -148,7 +152,7 @@ public class Controller {
         m_bitmapFont = new BitmapFont(Gdx.files.internal(BFXSnake.MENU_FONT));
         m_bitmapFont.getData().setScale(BFXSnake.DEF_FONT_SIZE, BFXSnake.DEF_FONT_SIZE);
 
-        gsm.setTextButtonFont(m_bitmapFont);
+        m_gsm.setTextButtonFont(m_bitmapFont);
 
         Image pauseButton = new Image(new Texture(PAUSE_BUTTON));
         pauseButton.setColor(pauseButton.getColor().r,
@@ -208,6 +212,10 @@ public class Controller {
         if(PlayState.DEBUG_MODE){
             m_touchStage.setDebugAll(true);
         }
+    }
+
+    public GameStateManager getGSM(){
+        return m_gsm;
     }
 
     public Stage getStage(){

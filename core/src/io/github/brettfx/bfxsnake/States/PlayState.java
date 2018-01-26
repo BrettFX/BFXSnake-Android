@@ -205,6 +205,7 @@ public class PlayState extends State {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button){
                 m_gsm.getAssets().get(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class).play();
                 m_snake.resume();
+                m_gsm.getThemeMusic().setVolume(BFXSnake.DEF_MUSIC_VOL);
                 m_btnExit.setVisible(false);
                 m_btnResume.setVisible(false);
             }
@@ -323,6 +324,7 @@ public class PlayState extends State {
                     
                 }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
                     m_snake.pause();
+                    m_gsm.getThemeMusic().setVolume(BFXSnake.PAUSE_MUSIC_VOL);
                     m_btnResume.setVisible(true);
                     m_btnExit.setVisible(true);
                 }
@@ -334,6 +336,7 @@ public class PlayState extends State {
 
                     if(m_controller.isPausedPressed()){
                         m_snake.pause();
+                        m_gsm.getThemeMusic().setVolume(BFXSnake.PAUSE_MUSIC_VOL);
                         m_btnResume.setVisible(true);
                         m_btnExit.setVisible(true);
                         return;
@@ -392,6 +395,7 @@ public class PlayState extends State {
                     m_snake.setDirection(Snake.Directions.RIGHT);
                 }else if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
                     m_snake.pause();
+                    m_gsm.getThemeMusic().setVolume(BFXSnake.PAUSE_MUSIC_VOL);
                     m_btnResume.setVisible(true);
                     m_btnExit.setVisible(true);
                 }
@@ -408,6 +412,7 @@ public class PlayState extends State {
 
         }else if((m_controller.isPausedPressed() && Gdx.input.justTouched()) || Gdx.input.isKeyJustPressed(Input.Keys.P)){
             m_snake.resume();
+            m_gsm.getThemeMusic().setVolume(BFXSnake.DEF_MUSIC_VOL);
             m_btnResume.setVisible(false);
             m_btnExit.setVisible(false);
         }
@@ -423,6 +428,7 @@ public class PlayState extends State {
         //Show new high score notification if the high score has changed and the notification has not be shown yet
         if(m_snake.getScore().isNewHighScore() && !m_highScoreNotified){
             m_notificationLabel.setText("NEW HIGH SCORE!");
+            m_gsm.getAssets().get(BFXSnake.HIGHSCORE_SOUND, Sound.class).play();
             m_notificationAlpha = 1.0f;
             m_highScoreNotified = true;
         }
