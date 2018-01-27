@@ -437,7 +437,14 @@ public class PlayState extends State {
         m_notificationLabel.setColor(NOTIFICATION_COLOR.r, NOTIFICATION_COLOR.g, NOTIFICATION_COLOR.b, m_notificationAlpha);
         m_notificationAlpha = m_notificationAlpha >= 0 ? m_notificationAlpha - NOTIFICATION_FADE_SPEED : 0.0f;
 
+        boolean prevGameOver = m_gameOver;
         m_gameOver = m_snake.isColliding();
+
+        if(prevGameOver != m_gameOver){
+            m_gsm.getThemeMusic().stop();
+            m_gsm.getAssets().get(BFXSnake.GAMEOVER_SOUND, Sound.class).play();
+        }
+
         m_scoreLabel.setText(String.valueOf(m_snake.getScore().getCurrentScore()));
     }
 

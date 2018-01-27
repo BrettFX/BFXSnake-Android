@@ -85,6 +85,7 @@ public class GameStateManager {
         m_assetManager.load(BFXSnake.BUTTON_CLICK_UP_SOUND, Sound.class);
         m_assetManager.load(BFXSnake.HIGHSCORE_SOUND, Sound.class);
         m_assetManager.load(BFXSnake.PICKUP_SOUND, Sound.class);
+        m_assetManager.load(BFXSnake.GAMEOVER_SOUND, Sound.class);
         m_assetManager.finishLoading();
 
         m_themeMusic = m_assetManager.get(BFXSnake.THEME_MUSIC, Music.class);
