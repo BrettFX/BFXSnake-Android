@@ -24,9 +24,6 @@ import static io.github.brettfx.bfxsnake.BFXSnake.DEF_FONT_SIZE;
  * @author brett
  * @since 12/24/2017
  */
-
-//TODO create a hash table for the settings buttons and render only those that fit on the screen
-//TODO create two arrow buttons to be used to scroll through the settings for the buttons that didn't fit
 public class MenuState extends State {
     public static boolean DEBUG_MODE = false;
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -172,7 +173,7 @@ public class SettingsState extends State{
 
                 if(!m_gsm.isMusicOn()){
                     m_gsm.toggleMusicState();
-                    m_gsm.getThemeMusic().play();
+                    m_gsm.getMenuMusic().play();
                 }
             }
         });
@@ -194,7 +195,7 @@ public class SettingsState extends State{
 
         Table selectionTable = new Table();
 
-        selectionTable.top().padTop(Gdx.graphics.getHeight() / 6 + titleLabel.getHeight());
+        selectionTable.top().padTop(Gdx.graphics.getHeight() / 8 + titleLabel.getHeight());
         selectionTable.setFillParent(true);
 
         float padding = Gdx.graphics.getWidth() / BFXSnake.SCALE_FACTOR;
@@ -220,7 +221,16 @@ public class SettingsState extends State{
         selectionTable.add(m_btnBack).width(largeLabel.getWidth() * BFXSnake.DEF_BUTTON_WIDTH_SCALE);
         selectionTable.row().padTop(padding);
 
-        m_settingsStage.addActor(selectionTable);
+        ScrollPane settingsScrolePane = new ScrollPane(selectionTable);
+        settingsScrolePane.setScrollingDisabled(true, false);
+        settingsScrolePane.setOverscroll(false, true);
+        settingsScrolePane.setSmoothScrolling(true);
+
+        Table scrollTable = new Table();
+        scrollTable.setFillParent(true);
+        scrollTable.add(settingsScrolePane).fill().expand();
+
+        m_settingsStage.addActor(scrollTable);
     }
 
     @Override
@@ -238,6 +248,7 @@ public class SettingsState extends State{
 
     @Override
     public void render(SpriteBatch sb) {
+        m_settingsStage.act();
         m_settingsStage.draw();
     }
 
