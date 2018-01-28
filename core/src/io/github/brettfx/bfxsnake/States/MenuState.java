@@ -45,6 +45,9 @@ public class MenuState extends State {
         m_gsm.flush();
         Score.flush();
 
+        //Stop any sounds that may still be playing
+        m_gsm.stopSounds();
+
         //Only manipulate music if the music is on
         if(m_gsm.isMusicOn()){
             m_gsm.getThemeMusic().stop();

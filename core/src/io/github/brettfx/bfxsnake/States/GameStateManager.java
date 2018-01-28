@@ -98,6 +98,13 @@ public class GameStateManager {
         m_menuMusic.setVolume(BFXSnake.DEF_MUSIC_VOL);
     }
 
+    public void stopSounds(){
+        m_assetManager.get(BFXSnake.GAMEOVER_SOUND, Sound.class).stop();
+        m_assetManager.get(BFXSnake.WINNING_SOUND, Sound.class).stop();
+        m_assetManager.get(BFXSnake.HIGHSCORE_SOUND, Sound.class).stop();
+        m_assetManager.get(BFXSnake.PICKUP_SOUND, Sound.class).stop();
+    }
+
     public AssetManager getAssets(){
         return m_assetManager;
     }

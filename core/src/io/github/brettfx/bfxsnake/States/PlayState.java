@@ -31,7 +31,6 @@ import static io.github.brettfx.bfxsnake.BFXSnake.OPACITY;
  * @author brett
  * @since 12/24/2017
  */
-//TODO determine when the player has won the game and display an appropriate message and sound
 public class PlayState extends State {
 
     //The closer to zero the slower the animation speed
@@ -71,13 +70,13 @@ public class PlayState extends State {
         m_gsm.flush();
 
         //Stop any sounds that may still be playing
-        m_gsm.getAssets().get(BFXSnake.GAMEOVER_SOUND, Sound.class).stop();
-        m_gsm.getAssets().get(BFXSnake.WINNING_SOUND, Sound.class).stop();
+       m_gsm.stopSounds();
 
         //Only manipulate music if the music is on
         if(m_gsm.isMusicOn()){
             m_gsm.getMenuMusic().stop();
             m_gsm.getThemeMusic().stop();
+            m_gsm.getThemeMusic().setVolume(BFXSnake.DEF_MUSIC_VOL);
             m_gsm.getThemeMusic().play();
         }
 
@@ -265,7 +264,7 @@ public class PlayState extends State {
         scoreTable.setFillParent(true);
 
         Label.LabelStyle scoreStyle = new Label.LabelStyle(m_snake.getScore().getScoreFont(), m_snake.getScore().getScoreFont().getColor());
-        m_scoreLabel = new Label(String.valueOf(m_snake.getScore().getCurrentScore()), scoreStyle);
+        m_scoreLabel = new Label(String.valueOf(m_snake.getScore().getCurrentScore()) + " / " + String.valueOf(m_snake.getWinningScore()), scoreStyle);
         m_scoreLabel.setColor(m_scoreLabel.getColor().r,
                 m_scoreLabel.getColor().g,
                 m_scoreLabel.getColor().b,
@@ -459,7 +458,7 @@ public class PlayState extends State {
             }
         }
 
-        m_scoreLabel.setText(String.valueOf(m_snake.getScore().getCurrentScore()));
+        m_scoreLabel.setText(String.valueOf(m_snake.getScore().getCurrentScore()) + " / " + String.valueOf(m_snake.getWinningScore()));
     }
 
     @Override

@@ -88,8 +88,10 @@ public class Snake {
 
         m_score = new Score(BFXSnake.SCORE_COLOR);
 
+        float scoreMaxWidth = controller.isUsingController() ? m_maxWidth - controller.getWidth() : m_maxWidth;
+
         //Calculate the target winning score
-        float area = m_maxWidth * m_maxHeight;
+        float area = scoreMaxWidth * m_maxHeight;
         float snakeArea = m_snakeParts.get(0).getWidth() * m_snakeParts.get(0).getHeight();
         m_winningScore = (int)(area / snakeArea);
 
@@ -242,6 +244,10 @@ public class Snake {
      * */
     public boolean isColliding(){
         return m_colliding;
+    }
+
+    public int getWinningScore(){
+        return m_winningScore;
     }
 
     public boolean isWinner(){
