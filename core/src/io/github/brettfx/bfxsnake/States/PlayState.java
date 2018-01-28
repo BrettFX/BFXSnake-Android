@@ -31,6 +31,7 @@ import static io.github.brettfx.bfxsnake.BFXSnake.OPACITY;
  * @author brett
  * @since 12/24/2017
  */
+//TODO determine when the player has won the game and display an appropriate message and sound
 public class PlayState extends State {
 
     //The closer to zero the slower the animation speed
@@ -60,6 +61,8 @@ public class PlayState extends State {
     private TextButton m_btnBack;
     private TextButton m_btnResume;
     private TextButton m_btnExit;
+
+    private int m_winningScore;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
@@ -282,7 +285,14 @@ public class PlayState extends State {
         //Initially invisible
         m_notificationAlpha = 0.0f;
 
+        //Calculate the target winning score
+        float area = m_snake.getMaxWidth() * m_snake.getMaxHeight();
+        float snakeArea = m_snake.getSnake().get(0).getWidth() * m_snake.getSnake().get(0).getHeight();
+        m_winningScore = (int)(area / snakeArea);
+
         if(DEBUG_MODE){
+            System.out.println("Target Winning Score Based on Screen Size of " + Gdx.graphics.getWidth() + " x " + Gdx.graphics.getHeight() +
+            " is " + m_winningScore);
             m_gameOverStage.setDebugAll(true);
             m_scoreStage.setDebugAll(true);
             m_notificationStage.setDebugAll(true);
