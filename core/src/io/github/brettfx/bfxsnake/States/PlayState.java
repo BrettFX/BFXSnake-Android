@@ -49,6 +49,8 @@ public class PlayState extends State {
     private Stage m_notificationStage;
     private Stage m_pauseStage;
 
+    private Label m_gameOverLabel;
+
     private Label m_scoreLabel;
     private boolean m_highScoreNotified;
 
@@ -62,13 +64,15 @@ public class PlayState extends State {
     private TextButton m_btnResume;
     private TextButton m_btnExit;
 
-    private int m_winningScore;
-
     public PlayState(GameStateManager gsm) {
         super(gsm);
 
         m_gsm.setDifficulty();
         m_gsm.flush();
+
+        //Stop any sounds that may still be playing
+        m_gsm.getAssets().get(BFXSnake.GAMEOVER_SOUND, Sound.class).stop();
+        m_gsm.getAssets().get(BFXSnake.WINNING_SOUND, Sound.class).stop();
 
         //Only manipulate music if the music is on
         if(m_gsm.isMusicOn()){
@@ -225,8 +229,8 @@ public class PlayState extends State {
         gameOverTable.setFillParent(true);
 
         //Create game over label
-        Label gameOverLabel = new Label("GAME OVER", fontStyle);
-        gameOverTable.add(gameOverLabel).expandX();
+        m_gameOverLabel = new Label("GAME OVER", fontStyle);
+        gameOverTable.add(m_gameOverLabel).expandX();
 
         m_gameOverStage.addActor(gameOverTable);
 
@@ -285,14 +289,7 @@ public class PlayState extends State {
         //Initially invisible
         m_notificationAlpha = 0.0f;
 
-        //Calculate the target winning score
-        float area = m_snake.getMaxWidth() * m_snake.getMaxHeight();
-        float snakeArea = m_snake.getSnake().get(0).getWidth() * m_snake.getSnake().get(0).getHeight();
-        m_winningScore = (int)(area / snakeArea);
-
         if(DEBUG_MODE){
-            System.out.println("Target Winning Score Based on Screen Size of " + Gdx.graphics.getWidth() + " x " + Gdx.graphics.getHeight() +
-            " is " + m_winningScore);
             m_gameOverStage.setDebugAll(true);
             m_scoreStage.setDebugAll(true);
             m_notificationStage.setDebugAll(true);
@@ -448,11 +445,18 @@ public class PlayState extends State {
         m_notificationAlpha = m_notificationAlpha >= 0 ? m_notificationAlpha - NOTIFICATION_FADE_SPEED : 0.0f;
 
         boolean prevGameOver = m_gameOver;
-        m_gameOver = m_snake.isColliding();
+        m_gameOver = m_snake.isColliding() || m_snake.isWinner();
 
         if(prevGameOver != m_gameOver){
             m_gsm.getThemeMusic().stop();
-            m_gsm.getAssets().get(BFXSnake.GAMEOVER_SOUND, Sound.class).play();
+
+            //Play the appropriate sound
+            if(m_snake.isWinner()){
+                m_gameOverLabel.setText(BFXSnake.WINNING_TEXT);
+                m_gsm.getAssets().get(BFXSnake.WINNING_SOUND, Sound.class).play();
+            }else{
+                m_gsm.getAssets().get(BFXSnake.GAMEOVER_SOUND, Sound.class).play();
+            }
         }
 
         m_scoreLabel.setText(String.valueOf(m_snake.getScore().getCurrentScore()));

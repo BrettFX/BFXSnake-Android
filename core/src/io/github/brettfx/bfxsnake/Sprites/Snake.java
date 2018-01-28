@@ -49,6 +49,7 @@ public class Snake {
     private float m_minWidth;
 
     private Score m_score;
+    private int m_winningScore;
 
     private GameStateManager m_gsm;
 
@@ -86,6 +87,16 @@ public class Snake {
         m_delay = 0;
 
         m_score = new Score(BFXSnake.SCORE_COLOR);
+
+        //Calculate the target winning score
+        float area = m_maxWidth * m_maxHeight;
+        float snakeArea = m_snakeParts.get(0).getWidth() * m_snakeParts.get(0).getHeight();
+        m_winningScore = (int)(area / snakeArea);
+
+        if(DEBUG_MODE){
+            System.out.println("Target Winning Score Based on Screen Size of " + Gdx.graphics.getWidth() + " x " + Gdx.graphics.getHeight() +
+                    " is " + m_winningScore);
+        }
     }
 
     public Score getScore(){
@@ -231,6 +242,10 @@ public class Snake {
      * */
     public boolean isColliding(){
         return m_colliding;
+    }
+
+    public boolean isWinner(){
+        return m_score.getCurrentScore() == m_winningScore;
     }
 
     /**

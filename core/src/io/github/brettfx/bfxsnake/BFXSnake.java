@@ -23,6 +23,8 @@ public class BFXSnake extends ApplicationAdapter {
 	public static final String LARGE_LABEL_TEXT = "  HIGHSCORE: IMPOSSIBLE  ";
 	public static final String SMALL_LABEL_TEXT = "    BACK TO MENU    ";
 
+	public static String WINNING_TEXT = "WINNER WINNER CHICKEN DINNER!";
+
 	public static final float DEF_BUTTON_WIDTH_SCALE = 1.0625f;
 
 	//Increasing this will make the snake smaller and decrease padding between buttons
@@ -45,6 +47,7 @@ public class BFXSnake extends ApplicationAdapter {
 	public static final String HIGHSCORE_SOUND = "audio/sounds/Highscore.wav";
 	public static final String PICKUP_SOUND = "audio/sounds/Pickup.wav";
 	public static final String GAMEOVER_SOUND = "audio/sounds/Gameover.wav";
+	public static final String WINNING_SOUND = "audio/sounds/Winning.wav";
 
 	public static final float DEF_FONT_SIZE = 5.0f; //1.4f
 	public static final float SETTINGS_FONT_SIZE = 5.0f; //2.5f
@@ -70,9 +73,9 @@ public class BFXSnake extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
-		Snake.DEBUG_MODE = false;
+		Snake.DEBUG_MODE = true;
 		MenuState.DEBUG_MODE = false;
-		PlayState.DEBUG_MODE = true;
+		PlayState.DEBUG_MODE = false;
 		Pickup.DEBUG_MODE = false;
 
 		m_batch = new SpriteBatch();
