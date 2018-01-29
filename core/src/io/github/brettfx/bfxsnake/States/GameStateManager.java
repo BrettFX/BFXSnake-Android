@@ -62,7 +62,7 @@ public class GameStateManager {
         m_pickupColorIndex = m_preferences.getInteger("PickupColor", 1);
         m_pickupColor = new Color(BFXSnake.COLORS[m_pickupColorIndex]);
 
-        m_controllerOn = m_preferences.getBoolean("ControllerState", true);
+        m_controllerOn = m_preferences.getBoolean("ControllerState", false);
         m_musicOn = m_preferences.getBoolean("MusicState", true);
 
         m_buttonAtlas = new TextureAtlas(Gdx.files.internal(BFXSnake.BUTTON_PACK));
