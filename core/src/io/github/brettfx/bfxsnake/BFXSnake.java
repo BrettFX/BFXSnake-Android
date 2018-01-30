@@ -20,6 +20,9 @@ public class BFXSnake extends ApplicationAdapter {
 	public static final String PREFS_NAME = "BFXSnake_Preferences";
 	public static final String TITLE = "BFX SNAKE";
 
+	public static final int DESKTOP_WIDTH = 800;
+	public static final int DESKTOP_HEIGHT = 480;
+
 	public static final String LARGE_LABEL_TEXT = "  HIGHSCORE: IMPOSSIBLE  ";
 	public static final String SMALL_LABEL_TEXT = "    BACK TO MENU    ";
 
